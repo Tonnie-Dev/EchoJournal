@@ -1,12 +1,17 @@
-plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-}
+
+    plugins {
+        alias(libs.plugins.android.application)
+        alias(libs.plugins.jetbrains.kotlin.android)
+        alias(libs.plugins.compose.compiler)
+        alias(libs.plugins.hilt.plugin)
+        alias(libs.plugins.ksp.plugin)
+        alias(libs.plugins.parcelize.plugin)
+        alias(libs.plugins.kotlin.serializer.plugin )
+    }
 
 android {
     namespace = "com.tonyxlab.echojournal"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.tonyxlab.echojournal"
@@ -41,15 +46,49 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(AndroidX.core.ktx)
+    implementation(AndroidX.lifecycle.runtime.ktx)
+    implementation(AndroidX.activity.compose)
+    implementation(platform(AndroidX.compose.bom))
+    implementation(AndroidX.compose.ui)
+    implementation(AndroidX.compose.ui.graphics)
+    implementation(AndroidX.compose.ui.toolingPreview)
+
+    //Material 3
+    implementation(AndroidX.compose.material3)
+
+    //Splash Screen
+    implementation(AndroidX.core.splashscreen)
+
+    // Dagger Hilt
+    implementation(Google.dagger.hilt.android)
+    ksp(Google.dagger.hilt.compiler)
+    implementation(AndroidX.hilt.navigationCompose)
+
+    // Room
+    implementation(AndroidX.room.ktx)
+    ksp(AndroidX.room.compiler)
+
+    // Kotlinx Date-Time
+    implementation(KotlinX.datetime)
+
+    // Kotlinx Serialization
+    implementation(KotlinX.serialization.json)
+
+    //Compose Navigation
+    implementation(AndroidX.navigation.compose)
+
+    // Logging
+    implementation(JakeWharton.timber)
+
+    // Testing
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinTest)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockk)
+
+    // Android Tests
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
