@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.EchoJournal" parent="android:Theme.Material.Light.NoActionBar" />
+  <style name="Theme.EchoJournal" parent="android:Theme.Material.Light.NoActionBar" />
 
     <style name="Theme.EchoJournal.Splash" parent="Theme.SplashScreen">
-
-        <item name="windowSplashScreenBackground" > @drawable/gradient_background</item>
-        <item name="postSplashScreenTheme"> @style/Theme.EchoJournal</item>
-        <!--<item name="android:windowSplashScreenAnimatedIcon">@drawable/mood_splash</item>-->
+        <item name="windowSplashScreenBackground">@color/blue_200</item> <!-- Solid color -->
+        <item name="postSplashScreenTheme">@style/Theme.EchoJournal</item>
+        <!--<item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>-->
     </style>
 </resources>

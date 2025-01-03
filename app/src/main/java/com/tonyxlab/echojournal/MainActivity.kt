@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    val viewModel by viewModels<MainDummyViewModel>()
+    private val viewModel by viewModels<MainDummyViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
