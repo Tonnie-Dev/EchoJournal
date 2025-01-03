@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal
+package com.tonyxlab.echojournal.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

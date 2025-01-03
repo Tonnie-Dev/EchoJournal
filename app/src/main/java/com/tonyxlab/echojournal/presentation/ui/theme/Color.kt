@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.ui.theme
+package com.tonyxlab.echojournal.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

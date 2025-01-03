@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal
+package com.tonyxlab.echojournal.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,8 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.tonyxlab.echojournal.ui.theme.EchoJournalTheme
-import dagger.hilt.EntryPoint
+import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
