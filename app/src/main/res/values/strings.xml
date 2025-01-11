@@ -4,4 +4,6 @@
     <string name="start_recording_text">Start recording your first Echo</string>
     <string name="add_text">add</string>
     <string name="live_tracker_timestamp">%s/%S</string>
+    <string name="play_text">Play</string>
+    <string name="pause_text">Pause</string>
 </resources>
