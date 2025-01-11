@@ -6,6 +6,6 @@
     <string name="live_tracker_timestamp">%s/%S</string>
     <string name="play_text">Play</string>
     <string name="pause_text">Pause</string>
-    <string name="show_more_text">Show More</string>
-    <string name="show_less_text">Show Less</string>
+    <string name="show_more_text"> … Show More</string>
+    <string name="show_less_text"> … Show Less</string>
 </resources>
