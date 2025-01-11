@@ -7,12 +7,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -37,15 +42,23 @@ fun PlayPauseButton(
     val spacing = LocalSpacing.current
     Box(
             modifier = modifier
-                    .size(spacing.spaceExtraLarge)
-                    .background(color = playButtonColor, shape = CircleShape)
-                    .clickable { onTogglePlay() },
+
+                    .clip(CircleShape)
+                    .background(color = playButtonColor)
+                   // .background(color = playButtonColor, shape = CircleShape)
+                    //.shadow(2.dp)
+                    .clickable { onTogglePlay() }
+
+                    .padding(spacing.spaceExtraSmall *3)
+
+
+            ,
             contentAlignment = Alignment.Center
     ) {
 
         Canvas(
                 modifier = Modifier
-                        .size(spacing.spaceLarge)
+                        .size(spacing.spaceMedium)
                         .align(Alignment.Center)
         ) {
 
@@ -60,7 +73,7 @@ fun PlayPauseButton(
 
 private fun DrawScope.drawPauseBars(color: Color) {
 
-    val barWidth = 8.dp.toPx()
+    val barWidth = 4.dp.toPx()
     val spacing = 4.dp.toPx()
     val barHeight = size.height
 
@@ -84,9 +97,9 @@ private fun DrawScope.drawPlayTriangle(color: Color) {
 
     val path = Path().apply {
 
-        moveTo(size.width * 0.2f, size.height * 0.2f)
-        lineTo(size.width * 0.7f, size.height / 2)
-        lineTo(size.width * 0.2f, size.height * 0.8f)
+        moveTo(size.width * 0.3f, size.height * .1f)
+        lineTo(size.width * 1f, size.height /2)
+        lineTo(size.width * 0.3f, size.height * .9f)
         close()
     }
 
@@ -100,7 +113,10 @@ private fun PlayPauseButtonPreview() {
     EchoJournalTheme {
 
         Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(vertical = spacing.spaceTwoHundred),
                 verticalArrangement = Arrangement.spacedBy(spacing.spaceLarge),
                 horizontalAlignment = Alignment.CenterHorizontally
         ) {
