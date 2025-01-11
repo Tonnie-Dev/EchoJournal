@@ -3,5 +3,5 @@
     <string name="no_entries_text">No Entries</string>
     <string name="start_recording_text">Start recording your first Echo</string>
     <string name="add_text">add</string>
-    <string name="live_tracker_timestamp">%d/%d</string>
+    <string name="live_tracker_timestamp">%s/%S</string>
 </resources>
