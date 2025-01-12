@@ -38,6 +38,7 @@ val NeutralVariant99 = Color(0xFFFCFDFE)
 
 // Surface Variant and Tints
 val SurfaceVariant = Color(0xFFE1E2EC)
+val SurfaceTint05 = Color(0x0C475D92)
 val SurfaceTint12 = Color(0x1F475D92)
 val SurfaceTint15 = Color(0x0D475D92)
 
