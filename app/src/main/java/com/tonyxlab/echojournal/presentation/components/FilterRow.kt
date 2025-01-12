@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -47,21 +48,21 @@ fun FilterRow(
     onClickTopicFilter: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    FlowRow {
+    val spacing = LocalSpacing.current
+    FlowRow (horizontalArrangement = Arrangement.Absolute.spacedBy(spacing.spaceSmall), maxLines = 1){
 
         MoodFilter(
                 moods = moods,
                 isMoodFilterClicked = isMoodFilterClicked,
                 onClickMoodFilter = onClickMoodFilter,
-                modifier = modifier
+                modifier = modifier.height(spacing.spaceLarge)
         )
 
         TopicFilter(
                 topics = topics,
                 isTopicFilterClicked = isTopicFilterClicked,
                 onClickTopicFilter = onClickTopicFilter,
-                modifier = modifier
+                modifier = modifier.height(spacing.spaceLarge)
         )
 
     }
@@ -110,6 +111,7 @@ fun MoodFilter(
 
         if (moods.isEmpty()) {
             Text(
+                    modifier = Modifier.padding(horizontal = spacing.spaceSmall),
                     text = stringResource(R.string.all_moods_filter_text),
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.labelLarge
@@ -191,6 +193,7 @@ fun TopicFilter(
         if (topics.isEmpty()) {
 
             Text(
+                    modifier = Modifier.padding(horizontal = spacing.spaceSmall),
                     text = stringResource(R.string.all_topics_filter_text),
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.labelLarge
@@ -246,6 +249,7 @@ private fun FilterRowPreview() {
     val topics = listOf(
             "Work", "Money", "Family", "Love", "Food", "School"
     )
+
     EchoJournalTheme {
 
         Column(
@@ -270,8 +274,8 @@ private fun FilterRowPreview() {
 
             FilterRow(
                     moods = moods.take(1),
-                    topics = topics.take(1),
-                    isMoodFilterClicked = false,
+                    topics = topics.take(0),
+                    isMoodFilterClicked = true,
                     isTopicFilterClicked = false,
                     onClickMoodFilter = {},
                     onClickTopicFilter = {},
@@ -279,8 +283,8 @@ private fun FilterRowPreview() {
 
             FilterRow(
                     moods = moods.take(2),
-                    topics = topics.take(2),
-                    isMoodFilterClicked = false,
+                    topics = topics.take(0),
+                    isMoodFilterClicked = true,
                     isTopicFilterClicked = false,
                     onClickMoodFilter = {},
                     onClickTopicFilter = {},
@@ -288,9 +292,64 @@ private fun FilterRowPreview() {
 
             FilterRow(
                     moods = moods.take(3),
+                    topics = topics.take(0),
+                    isMoodFilterClicked = true,
+                    isTopicFilterClicked = false,
+                    onClickMoodFilter = {},
+                    onClickTopicFilter = {},
+            )
+
+            FilterRow(
+                    moods = moods.take(4),
+                    topics = topics.take(0),
+                    isMoodFilterClicked = true,
+                    isTopicFilterClicked = false,
+                    onClickMoodFilter = {},
+                    onClickTopicFilter = {},
+            )
+
+            FilterRow(
+                    moods = moods.take(5),
+                    topics = topics.take(0),
+                    isMoodFilterClicked = true,
+                    isTopicFilterClicked = false,
+                    onClickMoodFilter = {},
+                    onClickTopicFilter = {},
+            )
+
+            FilterRow(
+                    moods = moods.take(0),
+                    topics = topics.take(1),
+                    isMoodFilterClicked = false,
+                    isTopicFilterClicked = true,
+                    onClickMoodFilter = {},
+                    onClickTopicFilter = {},
+            )
+
+
+            FilterRow(
+                    moods = moods.take(0),
+                    topics = topics.take(2),
+                    isMoodFilterClicked = false,
+                    isTopicFilterClicked = true,
+                    onClickMoodFilter = {},
+                    onClickTopicFilter = {},
+            )
+
+            FilterRow(
+                    moods = moods.take(0),
                     topics = topics.take(3),
                     isMoodFilterClicked = false,
-                    isTopicFilterClicked = false,
+                    isTopicFilterClicked = true,
+                    onClickMoodFilter = {},
+                    onClickTopicFilter = {},
+            )
+
+            FilterRow(
+                    moods = moods.take(0),
+                    topics = topics.take(4),
+                    isMoodFilterClicked = false,
+                    isTopicFilterClicked = true,
                     onClickMoodFilter = {},
                     onClickTopicFilter = {},
             )
