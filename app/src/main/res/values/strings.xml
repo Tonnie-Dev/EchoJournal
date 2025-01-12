@@ -8,4 +8,6 @@
     <string name="pause_text">Pause</string>
     <string name="show_more_text"> … Show More</string>
     <string name="show_less_text"> … Show Less</string>
+    <string name="close_icon_text">Close</string>
+    <string name="all_moods_filter_text">All Moods</string>
 </resources>
