@@ -2,23 +2,37 @@ package com.tonyxlab.echojournal.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
@@ -27,27 +41,109 @@ import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
 import com.tonyxlab.echojournal.utils.addConditionalModifier
 
 @Composable
-fun FilterExpandableMenu(modifier: Modifier = Modifier) {
+fun FilterExpandableMenu(
+    selectionMode: SelectionMode,
+    moods: List<Mood>,
+    topics: List<String>,
+    onClickItem: () -> Unit, modifier: Modifier = Modifier
+) {
+
+    var isExpanded by remember { mutableStateOf(true) }
+
+    val menuWidth = LocalConfiguration.current.screenWidthDp.dp - 422.dp
+    MaterialTheme(
+            shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(10.dp))
+    ) {
+        Box(
+                modifier = modifier
+                        .fillMaxWidth()
+        ) {
+            DropdownMenu(
+                    expanded = isExpanded,
+                    onDismissRequest = {  },
+                    offset = DpOffset(16.dp, 0.dp),
+                    modifier = Modifier
+                            .width(menuWidth)
+                            .background(MaterialTheme.colorScheme.onPrimary)
+                            .padding(0.dp),
+            ) {
+
+
+        SelectionMenu(
+                selectionMode = selectionMode,
+                moods = moods,
+                topics = topics,
+                onClickItem = onClickItem
+        )}}
+    }
 
 }
 
 @Composable
-fun SelectionMenu(modifier: Modifier = Modifier) {
+fun SelectionMenu(
+    selectionMode: SelectionMode,
+    moods: List<Mood>,
+    topics: List<String>,
+    onClickItem: () -> Unit,
 
+    ) {
+    when (selectionMode) {
+
+        SelectionMode.MOOD -> {
+
+            SelectionRow(
+                    items = moods,
+
+                    rowContent = {
+
+                        MoodSelectionItem(mood = it, onSelectMoodItem = onClickItem)
+                    }
+            )
+        }
+
+        SelectionMode.TOPIC -> {
+
+
+            SelectionRow(
+                    items = topics,
+
+                    rowContent = {
+
+                        TopicSelectionItem(topic = it, onClickTopicItem = onClickItem)
+                    }
+            )
+        }
+    }
 }
 
 @Composable
-fun SelectionRow(isSelected: Boolean, modifier: Modifier = Modifier) {
+private fun <T> SelectionRow(
+    items: List<T>,
+    rowContent: @Composable (T) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
 
+    Column(
+            modifier = modifier
+
+                    .wrapContentHeight()
+    ) {
+
+        repeat(items.size) {
+
+            rowContent(items[it])
+        }
+    }
 }
 
 @Composable
 private fun MoodSelectionItem(
     mood: Mood,
-    isSelected: Boolean
+    onSelectMoodItem: () -> Unit,
 ) {
     val spacing = LocalSpacing.current
+    var isSelected by remember { mutableStateOf(false) }
     Row(
             modifier = Modifier
                     .addConditionalModifier(isSelected) {
@@ -59,6 +155,10 @@ private fun MoodSelectionItem(
                         )
                     }
                     .height(spacing.spaceTen * 4)
+                    .clickable {
+                        onSelectMoodItem()
+                        isSelected = isSelected.not()
+                    }
                     .padding(
                             horizontal = spacing.spaceExtraSmall,
                             vertical = spacing.spaceDoubleDp
@@ -95,9 +195,10 @@ private fun MoodSelectionItem(
 @Composable
 private fun TopicSelectionItem(
     topic: String,
-    isSelected: Boolean
+    onClickTopicItem: () -> Unit,
 ) {
     val spacing = LocalSpacing.current
+    var isSelected by remember { mutableStateOf(false) }
     Row(
             modifier = Modifier
                     .addConditionalModifier(isSelected) {
@@ -109,6 +210,10 @@ private fun TopicSelectionItem(
                         )
                     }
                     .height(spacing.spaceTen * 4)
+                    .clickable {
+                        onClickTopicItem()
+                        isSelected = isSelected.not()
+                    }
                     .padding(
                             horizontal = spacing.spaceExtraSmall,
                             vertical = spacing.spaceDoubleDp
@@ -145,7 +250,27 @@ private fun TopicSelectionItem(
 
 }
 
+@PreviewLightDark
+@Composable
+private fun FilterExpandedMenuPreview() {
 
+    val moods = listOf(Mood.Sad, Mood.Neutral, Mood.Stressed, Mood.Peaceful, Mood.Excited)
+    EchoJournalTheme {
+
+        Surface {
+
+            FilterExpandableMenu(
+                    selectionMode = SelectionMode.MOOD,
+                    moods = moods,
+                    topics = emptyList(),
+                    onClickItem = {},
+            )
+
+        }
+
+
+    }
+}
 
 @PreviewLightDark
 @Composable
@@ -157,18 +282,16 @@ private fun TopicSelectionItemPreview() {
                 modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
                 verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
         ) {
-            TopicSelectionItem(topic = "Work", isSelected = false)
-            TopicSelectionItem(topic = "Friends", isSelected = true)
-            TopicSelectionItem(topic = "Family", isSelected = true)
-            TopicSelectionItem(topic = "Love",isSelected = false)
-            TopicSelectionItem(topic = "Surprise", isSelected = false)
+            TopicSelectionItem(topic = "Work", onClickTopicItem = {})
+            TopicSelectionItem(topic = "Friends", onClickTopicItem = {})
+            TopicSelectionItem(topic = "Family", onClickTopicItem = {})
+            TopicSelectionItem(topic = "Love", onClickTopicItem = {})
+            TopicSelectionItem(topic = "Surprise", onClickTopicItem = {})
 
         }
     }
 
 }
-
-
 
 
 @PreviewLightDark
@@ -181,14 +304,20 @@ private fun MoodSelectionPreview() {
                 modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
                 verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
         ) {
-            MoodSelectionItem(mood = Mood.Excited, isSelected = false)
-            MoodSelectionItem(mood = Mood.Peaceful, isSelected = true)
-            MoodSelectionItem(mood = Mood.Neutral, isSelected = true)
-            MoodSelectionItem(mood = Mood.Sad, isSelected = false)
-            MoodSelectionItem(mood = Mood.Stressed, isSelected = false)
+            MoodSelectionItem(mood = Mood.Excited, onSelectMoodItem = {})
+            MoodSelectionItem(mood = Mood.Peaceful, onSelectMoodItem = {})
+            MoodSelectionItem(mood = Mood.Neutral, onSelectMoodItem = {})
+            MoodSelectionItem(mood = Mood.Sad, onSelectMoodItem = {})
+            MoodSelectionItem(mood = Mood.Stressed, onSelectMoodItem = {})
 
         }
     }
 
+}
+
+
+enum class SelectionMode {
+
+    MOOD, TOPIC
 }
 
