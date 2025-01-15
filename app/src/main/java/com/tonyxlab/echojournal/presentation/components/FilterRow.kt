@@ -3,6 +3,7 @@ package com.tonyxlab.echojournal.presentation.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -49,20 +50,30 @@ fun FilterRow(
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
-    FlowRow (horizontalArrangement = Arrangement.Absolute.spacedBy(spacing.spaceSmall), maxLines = 1){
+    FlowRow(
+            modifier = modifier.padding(
+
+                    top = spacing.spaceSmall,
+                    bottom = spacing.spaceSmall,
+                    start = spacing.spaceMedium,
+                    end = spacing.spaceMedium
+            ),
+            horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
+            maxLines = 2
+    ) {
 
         MoodFilter(
                 moods = moods,
                 isMoodFilterClicked = isMoodFilterClicked,
                 onClickMoodFilter = onClickMoodFilter,
-                modifier = modifier.height(spacing.spaceLarge)
+                modifier = Modifier.height(spacing.spaceLarge)
         )
 
         TopicFilter(
                 topics = topics,
                 isTopicFilterClicked = isTopicFilterClicked,
                 onClickTopicFilter = onClickTopicFilter,
-                modifier = modifier.height(spacing.spaceLarge)
+                modifier = Modifier.height(spacing.spaceLarge)
         )
 
     }
@@ -98,11 +109,14 @@ fun MoodFilter(
                             color = Color.White,
                             RoundedCornerShape(spacing.spaceMedium)
                     )
+                    .clickable {
+                        onClickMoodFilter()
+                    }
                     .padding(
-                            top = spacing.spaceExtraSmall,
-                            bottom = spacing.spaceExtraSmall,
-                            start = spacing.spaceExtraSmall,
-                            end = spacing.spaceSmall
+                            top = spacing.spaceDoubleDp * 3,
+                            bottom = spacing.spaceDoubleDp * 3,
+                            start = spacing.spaceDoubleDp * 6,
+                            end = spacing.spaceDoubleDp * 6
                     )
                     .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -181,9 +195,16 @@ fun TopicFilter(
                             color = Color.White,
                             RoundedCornerShape(spacing.spaceMedium)
                     )
+                    .clickable {
+
+                        onClickTopicFilter()
+                    }
                     .padding(
-                            horizontal = spacing.spaceSmall,
-                            vertical = spacing.spaceExtraSmall
+                            top = spacing.spaceDoubleDp * 3,
+                            bottom = spacing.spaceDoubleDp * 3,
+                            start = spacing.spaceDoubleDp * 6,
+                            end = spacing.spaceDoubleDp * 6
+
                     )
                     .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically,
