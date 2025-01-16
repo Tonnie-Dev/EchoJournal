@@ -1,16 +1,25 @@
 package com.tonyxlab.echojournal.presentation.ui.theme
 
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.shapes
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.CompositionLocalProvider
 
 @Composable
+fun CustomTheme(content: @Composable () -> Unit) {
+    CompositionLocalProvider(
+            LocalGradient provides Gradients(),
+            LocalSpacing provides Dimens()
+    ) {
+        MaterialTheme(
+                colorScheme = DefaultScheme,
+                shapes = shapes,
+                typography = Typography,
+                content = content
+        )
+    }
+}/*@Composable
 
 fun EchoJournalTheme(content: @Composable () -> Unit) {
     MaterialTheme(
@@ -19,7 +28,7 @@ fun EchoJournalTheme(content: @Composable () -> Unit) {
             typography = Typography,
             content = content
     )
-}
+}*/
 
 private val DefaultScheme = lightColorScheme(
         primary = Primary30,
