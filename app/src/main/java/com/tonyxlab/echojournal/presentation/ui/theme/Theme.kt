@@ -24,12 +24,13 @@ fun EchoJournalTheme(content: @Composable () -> Unit) {
 private val DefaultScheme = lightColorScheme(
         primary = Primary30,
         primaryContainer = Primary50,
+        onPrimary = Primary100,
+        onPrimaryContainer = Primary95,
         secondary = Secondary30,
+        secondaryContainer = Secondary50,
         background = NeutralVariant99,
         surface = Primary100,
-        onPrimary = Primary100,
         inverseOnSurface = Secondary80,
-        secondaryContainer = Secondary50,
         onSurface = NeutralVariant10,
         onSurfaceVariant = NeutralVariant30,
         outline = NeutralVariant50,
@@ -40,6 +41,5 @@ private val DefaultScheme = lightColorScheme(
         onErrorContainer = Error20,
         errorContainer = Error95,
         onError = Error100
-
 
 )

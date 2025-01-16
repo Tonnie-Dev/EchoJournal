@@ -11,8 +11,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -20,14 +23,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
@@ -38,21 +42,48 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
 import com.tonyxlab.echojournal.presentation.ui.theme.gradient
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 
-@Composable
-fun BottomSheetContent(modifier: Modifier = Modifier) {
-
-}
 
 @Composable
-fun BottomSheetLayout(modifier: Modifier = Modifier) {
+fun BottomSheetContent(
+    isPlaying: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    time: String = "01:13:40"
+) {
     val spacing = LocalSpacing.current
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(
+            modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.spaceFifty)
+    ) {
+        Column(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                        .padding(),
+                horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                    text = if (isPlaying) stringResource(id = R.string.text_recording_memories) else stringResource(
+                            id = R.string.text_recording_paused
+                    ),
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                    text = time,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Spacer(modifier = Modifier.height(spacing.spaceMedium))
         Icon(
                 modifier = Modifier
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.errorContainer)
-                        .size(spacing.spaceSmall * 6)
+                        .size(MaterialTheme.spacing.spaceSmall * 6)
                         .align(Alignment.CenterStart)
                         .padding(spacing.spaceSmall),
                 imageVector = Icons.Default.Close,
@@ -60,17 +91,21 @@ fun BottomSheetLayout(modifier: Modifier = Modifier) {
                 contentDescription = stringResource(R.string.icon_close_text),
 
                 )
-
+        RecordingButton(
+                isPlaying = isPlaying,
+                onClick = onClick,
+                modifier = Modifier.align(Alignment.Center)
+        )
 
         Icon(
                 modifier = Modifier
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.onPrimary)
+                        .background(MaterialTheme.colorScheme.onPrimaryContainer)
                         .size(spacing.spaceSmall * 6)
                         .align(Alignment.CenterEnd)
                         .padding(spacing.spaceSmall),
-                painter = painterResource(R.drawable.pause_arrow),
-                tint = MaterialTheme.colorScheme.primaryContainer,
+                imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.Done,
+                tint = MaterialTheme.colorScheme.primary,
                 contentDescription = stringResource(R.string.icon_close_text),
 
                 )
@@ -84,6 +119,7 @@ fun BottomSheetLayout(modifier: Modifier = Modifier) {
 fun RecordingButton(
     isPlaying: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val gradient = MaterialTheme.gradient.buttonDefaultGradient
     val infiniteTransition = rememberInfiniteTransition()
@@ -104,7 +140,7 @@ fun RecordingButton(
             )
     )
 
-    Box {
+    Box(modifier = modifier) {
         Canvas(
                 modifier = Modifier
                         .size(MaterialTheme.spacing.spaceOneTwentyEight)
@@ -147,6 +183,40 @@ fun RecordingButton(
         }
     }
 }
+
+@PreviewLightDark
+@Composable
+private fun BottomSheetContentPreview() {
+
+
+    EchoJournalTheme {
+
+
+        Column(
+                modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .fillMaxSize()
+                        .padding(vertical = MaterialTheme.spacing.spaceFifty),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraLarge)
+        ) {
+
+
+            BottomSheetContent(
+                    isPlaying = true,
+                    onClick = {},
+                    modifier = Modifier.fillMaxHeight(.3f)
+            )
+
+            BottomSheetContent(
+                    isPlaying = false,
+                    onClick = {},
+                    modifier = Modifier.fillMaxHeight(.3f)
+            )
+        }
+    }
+}
+
 
 @PreviewLightDark
 @Composable
