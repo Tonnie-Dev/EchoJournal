@@ -155,7 +155,7 @@ fun MoodFilter(
             Icon(
                     modifier = Modifier.size(spacing.spaceDoubleDp * 10),
                     imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(R.string.close_icon_text),
+                    contentDescription = stringResource(R.string.icon_close_text),
                     tint = MaterialTheme.colorScheme.secondaryContainer
             )
 
@@ -244,7 +244,7 @@ fun TopicFilter(
             Icon(
                     modifier = Modifier.size(spacing.spaceDoubleDp * 10),
                     imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(R.string.close_icon_text),
+                    contentDescription = stringResource(R.string.icon_close_text),
                     tint = MaterialTheme.colorScheme.secondaryContainer
             )
 
