@@ -8,10 +8,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 data class Gradients(
-    val defaultGradient: Brush = GradientDefault,
-    val pressedGradient: Brush = GradientPressed
+    val buttonDefaultGradient: Brush = GradientDefault,
+    val buttonPressedGradient: Brush = GradientPressed
 ) {
-
 
     companion object {
 

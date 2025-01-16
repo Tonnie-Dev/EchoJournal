@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
 @Composable
-fun CustomTheme(content: @Composable () -> Unit) {
+fun EchoJournalTheme(content: @Composable () -> Unit) {
     CompositionLocalProvider(
             LocalGradient provides Gradients(),
             LocalSpacing provides Dimens()
@@ -19,16 +19,7 @@ fun CustomTheme(content: @Composable () -> Unit) {
                 content = content
         )
     }
-}/*@Composable
-
-fun EchoJournalTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-            colorScheme = DefaultScheme,
-            shapes = shapes,
-            typography = Typography,
-            content = content
-    )
-}*/
+}
 
 private val DefaultScheme = lightColorScheme(
         primary = Primary30,
