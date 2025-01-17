@@ -192,6 +192,16 @@ fun RecordingButton(
             )
     )
 
+    val fabCircleScaling by infiniteTransition.animateFloat(
+
+            initialValue = 1f,
+            targetValue = 1.1f,
+            animationSpec = infiniteRepeatable(
+                    animation = tween(1000),
+                    repeatMode = RepeatMode.Reverse
+            )
+    )
+
     Box(modifier = modifier) {
         Canvas(
                 modifier = Modifier
@@ -203,20 +213,19 @@ fun RecordingButton(
                 drawCircle(
                         color = Primary95,
                         radius = (size.minDimension.div(2)) * outerCircleScaling,
-                        //alpha = 0.5f
                 )
+
                 //  Inner Circle
                 drawCircle(
                         color = Primary90,
                         radius = (size.minDimension.div(2.5f)) * innerCircleScaling,
-                        //alpha = 0.7f
                 )
             }
 
             // FAB
             drawCircle(
                     brush = gradient,
-                    radius = size.minDimension.div(3)
+                    radius = size.minDimension.div(3) * fabCircleScaling
             )
         }
 
