@@ -11,11 +11,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,11 +21,16 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,13 +44,44 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
 import com.tonyxlab.echojournal.presentation.ui.theme.gradient
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RecordingBottomSheet(
+    isShowBottomSheet: Boolean,
+    isPlaying: Boolean,
+    onRecordPauseClick: () -> Unit,
+    recordingTime: String,
+    modifier: Modifier = Modifier
+) {
+
+    // TODO: add some launch block to launch bottomsheeet when isShowBottomSheet Changes 
+    val scaffoldState = rememberBottomSheetScaffoldState()
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    if (isShowBottomSheet) {
+
+        ModalBottomSheet(
+                modifier = modifier,
+                content = {
+
+                    BottomSheetContent(
+                            isPlaying = isPlaying,
+                            onRecordPauseClick = onRecordPauseClick,
+                            modifier = Modifier,
+                            recordingTime = recordingTime
+                    )
+                }, onDismissRequest = {}
+        )
+    }
+
+}
 
 @Composable
 fun BottomSheetContent(
     isPlaying: Boolean,
-    onClick: () -> Unit,
+    onRecordPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
-    time: String = "01:13:40"
+    recordingTime: String = "01:13:40"
 ) {
     val spacing = LocalSpacing.current
 
@@ -72,44 +105,63 @@ fun BottomSheetContent(
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onSurface
             )
+
+
             Text(
-                    text = time,
+                    text = recordingTime,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        }
-        Spacer(modifier = Modifier.height(spacing.spaceMedium))
-        Icon(
-                modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.errorContainer)
-                        .size(MaterialTheme.spacing.spaceSmall * 6)
-                        .align(Alignment.CenterStart)
-                        .padding(spacing.spaceSmall),
-                imageVector = Icons.Default.Close,
-                tint = MaterialTheme.colorScheme.onErrorContainer,
-                contentDescription = stringResource(R.string.icon_close_text),
 
-                )
+
+        }
+
+        Column(
+                modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(top = MaterialTheme.spacing.spaceExtraLarge)
+        ) {
+            Icon(
+                    modifier = Modifier
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.errorContainer)
+                            .size(MaterialTheme.spacing.spaceSmall * 6)
+
+                            .padding(MaterialTheme.spacing.spaceSmall),
+                    imageVector = Icons.Default.Close,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
+                    contentDescription = stringResource(R.string.icon_close_text),
+
+                    )
+        }
         RecordingButton(
                 isPlaying = isPlaying,
-                onClick = onClick,
-                modifier = Modifier.align(Alignment.Center)
+                onClick = onRecordPauseClick,
+                modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(
+                                top = MaterialTheme.spacing.spaceExtraLarge,
+                                bottom = MaterialTheme.spacing.spaceMedium
+                        )
         )
 
-        Icon(
+        Column(
                 modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.onPrimaryContainer)
-                        .size(spacing.spaceSmall * 6)
                         .align(Alignment.CenterEnd)
-                        .padding(spacing.spaceSmall),
-                imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.Done,
-                tint = MaterialTheme.colorScheme.primary,
-                contentDescription = stringResource(R.string.icon_close_text),
+                        .padding(top = MaterialTheme.spacing.spaceExtraLarge)
+        ) {
+            Icon(
+                    modifier = Modifier
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.onPrimaryContainer)
+                            .size(spacing.spaceSmall * 6)
+                            .padding(spacing.spaceSmall),
+                    imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.Done,
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = stringResource(R.string.icon_close_text),
 
-                )
-
+                    )
+        }
     }
 
 
@@ -135,7 +187,7 @@ fun RecordingButton(
             initialValue = 1f,
             targetValue = 1.3f,
             animationSpec = infiniteRepeatable(
-                    animation = tween(1000, delayMillis = 100),
+                    animation = tween(1000),
                     repeatMode = RepeatMode.Reverse
             )
     )
@@ -151,13 +203,13 @@ fun RecordingButton(
                 drawCircle(
                         color = Primary95,
                         radius = (size.minDimension.div(2)) * outerCircleScaling,
-                        alpha = 0.5f
+                        //alpha = 0.5f
                 )
                 //  Inner Circle
                 drawCircle(
                         color = Primary90,
-                        radius = (size.minDimension.div(2.2f)) * innerCircleScaling,
-                        alpha = 0.7f
+                        radius = (size.minDimension.div(2.5f)) * innerCircleScaling,
+                        //alpha = 0.7f
                 )
             }
 
@@ -184,6 +236,30 @@ fun RecordingButton(
     }
 }
 
+
+@PreviewLightDark
+@Composable
+private fun RecordingBottomSheetPreview() {
+    EchoJournalTheme {
+
+
+        Column(
+                modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .fillMaxSize()
+                        .padding(vertical = MaterialTheme.spacing.spaceFifty),
+        ) {
+            RecordingBottomSheet(
+                    isShowBottomSheet = true,
+                    isPlaying = true,
+                    onRecordPauseClick = {},
+                    recordingTime = "02:18:01",
+            )
+        }
+    }
+}
+
+
 @PreviewLightDark
 @Composable
 private fun BottomSheetContentPreview() {
@@ -204,14 +280,12 @@ private fun BottomSheetContentPreview() {
 
             BottomSheetContent(
                     isPlaying = true,
-                    onClick = {},
-                    modifier = Modifier.fillMaxHeight(.3f)
+                    onRecordPauseClick = {},
             )
 
             BottomSheetContent(
                     isPlaying = false,
-                    onClick = {},
-                    modifier = Modifier.fillMaxHeight(.3f)
+                    onRecordPauseClick = {},
             )
         }
     }

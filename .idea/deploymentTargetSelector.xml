@@ -27,6 +27,9 @@
       <SelectionState runConfigName="PreviewCustomDropdownMenuExample (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="RecordingBottomSheetPreview - Dark">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
