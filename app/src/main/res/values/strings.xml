@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">EchoJournal</string>
+    <string name="no_entries_text">No Entries</string>
+    <string name="start_recording_text">Start recording your first Echo</string>
+    <string name="add_text">add</string>
+    <string name="live_tracker_timestamp">%s/%S</string>
+    <string name="play_text">Play</string>
+    <string name="pause_text">Pause</string>
+    <string name="show_more_text"> … Show More</string>
+    <string name="show_less_text"> … Show Less</string>
+    <string name="icon_close_text">Close</string>
+    <string name="all_moods_filter_text">All Moods</string>
+    <string name="all_topics_filter_text">All Topics</string>
+    <string name="icon_text_checkmark">Checkmark</string>
+    <string name="hash_tag_text">"# "</string>
+    <string name="text_recording_memories">Recording Your Memories...</string>
+    <string name="text_recording_paused">Recording Paused</string>
 </resources>

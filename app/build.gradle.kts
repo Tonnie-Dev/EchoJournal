@@ -57,6 +57,9 @@ dependencies {
     //Material 3
     implementation(AndroidX.compose.material3)
 
+    //Material Extended Icons
+    implementation(AndroidX.compose.material.icons.extended)
+
     //Splash Screen
     implementation(AndroidX.core.splashscreen)
 
