@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Echo
+import com.tonyxlab.echojournal.presentation.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.components.EmptyScreen
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
@@ -39,33 +40,26 @@ fun HomeScreenContent(
 ) {
     val spacing = LocalSpacing.current
     Scaffold(modifier = modifier,
-            topBar = {
+        topBar = {
 
-                TopAppBar(title = {
-                    Text(
-                            text = "Your Echo Journal",
-                            style = MaterialTheme.typography.headlineLarge,
-                            fontWeight = FontWeight.Black,
-                            color = MaterialTheme.colorScheme.onSurface
-                    )
-                })
-            },
-            floatingActionButton = {
+            AppTopBar(title = stringResource(id = R.string.title_text))
+        },
+        floatingActionButton = {
 
-                FloatingActionButton(
-                        modifier = Modifier.size(spacing.spaceSmall * 8),
-                        onClick = onAddEcho,
-                        shape = CircleShape
-                ) {
+            FloatingActionButton(
+                modifier = Modifier.size(spacing.spaceSmall * 8),
+                onClick = onAddEcho,
+                shape = CircleShape
+            ) {
 
-                    Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.add_text),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                    )
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add_text),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
 
-                }
-            }) { paddingValues ->
+            }
+        }) { paddingValues ->
 
 
         list.ifEmpty {

@@ -15,4 +15,5 @@
     <string name="hash_tag_text">"# "</string>
     <string name="text_recording_memories">Recording Your Memories...</string>
     <string name="text_recording_paused">Recording Paused</string>
+    <string name="title_text">Your Echo Journal</string>
 </resources>
