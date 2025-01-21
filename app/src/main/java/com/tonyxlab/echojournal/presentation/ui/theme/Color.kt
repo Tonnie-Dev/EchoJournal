@@ -20,7 +20,7 @@ val Primary90 = Color(0xFFD9E2FF)
 val Primary95 = Color(0xFFEEF0FF)
 val Primary100 = Color(0xFFFFFFFF)
 
-// Secondary
+// Secondary/
 val Secondary30 = Color(0xFF384663)
 val Secondary50 = Color(0xFF6B7796)
 val Secondary70 = Color(0xFF9FABCD)
