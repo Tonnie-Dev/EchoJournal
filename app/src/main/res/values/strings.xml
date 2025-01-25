@@ -19,4 +19,5 @@
     <string name="text_back">Back</string>
     <string name="title_new_entry">New Entry</string>
     <string name="topics_text">Topics</string>
+    <string name="text_cancel">Cancel</string>
 </resources>
