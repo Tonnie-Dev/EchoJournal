@@ -13,11 +13,12 @@
     <string name="all_topics_filter_text">All Topics</string>
     <string name="icon_text_checkmark">Checkmark</string>
     <string name="hash_tag_text">"# "</string>
-    <string name="text_recording_memories">Recording Your Memories...</string>
+    <string name="text_recording_memories">Recording Your Memories…</string>
     <string name="text_recording_paused">Recording Paused</string>
     <string name="title_text">Your Echo Journal</string>
     <string name="text_back">Back</string>
     <string name="title_new_entry">New Entry</string>
     <string name="topics_text">Topics</string>
     <string name="text_cancel">Cancel</string>
+    <string name="text_add_title">Add Title … </string>
 </resources>

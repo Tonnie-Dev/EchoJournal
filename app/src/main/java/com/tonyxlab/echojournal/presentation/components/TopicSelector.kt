@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.save
+package com.tonyxlab.echojournal.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -50,14 +49,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.components.AppIcon
 import com.tonyxlab.echojournal.presentation.ui.theme.NeutralVariant10
 import com.tonyxlab.echojournal.presentation.ui.theme.NeutralVariant30
 import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
 import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
-import kotlinx.serialization.json.JsonNull.content
 
 @Composable
 fun TopicSelector(modifier: Modifier = Modifier) {

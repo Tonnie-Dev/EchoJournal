@@ -12,9 +12,13 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Neutral80
 import com.tonyxlab.echojournal.presentation.ui.theme.Peaceful25
 import com.tonyxlab.echojournal.presentation.ui.theme.Peaceful35
 import com.tonyxlab.echojournal.presentation.ui.theme.Peaceful80
+import com.tonyxlab.echojournal.presentation.ui.theme.Primary30
+import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
 import com.tonyxlab.echojournal.presentation.ui.theme.Sad25
 import com.tonyxlab.echojournal.presentation.ui.theme.Sad35
 import com.tonyxlab.echojournal.presentation.ui.theme.Sad80
+import com.tonyxlab.echojournal.presentation.ui.theme.Secondary30
+import com.tonyxlab.echojournal.presentation.ui.theme.Secondary80
 import com.tonyxlab.echojournal.presentation.ui.theme.Stressed25
 import com.tonyxlab.echojournal.presentation.ui.theme.Stressed35
 import com.tonyxlab.echojournal.presentation.ui.theme.Stressed80
@@ -65,5 +69,14 @@ sealed class Mood(
             accentColor1 = Excited80,
             accentColor2 = Excited35,
             accentColor3 = Excited25
+    )
+
+
+    data object Other : Mood(
+        icon = R.drawable.mood_excited,
+        name = "Other",
+        accentColor1 = Primary30 ,
+        accentColor2 = Secondary80,
+        accentColor3 = Primary95
     )
 }
