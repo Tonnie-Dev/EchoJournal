@@ -5,11 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
@@ -23,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -38,30 +43,37 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Secondary95
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 
 @Composable
- fun BasicEntryTextField(
+fun BasicEntryTextField(
     value: String,
     onValueChange: (String) -> Unit,
     hint: String,
     modifier: Modifier = Modifier,
-    iconContent: @Composable (() -> Unit)? = null,
+    leadingContent: @Composable (() -> Unit)? = null,
     hintColor: Color = MaterialTheme.colorScheme.outlineVariant,
+    singleLine: Boolean = true,
     isHeadline: Boolean = false,
     gap: Dp = 6.dp,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default
+
 ) {
     val focusManager = LocalFocusManager.current
+
     val bodyMediumTextStyle = TextStyle(
-        color = MaterialTheme.colorScheme.outlineVariant,
+        color = MaterialTheme.colorScheme.onSurface,
         fontSize = 14.sp,
         fontWeight = FontWeight.W400
     )
+
     var isFocused by remember { mutableStateOf(false) }
+
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.wrapContentWidth(),
         horizontalArrangement = Arrangement.spacedBy(gap),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        iconContent?.invoke()
+        leadingContent?.invoke()
 
         BasicTextField(
             modifier = Modifier.onFocusChanged { isFocused = it.isFocused },
@@ -73,7 +85,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 
                     if (value.isBlank() && isFocused.not()) {
                         Text(
-                            modifier = Modifier.fillMaxWidth(),
+
                             text = hint,
                             color = hintColor,
                             style = if (isHeadline)
@@ -83,7 +95,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.spacing
                         )
                     } else if (value.isNotBlank()) {
                         Box(
-                            modifier = Modifier.fillMaxWidth(),
+
                             contentAlignment = Alignment.CenterStart
                         ) {
                             it()
@@ -91,7 +103,10 @@ import com.tonyxlab.echojournal.presentation.ui.theme.spacing
                         }
                     }
                 }
-            }
+            },
+            singleLine = singleLine,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions
         )
 
     }
@@ -107,7 +122,8 @@ private fun EntryBasicTextFieldPreview() {
 
         Column(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                .background(color = Color.White)
+                . fillMaxSize()
                 .padding(MaterialTheme.spacing.spaceMedium),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
@@ -117,7 +133,7 @@ private fun EntryBasicTextFieldPreview() {
                 onValueChange = {},
                 isHeadline = true,
                 hint = "Add Something ...",
-                iconContent = {
+                leadingContent = {
                     AppIcon(
                         modifier = Modifier
                             .clip(CircleShape)
@@ -130,11 +146,29 @@ private fun EntryBasicTextFieldPreview() {
             )
 
             BasicEntryTextField(
-                value = "Work",
+                value = "",
                 onValueChange = {},
-                isHeadline = true,
+                isHeadline = false,
                 hint = "Add Something ...",
-                iconContent = {
+                leadingContent = {
+                    AppIcon(
+                        modifier = Modifier
+                            .size(
+                                width = MaterialTheme.spacing.spaceMedium,
+                                height = MaterialTheme.spacing.spaceExtraSmall * 5
+                            ),
+                        imageVector = Icons.Default.Edit,
+                        tint = MaterialTheme.colorScheme.outlineVariant
+                    )
+                }
+            )
+
+            BasicEntryTextField(
+                value = "",
+                onValueChange = {},
+                isHeadline = false,
+                hint = "Add Something ...",
+                leadingContent = {
                     AppIcon(
                         modifier = Modifier
                             .size(

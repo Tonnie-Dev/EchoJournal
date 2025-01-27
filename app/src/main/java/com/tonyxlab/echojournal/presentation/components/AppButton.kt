@@ -53,13 +53,15 @@ fun AppButton(
             .addConditionalModifier(isHighlighted) {
 
                 background(brush = MaterialTheme.gradient.buttonPressedGradient)
-            }
+            },
+
+        contentAlignment = Alignment.Center
 
     ) {
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+
                 .padding(
                     horizontal = MaterialTheme.spacing.spaceMedium,
                     vertical = MaterialTheme.spacing.spaceSmall

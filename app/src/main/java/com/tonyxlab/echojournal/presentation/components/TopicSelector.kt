@@ -14,18 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,10 +47,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.ui.theme.NeutralVariant10
+import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.NeutralVariant30
 import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
-import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
 import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 
@@ -75,7 +72,7 @@ fun TopicSelector(modifier: Modifier = Modifier) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier) {
 
         TopicsListing(
             modifier = modifier,
@@ -117,40 +114,19 @@ private fun TopicsListing(
     keyboardController: SoftwareKeyboardController? = null
 ) {
 
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(
-                elevation = MaterialTheme.spacing.spaceSmall,
-                shape = MaterialTheme.shapes.medium,
-            ), color = Secondary90
-    ) {
-
-        Column(
-            Modifier.padding(MaterialTheme.spacing.spaceMedium),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
-        ) {
-
-            Text(
-                text = stringResource(R.string.topics_text),
-                style = MaterialTheme.typography.titleMedium,
-                color = NeutralVariant10,
-            )
-
-            TopicsFlowRow(
-                selectedTopics = selectedTopics,
-                onSelectTopic = onSelectTopic,
-                isAddingTopic = isAddingTopic,
-                onAddTopic = onAddTopic,
-                searchQuery = searchQuery,
-                onSearch = onSearch,
-                keyboardController = keyboardController,
-                focusRequester = focusRequester
-            )
-        }
-    }
-
+    TopicsFlowRow(
+        modifier = modifier,
+        selectedTopics = selectedTopics,
+        onSelectTopic = onSelectTopic,
+        isAddingTopic = isAddingTopic,
+        onAddTopic = onAddTopic,
+        searchQuery = searchQuery,
+        onSearch = onSearch,
+        keyboardController = keyboardController,
+        focusRequester = focusRequester
+    )
 }
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -186,10 +162,9 @@ fun TopicsFlowRow(
 
             TopicChip(modifier = Modifier.padding(end = MaterialTheme.spacing.spaceExtraSmall),
                 topic = topic,
-                onCancel = { onSelectTopic(selectedTopics - topic) })
-
-
+                onDeleteTopic = { onSelectTopic(selectedTopics - topic) })
         }
+
 
         // Show Icon when not typing
         if (!isAddingTopic) {
@@ -213,27 +188,28 @@ fun TopicsFlowRow(
         // Show TextField if typing
         else {
 
-            BasicTextField(
+            BasicEntryTextField(
                 modifier = Modifier
                     .wrapContentWidth()
                     .padding(top = MaterialTheme.spacing.spaceMedium)
                     .focusRequester(focusRequester),
                 value = searchQuery,
                 onValueChange = onSearch,
-                singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
                 ),
-                keyboardActions = KeyboardActions(onDone = {
-                    onSelectTopic(selectedTopics + searchQuery)
-                    onAddTopic(false)
-                    onSearch("")
-                    keyboardController?.hide()
-                })
+                hint = stringResource(id = R.string.topics_text),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onSelectTopic(selectedTopics + searchQuery)
+                        onAddTopic(false)
+                        onSearch("")
+                        keyboardController?.hide()
+                    })
             )
         }
+       
     }
-
 }
 
 
@@ -241,7 +217,7 @@ fun TopicsFlowRow(
 fun TopicChip(
     topic: String,
     modifier: Modifier = Modifier,
-    onCancel: (() -> Unit)? = null
+    onDeleteTopic: (() -> Unit)? = null
 ) {
 
     FilterChip(
@@ -253,19 +229,15 @@ fun TopicChip(
             selectedContainerColor = Primary95
         ),
         leadingIcon = {
-            AppIcon(
-                modifier = Modifier.size(MaterialTheme.spacing.spaceSmall),
-                imageVector = Icons.Outlined.Info,
-                tint = MaterialTheme.colorScheme.inverseOnSurface
-            )
+          Text("#", style = buttonSmallTextStyle)
         },
         trailingIcon = {
 
             AppIcon(
                 modifier = Modifier
-                    .size(MaterialTheme.spacing.spaceSmall)
-                    .clickable { onCancel?.invoke() },
-                imageVector = Icons.Outlined.Info,
+                    .size(MaterialTheme.spacing.spaceMedium)
+                    .clickable { onDeleteTopic?.invoke() },
+                imageVector = Icons.Outlined.Close,
                 contentDescription = stringResource(R.string.text_cancel),
                 tint = MaterialTheme.colorScheme.inverseOnSurface
             )
@@ -391,7 +363,20 @@ fun TopicDropDown(
 @Composable
 private fun Preview() {
 
-    TopicSelector()
+
+    EchoJournalTheme {
+
+
+      Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(top = MaterialTheme.spacing.spaceExtraLarge),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+        ) {
+          TopicSelector(modifier = Modifier.background(Color.Cyan))
+        }
+    }
 
 
 }

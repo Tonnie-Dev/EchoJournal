@@ -13,10 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="Preview - Light">
+      <SelectionState runConfigName="PlayTrackUnitPreview - Dark">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PlayTrackUnitPreview - Dark">
+      <SelectionState runConfigName="SaveScreenPreview - Dark">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="Preview - Dark">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="EntryBasicTextFieldPreview - Dark">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="AppButtonPreview - Dark">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
