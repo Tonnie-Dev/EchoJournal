@@ -50,7 +50,7 @@ fun AppButton(
             .addConditionalModifier(isEnabled.not()) {
                 background(MaterialTheme.colorScheme.surfaceVariant)
             }
-            .addConditionalModifier(isHighlighted ) {
+            .addConditionalModifier(isHighlighted) {
 
                 background(brush = MaterialTheme.gradient.buttonPressedGradient)
             }
@@ -83,10 +83,8 @@ fun AppButton(
                 style = buttonMediumTextStyle,
 
                 color = when {
-
-                    isEnabled -> MaterialTheme.colorScheme.primary
-
                     isHighlighted -> MaterialTheme.colorScheme.onPrimary
+                    isEnabled -> MaterialTheme.colorScheme.primary
                     else -> MaterialTheme.colorScheme.outline
                 }
 
