@@ -1,9 +1,7 @@
 package com.tonyxlab.echojournal.data.database.converters
 
-import android.net.Uri
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import com.tonyxlab.echojournal.domain.json.JsonSerializer
 import com.tonyxlab.echojournal.domain.model.Mood
 import kotlinx.serialization.KSerializer
