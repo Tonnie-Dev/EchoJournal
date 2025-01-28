@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.data.database.entity
 
-import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.tonyxlab.echojournal.domain.model.Mood
@@ -22,5 +21,5 @@ data class EchoEntity(
     @ColumnInfo(name = "topics")
     val topics:List<String>,
     @ColumnInfo(name = "uri")
-    val uri: Uri
+    val uri: String
 )
