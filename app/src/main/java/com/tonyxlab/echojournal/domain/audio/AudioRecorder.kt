@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.domain.recorder
+package com.tonyxlab.echojournal.domain.audio
 
 import java.io.File
 
