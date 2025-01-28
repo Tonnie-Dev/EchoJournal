@@ -28,6 +28,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.util.fastForEach
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.model.Mood.*
@@ -41,6 +43,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+
 
 @Composable
 fun SaveScreenContent(

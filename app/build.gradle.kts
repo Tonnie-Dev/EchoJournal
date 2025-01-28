@@ -81,6 +81,10 @@ dependencies {
     //Compose Navigation
     implementation(AndroidX.navigation.compose)
 
+
+    // Accompanist Permissions
+    implementation(Google.accompanist.permissions)
+
     // Logging
     implementation(JakeWharton.timber)
 
