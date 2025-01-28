@@ -14,7 +14,7 @@ object DispatchersModule {
         return AppCoroutineDispatchers(
                 main = Dispatchers.Main,
                 io = Dispatchers.IO,
-                computation = Dispatchers.Unconfined
+                computation = Dispatchers.Default
         )
     }
 }

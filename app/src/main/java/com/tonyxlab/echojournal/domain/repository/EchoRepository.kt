@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 interface EchoRepository {
 
     fun getEchos(): Flow<List<Echo>>
-    fun getEchoById(id: String): Resource<Echo>
-    fun createEcho(echo: Echo): Resource<Boolean>
-    fun updateEcho(echo: Echo): Resource<Boolean>
-    fun deleteEcho(echo: Echo): Resource<Boolean>
+    suspend fun getEchoById(id: String): Resource<Echo>
+    suspend fun createEcho(echo: Echo): Resource<Boolean>
+    suspend fun updateEcho(echo: Echo): Resource<Boolean>
+    suspend fun deleteEcho(echo: Echo): Resource<Boolean>
 
 }
