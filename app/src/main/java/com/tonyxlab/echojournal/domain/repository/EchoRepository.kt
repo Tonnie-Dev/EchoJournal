@@ -11,5 +11,5 @@ interface EchoRepository {
     fun createEcho(echo: Echo): Resource<Boolean>
     fun updateEcho(echo: Echo): Resource<Boolean>
     fun deleteEcho(echo: Echo): Resource<Boolean>
-    
+
 }
