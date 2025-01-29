@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.presentation.home
 
-import android.Manifest
 import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -24,10 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.presentation.components.AppTopBar
@@ -36,12 +30,12 @@ import com.tonyxlab.echojournal.presentation.components.EmptyScreen
 import com.tonyxlab.echojournal.presentation.components.RecordingModalSheet
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
-import com.tonyxlab.echojournal.utils.RequestRecordPermission
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
 
 @Composable
 fun HomeScreen(
     onClickEcho: (String) -> Unit,
+    navigateToSaveScreen: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
@@ -60,7 +54,11 @@ fun HomeScreen(
         onStop = viewModel::stop,
         isRecordingActivated = uiState.isRecordingActivated,
         onStartRecording = viewModel::startRecording,
-        onStopRecording = viewModel::stopRecording,
+        onStopRecording = {
+           viewModel.dismissRecordingModalSheet()
+            viewModel.stopRecording()
+            navigateToSaveScreen()
+        },
         onDismissRecordingModalSheet = viewModel::dismissRecordingModalSheet,
         onCancelRecording = viewModel::dismissRecordingModalSheet,
         onPauseRecording = viewModel::pauseRecording,

@@ -29,6 +29,8 @@ fun NavGraphBuilder.appDestinations(navController: NavController) {
 
                     navController.navigate(route = SaveScreenObject(it))
                 },
+
+                navigateToSaveScreen = { navController.navigate(route =SaveScreenObject())},
                 viewModel = viewModel
             )
         }

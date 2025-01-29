@@ -18,6 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +36,7 @@ import com.tonyxlab.echojournal.presentation.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.components.BasicEntryTextField
 import com.tonyxlab.echojournal.presentation.components.PlayTrackUnit
 import com.tonyxlab.echojournal.presentation.components.TopicSelector
+import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
@@ -42,11 +45,24 @@ import com.tonyxlab.echojournal.utils.TextFieldValue
 
 @Composable
 fun SaveScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
 
-        Text("This is the Second Screen")
+val seekFieldValue by viewModel.seekFieldValue.collectAsState()
+    val titleFieldValue by viewModel.titleFieldValue.collectAsState()
+val topicFieldValue by viewModel.topicFieldValue.collectAsState()
+    val descriptionFieldValue by viewModel.descriptionFieldValue.collectAsState()
 
-    }
+    val uiState by viewModel.uiState.collectAsState()
+    SaveScreenContent(
+        titleFieldValue = titleFieldValue,
+        topicFieldValue = topicFieldValue,
+        descriptionFieldValue = descriptionFieldValue,
+        isPlaying = uiState.isPlaying,
+        seekValue = uiState.seekValue,
+        onSeek = {},
+        echoLength = 0,
+        onTogglePlay = {},
+        
+    )
 }
 
 @Composable

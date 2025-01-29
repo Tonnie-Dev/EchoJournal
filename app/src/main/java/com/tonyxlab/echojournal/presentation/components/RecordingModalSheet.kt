@@ -32,7 +32,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +49,6 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Primary90
 import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
 import com.tonyxlab.echojournal.presentation.ui.theme.gradient
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
-import androidx.compose.runtime.rememberUpdatedState
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
@@ -166,9 +164,10 @@ private fun RecordingModalSheetContent(
 
 
         RecordingButton(
-            isRecording = isRecordingInProgress, onClick = {
+            isRecording = isRecordingInProgress,
+            onClick = {
 
-                isRecordingInProgress = !isRecordingInProgress
+
 
                 if (isRecordingInProgress) {
 
@@ -177,6 +176,8 @@ private fun RecordingModalSheetContent(
                     isRecordingActivated = true
                     onStartRecording()
                 }
+                isRecordingInProgress = !isRecordingInProgress
+
 
             }, modifier = Modifier
                 .align(Alignment.Center)

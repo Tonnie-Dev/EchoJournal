@@ -10,8 +10,10 @@ import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.domain.model.Mood
+import com.tonyxlab.echojournal.domain.usecases.CreateEchoUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetEchoByIdUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetEchoesUseCase
+import com.tonyxlab.echojournal.domain.usecases.UpdateEchoUseCase
 import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.utils.Resource
 import com.tonyxlab.echojournal.utils.TextFieldValue
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
+import timber.log.Timber
 import java.io.File
 import java.util.UUID
 import javax.inject.Inject
@@ -37,6 +40,8 @@ class HomeViewModel @Inject constructor(
     private val player: AudioPlayer,
     private val getEchoByIdUseCase: GetEchoByIdUseCase,
     getEchoesUseCase: GetEchoesUseCase,
+    private val updateEchoUseCase: UpdateEchoUseCase,
+    private val createEchoUseCase: CreateEchoUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -146,6 +151,29 @@ class HomeViewModel @Inject constructor(
             topics = listOf(),
             uri = _uiState.value.recordingUri
         )
+
+
+        viewModelScope.launch {
+
+
+
+            val result = if (this@HomeViewModel.echo !=null){
+
+                updateEchoUseCase(echo = echoItem)
+            }else{
+                createEchoUseCase(echo = echoItem)
+            }
+
+            when (result){
+
+                is Resource.Success -> {}
+                is Resource.Error -> {}
+            }
+        }
+
+
+
+
     }
 
     fun onCreateEcho() {
@@ -176,6 +204,7 @@ class HomeViewModel @Inject constructor(
 
     fun startRecording() {
 
+        Timber.i("Start recording Called")
 
         val file = File(
             context.filesDir,
@@ -192,6 +221,7 @@ class HomeViewModel @Inject constructor(
 
     fun stopRecording() {
 
+        Timber.i("Stop recording Called")
         recorder.stop()
     }
 
