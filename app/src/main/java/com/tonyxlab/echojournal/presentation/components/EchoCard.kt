@@ -1,6 +1,7 @@
 package com.tonyxlab.echojournal.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,22 +15,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.tonyxlab.echojournal.domain.model.Mood
+import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
-import com.tonyxlab.echojournal.utils.generateLoremIpsum
+import com.tonyxlab.echojournal.utils.generateRandomEchoItem
+import com.tonyxlab.echojournal.utils.toAmPmTime
 
 @Composable
 fun EchoCard(
-    echoName: String,
-    echoText: String,
-    mood: Mood,
-    time: String,
+    echo: Echo,
     isPlaying: Boolean,
     seekValue: Float,
     onSeek: (Float) -> Unit,
-    onTogglePlay: () -> Unit,
-    echoLength: Int,
+    onPlayPause: () -> Unit,
+    onClickEcho: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -43,12 +42,16 @@ fun EchoCard(
                 elevation = spacing.spaceSingleDp,
                 RoundedCornerShape(spacing.spaceDoubleDp * 5)
             )
+            .clickable {
+
+                onClickEcho(echo.id)
+            }
             .padding(
                 top = spacing.spaceDoubleDp * 6,
                 bottom = spacing.spaceDoubleDp * 7,
                 start = spacing.spaceDoubleDp * 7,
                 end = spacing.spaceDoubleDp * 7
-            ),
+            ).padding(spacing.spaceMedium),
         verticalArrangement = Arrangement.spacedBy(spacing.spaceDoubleDp * 3)
     ) {
 
@@ -60,32 +63,32 @@ fun EchoCard(
         ) {
 
             Text(
-                text = echoName,
+                text = echo.name,
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
             Text(
-                text = time,
+                text = echo.timestamp.toAmPmTime(),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
         PlayTrackUnit(
-            mood = mood,
+            mood = echo.mood,
             isPlaying = isPlaying,
             seekValue = seekValue,
             onSeek = onSeek,
-            echoLength = echoLength,
-            onTogglePlay = onTogglePlay,
+            echoLength = echo.length,
+            onTogglePlay = onPlayPause,
 
-        )
+            )
 
 
-        if (echoText.isNotEmpty()) {
+        if (echo.description.isNotEmpty()) {
 
-            ExpandableText(echoText = echoText)
+            ExpandableText(echoText = echo.description)
         }
     }
 }
@@ -105,31 +108,32 @@ private fun TrackerPreview() {
 
             EchoCard(
 
-                echoName = "Work",
-                echoText = generateLoremIpsum(120),
-                mood = Mood.Neutral,
-                time = "09:13",
+                echo = generateRandomEchoItem(),
                 isPlaying = true,
                 seekValue = .6f,
                 onSeek = {},
-                onTogglePlay = {},
-                echoLength = 123,
+                onPlayPause = {},
+                onClickEcho = {}
             )
 
             EchoCard(
-                echoName = "Dinner Time",
-                echoText = generateLoremIpsum(120),
-                mood = Mood.Sad,
-                time = "09:13",
+                echo = generateRandomEchoItem(),
                 isPlaying = false,
                 seekValue = .7f,
                 onSeek = {},
-                onTogglePlay = {},
-                echoLength = 234,
+                onPlayPause = {},
+                onClickEcho = {}
             )
         }
 
     }
+
+
+
 }
+
+
+
+
 
 

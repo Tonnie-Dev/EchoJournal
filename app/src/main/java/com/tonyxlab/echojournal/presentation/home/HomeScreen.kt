@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -32,7 +31,6 @@ import com.tonyxlab.echojournal.presentation.components.EmptyScreen
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
-import java.util.Collections.addAll
 
 @Composable
 fun HomeScreen(
