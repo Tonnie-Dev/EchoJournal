@@ -13,6 +13,7 @@ import kotlin.random.nextInt
 fun generateRandomEchoItem(): Echo {
 
     val randomInt = Random.nextInt(0..100)
+
     return Echo(
         id = UUID.randomUUID().toString(),
         name = "Day of The Jackal",
@@ -25,7 +26,6 @@ fun generateRandomEchoItem(): Echo {
         uri = Uri.EMPTY
     )
 
-
 }
 
 fun generateRandomEchoItems(count: Int = 13): List<Echo> {
@@ -33,8 +33,6 @@ fun generateRandomEchoItems(count: Int = 13): List<Echo> {
     return buildList {
 
         repeat(count) {
-
-
             add(generateRandomEchoItem())
         }
     }

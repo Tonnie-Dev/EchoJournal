@@ -1,1 +1,0 @@
-The Jetpack Compose Image Vectors in this folder were converted using https://composables.com/svgtocompose

@@ -10,12 +10,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
+//Time Now
 fun LocalDateTime.Companion.now(): LocalDateTime {
     val instant = Clock.System.now()
     return instant.toLocalDateTime(TimeZone.currentSystemDefault())
 }
 
+
+// In DB - EchoEntity
 fun LocalDateTime.fromLocalDateTimeToUtcTimeStamp(): Long {
 
     return this.toInstant(timeZone = TimeZone.currentSystemDefault())
@@ -25,6 +27,7 @@ fun LocalDateTime.fromLocalDateTimeToUtcTimeStamp(): Long {
 
 }
 
+// From DB - Echo
 fun Long.fromUtcTimeStampToLocalDateTime(): LocalDateTime {
 
     return Instant.fromEpochMilliseconds(this)
