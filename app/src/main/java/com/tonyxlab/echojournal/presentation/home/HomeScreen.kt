@@ -1,5 +1,6 @@
 package com.tonyxlab.echojournal.presentation.home
 
+import android.Manifest
 import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -22,6 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.presentation.components.AppTopBar
@@ -62,7 +68,7 @@ fun HomeScreen(
 
     )
 }
-
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreenContent(
     echoes: List<Echo>,
@@ -121,7 +127,17 @@ fun HomeScreenContent(
 
         if (isRecordingActivated) {
 
+            RequestRecordPermission { isGranted ->
+                if (isGranted) {
+                    onStartRecording()
+                } else {
+                    // Handle permission denied case
+                }
+            }
+
             RecordingModalSheet(
+
+                isRecordingInProgress = isRecordingInProgress,
                 onStartRecording = onStartRecording,
                 onStopRecording = onStopRecording,
                 onDismissRecordingModalSheet = onDismissRecordingModalSheet,
