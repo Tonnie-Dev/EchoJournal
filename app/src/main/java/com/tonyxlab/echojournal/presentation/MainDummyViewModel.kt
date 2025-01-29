@@ -18,7 +18,7 @@ class MainDummyViewModel @Inject constructor() : ViewModel() {
 
         viewModelScope.launch {
 
-            delay(3_000)
+            delay(300)
             _isReady.update { true }
         }
     }
