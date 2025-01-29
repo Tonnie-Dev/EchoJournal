@@ -2,6 +2,7 @@ package com.tonyxlab.echojournal.presentation.home
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.tonyxlab.echojournal.domain.audio.AudioRecorder
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor( private val recorder:AudioRecorder) : ViewModel() {
 
     private val _echoes = MutableStateFlow<List<Echo>>(emptyList())
     val echoes = _echoes.asStateFlow()

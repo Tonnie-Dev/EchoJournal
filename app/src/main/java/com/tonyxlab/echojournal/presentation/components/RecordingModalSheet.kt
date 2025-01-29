@@ -47,7 +47,6 @@ import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordingModalSheet(
-    isRecordingInProgress: Boolean,
     onStartRecording: () -> Unit,
     onStopRecording: () -> Unit,
     onPauseRecording:() -> Unit,
@@ -282,7 +281,6 @@ private fun RecordingBottomSheetPreview() {
                 .padding(vertical = MaterialTheme.spacing.spaceFifty),
         ) {
             RecordingModalSheet(
-                isRecordingInProgress = true,
                 onStartRecording = {},
                 onStopRecording = {},
                 onPauseRecording = {},
@@ -312,7 +310,6 @@ private fun BottomSheetContentPreview() {
 
 
             RecordingModalSheetContent(
-                //isRecordingInProgress = true,
                 onStartRecording = {},
                 onStopRecording = {},
                 onPauseRecording = {},
@@ -320,7 +317,6 @@ private fun BottomSheetContentPreview() {
             )
 
             RecordingModalSheetContent(
-                // isRecordingInProgress = false,
                 onStartRecording = {},
                 onStopRecording = {},
                 onPauseRecording = {},

@@ -122,8 +122,6 @@ fun HomeScreenContent(
         if (isRecordingActivated) {
 
             RecordingModalSheet(
-               // isRecordingActivated = isRecordingActivated,
-                isRecordingInProgress = isRecordingInProgress,
                 onStartRecording = onStartRecording,
                 onStopRecording = onStopRecording,
                 onDismissRecordingModalSheet = onDismissRecordingModalSheet,

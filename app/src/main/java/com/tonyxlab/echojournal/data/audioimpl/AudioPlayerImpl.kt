@@ -4,9 +4,12 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.core.net.toUri
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
+import javax.inject.Inject
 
-class AudioPlayerImpl(private val context: Context) : AudioPlayer {
+class AudioPlayerImpl @Inject constructor(@ApplicationContext private val context: Context) :
+    AudioPlayer {
 
     private var player: MediaPlayer? = null
 

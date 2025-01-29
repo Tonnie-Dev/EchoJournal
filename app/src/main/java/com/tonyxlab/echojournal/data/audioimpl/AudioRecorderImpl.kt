@@ -4,10 +4,13 @@ import android.content.Context
 import android.media.MediaRecorder
 import android.os.Build
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
+import javax.inject.Inject
 
-class AudioRecorderImpl(private val context: Context) : AudioRecorder {
+class AudioRecorderImpl @Inject constructor(@ApplicationContext private val context: Context) :
+    AudioRecorder {
 
     private var recorder: MediaRecorder? = null
 
@@ -25,19 +28,19 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
 
 
     override fun start(outputFile: File) {
-     createRecorder().apply {
+        createRecorder().apply {
 
-         setAudioSource(MediaRecorder.AudioSource.MIC)
-         setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-         setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-         setOutputFile(FileOutputStream(outputFile).fd)
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            setOutputFile(FileOutputStream(outputFile).fd)
 
-         prepare()
-         start()
+            prepare()
+            start()
 
-         recorder = this
+            recorder = this
 
-     }
+        }
     }
 
     override fun stop() {
