@@ -47,7 +47,7 @@ fun HomeScreen(
 
     val echoes by viewModel.echoes.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
-    val isRecordingActivated = uiState.isRecordingActivated
+
 
     HomeScreenContent(
         echoes = echoes,
@@ -59,7 +59,6 @@ fun HomeScreen(
         onPlay = viewModel::play,
         onStop = viewModel::stop,
         isRecordingActivated = uiState.isRecordingActivated,
-        isRecordingInProgress = uiState.isRecordingInProgress,
         onStartRecording = viewModel::startRecording,
         onStopRecording = viewModel::stopRecording,
         onDismissRecordingModalSheet = viewModel::dismissRecordingModalSheet,
@@ -70,7 +69,6 @@ fun HomeScreen(
     )
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreenContent(
     echoes: List<Echo>,
@@ -82,7 +80,6 @@ fun HomeScreenContent(
     isPlaying: Boolean,
     seekValue: Float,
     isRecordingActivated: Boolean,
-    isRecordingInProgress: Boolean,
     onStartRecording: () -> Unit,
     onStopRecording: () -> Unit,
     onPauseRecording: () -> Unit,
@@ -198,7 +195,6 @@ private fun HomeScreenContentPreview() {
             isPlaying = false,
             seekValue = 4.5f,
             isRecordingActivated = false,
-            isRecordingInProgress = false,
             onStartRecording = {},
             onStopRecording = {},
             onDismissRecordingModalSheet = {},

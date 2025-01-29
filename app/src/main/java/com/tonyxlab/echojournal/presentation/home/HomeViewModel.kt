@@ -10,6 +10,7 @@ import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.domain.usecases.GetEchoByIdUseCase
+import com.tonyxlab.echojournal.domain.usecases.GetEchoesUseCase
 import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.utils.Resource
 import com.tonyxlab.echojournal.utils.TextFieldValue
@@ -17,6 +18,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
@@ -28,12 +31,23 @@ class HomeViewModel @Inject constructor(
     private val recorder: AudioRecorder,
     private val player: AudioPlayer,
     private val getEchoByIdUseCase: GetEchoByIdUseCase,
+    getEchoesUseCase: GetEchoesUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     var echo: Echo? = null
 
+    private val _echoes = MutableStateFlow<List<Echo>>(emptyList())
+    val echoes = _echoes.asStateFlow()
+
     init {
+
+
+        getEchoesUseCase().onEach {
+
+            _echoes.value = it
+
+        }.launchIn(viewModelScope)
 
         val echoId = savedStateHandle.toRoute<SaveScreenObject>().id
         readEchoInfo(echoId = echoId)
@@ -41,13 +55,8 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private val _echoes = MutableStateFlow<List<Echo>>(emptyList())
-    val echoes = _echoes.asStateFlow()
-
-
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
-
 
     var seekFieldValue = MutableStateFlow(
         TextFieldValue(
@@ -57,6 +66,34 @@ class HomeViewModel @Inject constructor(
         )
     )
         private set
+
+
+    var titleFieldValue = MutableStateFlow(
+        TextFieldValue(
+            value = _uiState.value.seekValue,
+            onValueChange = this::onSeek
+
+        )
+    )
+        private set
+
+    var seekFieldValue = MutableStateFlow(
+        TextFieldValue(
+            value = _uiState.value.seekValue,
+            onValueChange = this::onSeek
+
+        )
+    )
+        private set
+    var seekFieldValue = MutableStateFlow(
+        TextFieldValue(
+            value = _uiState.value.seekValue,
+            onValueChange = this::onSeek
+
+        )
+    )
+        private set
+
 
 
     private fun readEchoInfo(echoId: String?) {

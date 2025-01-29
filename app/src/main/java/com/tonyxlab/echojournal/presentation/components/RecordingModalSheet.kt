@@ -58,8 +58,8 @@ import androidx.compose.runtime.rememberUpdatedState
 fun RecordingModalSheet(
     onStartRecording: () -> Unit,
     onStopRecording: () -> Unit,
-    onPauseRecording:() -> Unit,
-    onCancelRecording:() -> Unit,
+    onPauseRecording: () -> Unit,
+    onCancelRecording: () -> Unit,
     onDismissRecordingModalSheet: () -> Unit,
     recordingTime: String,
     modifier: Modifier = Modifier
@@ -77,15 +77,13 @@ fun RecordingModalSheet(
                 recordPermission.launchPermissionRequest()
             }
         }
-     
+
     }
 
     ModalBottomSheet(
-        modifier = modifier,
-        content = {
+        modifier = modifier, content = {
 
             RecordingModalSheetContent(
-                // isRecordingInProgress = isRecordingInProgress,
                 onStartRecording = onStartRecording,
                 onStopRecording = onStopRecording,
                 onPauseRecording = onPauseRecording,
@@ -93,8 +91,7 @@ fun RecordingModalSheet(
                 modifier = Modifier,
                 recordingTime = recordingTime
             )
-        },
-        onDismissRequest = onDismissRecordingModalSheet
+        }, onDismissRequest = onDismissRecordingModalSheet
     )
 }
 
@@ -104,7 +101,7 @@ private fun RecordingModalSheetContent(
     onStartRecording: () -> Unit,
     onStopRecording: () -> Unit,
     onPauseRecording: () -> Unit,
-    onCancelRecording:  () -> Unit,
+    onCancelRecording: () -> Unit,
     modifier: Modifier = Modifier,
     recordingTime: String = "01:13:40"
 ) {
@@ -169,8 +166,7 @@ private fun RecordingModalSheetContent(
 
 
         RecordingButton(
-            isRecording = isRecordingInProgress,
-            onClick = {
+            isRecording = isRecordingInProgress, onClick = {
 
                 isRecordingInProgress = !isRecordingInProgress
 
@@ -182,8 +178,7 @@ private fun RecordingModalSheetContent(
                     onStartRecording()
                 }
 
-            },
-            modifier = Modifier
+            }, modifier = Modifier
                 .align(Alignment.Center)
                 .padding(
                     top = MaterialTheme.spacing.spaceExtraLarge,
@@ -224,9 +219,7 @@ private fun RecordingModalSheetContent(
 
 @Composable
 private fun RecordingButton(
-    isRecording: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    isRecording: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     val gradient = MaterialTheme.gradient.buttonDefaultGradient
 
@@ -271,10 +264,8 @@ private fun RecordingButton(
             // FAB
             drawCircle(
                 brush = gradient,
-                radius = if (isRecording)
-                    size.minDimension.div(3) * fabCircleScaling
-                else
-                    size.minDimension.div(3)
+                radius = if (isRecording) size.minDimension.div(3) * fabCircleScaling
+                else size.minDimension.div(3)
             )
         }
 
@@ -305,8 +296,7 @@ private fun RecordingBottomSheetPreview() {
                 .fillMaxSize()
                 .padding(vertical = MaterialTheme.spacing.spaceFifty),
         ) {
-            RecordingModalSheet(
-                onStartRecording = {},
+            RecordingModalSheet(onStartRecording = {},
                 onStopRecording = {},
                 onPauseRecording = {},
                 onCancelRecording = {},

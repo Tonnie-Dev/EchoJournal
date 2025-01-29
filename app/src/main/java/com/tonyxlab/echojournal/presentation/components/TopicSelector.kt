@@ -52,6 +52,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.NeutralVariant30
 import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
 import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.utils.TextFieldValue
 
 @Composable
 fun TopicSelector(modifier: Modifier = Modifier) {
@@ -120,8 +121,7 @@ private fun TopicsListing(
         onSelectTopic = onSelectTopic,
         isAddingTopic = isAddingTopic,
         onAddTopic = onAddTopic,
-        searchQuery = searchQuery,
-        onSearch = onSearch,
+        topicFieldValue = TextFieldValue(value = ""),
         keyboardController = keyboardController,
         focusRequester = focusRequester
     )
@@ -135,8 +135,7 @@ fun TopicsFlowRow(
     onSelectTopic: (Set<String>) -> Unit,
     isAddingTopic: Boolean,
     onAddTopic: (Boolean) -> Unit,
-    searchQuery: String,
-    onSearch: (String) -> Unit,
+    topicFieldValue: TextFieldValue<String>,
     focusRequester: FocusRequester,
     modifier: Modifier = Modifier,
     keyboardController: SoftwareKeyboardController? = null,
@@ -193,17 +192,16 @@ fun TopicsFlowRow(
                     .wrapContentWidth()
                     .padding(top = MaterialTheme.spacing.spaceMedium)
                     .focusRequester(focusRequester),
-                value = searchQuery,
-                onValueChange = onSearch,
+               textFieldValue = topicFieldValue,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
                 ),
                 hint = stringResource(id = R.string.topics_text),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        onSelectTopic(selectedTopics + searchQuery)
+                        onSelectTopic(selectedTopics + topicFieldValue.value)
                         onAddTopic(false)
-                        onSearch("")
+                       topicFieldValue.onValueChange?.invoke("")
                         keyboardController?.hide()
                     })
             )

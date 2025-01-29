@@ -22,6 +22,7 @@
     <string name="topics_text">Topics</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_add_title">Add Title … </string>
+    <string name="text_add_description">Add Description … </string>
     <string name="text_how_are_you_doing">How are you doing?</string>
     <string name="text_confirm">Confirm</string>
     <string name="text_save">Save</string>

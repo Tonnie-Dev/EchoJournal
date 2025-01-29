@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -27,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -41,11 +39,11 @@ import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary95
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.utils.TextFieldValue
 
 @Composable
 fun BasicEntryTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
+    textFieldValue: TextFieldValue<String>,
     hint: String,
     modifier: Modifier = Modifier,
     leadingContent: @Composable (() -> Unit)? = null,
@@ -58,7 +56,7 @@ fun BasicEntryTextField(
 
 ) {
     val focusManager = LocalFocusManager.current
-
+val value = textFieldValue.value
     val bodyMediumTextStyle = TextStyle(
         color = MaterialTheme.colorScheme.onSurface,
         fontSize = 14.sp,
@@ -78,7 +76,7 @@ fun BasicEntryTextField(
         BasicTextField(
             modifier = Modifier.onFocusChanged { isFocused = it.isFocused },
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = { textFieldValue.onValueChange?.invoke(it)},
             textStyle = bodyMediumTextStyle,
             decorationBox = {
                 Box(contentAlignment = Alignment.Center) {
@@ -129,8 +127,7 @@ private fun EntryBasicTextFieldPreview() {
         ) {
 
             BasicEntryTextField(
-                value = "",
-                onValueChange = {},
+                textFieldValue = TextFieldValue(value = "My Heading"),
                 isHeadline = true,
                 hint = "Add Something ...",
                 leadingContent = {
@@ -146,8 +143,7 @@ private fun EntryBasicTextFieldPreview() {
             )
 
             BasicEntryTextField(
-                value = "",
-                onValueChange = {},
+              textFieldValue = TextFieldValue("My Topic"),
                 isHeadline = false,
                 hint = "Add Something ...",
                 leadingContent = {
@@ -164,8 +160,7 @@ private fun EntryBasicTextFieldPreview() {
             )
 
             BasicEntryTextField(
-                value = "",
-                onValueChange = {},
+                textFieldValue = TextFieldValue("My Description"),
                 isHeadline = false,
                 hint = "Add Something ...",
                 leadingContent = {

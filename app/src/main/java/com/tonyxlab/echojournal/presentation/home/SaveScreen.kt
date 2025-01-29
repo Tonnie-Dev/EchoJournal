@@ -38,6 +38,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.utils.TextFieldValue
 
 @Composable
 fun SaveScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
@@ -50,10 +51,15 @@ fun SaveScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
 
 @Composable
 fun SaveScreenContent(
+    titleFieldValue: TextFieldValue<String>,
+    topicFieldValue: TextFieldValue<String>,
+    descriptionFieldValue: TextFieldValue<String>,
+/*
     titleText: String,
     onTitleValueChange: (String) -> Unit,
     descText: String,
     onDescValueChange: (String) -> Unit,
+*/
     isPlaying: Boolean,
     seekValue: Float,
     onSeek: (Float) -> Unit,
@@ -79,8 +85,7 @@ fun SaveScreenContent(
         ) {
 
             BasicEntryTextField(
-                value = titleText,
-                onValueChange = onDescValueChange,
+               textFieldValue = titleFieldValue,
                 hint = stringResource(id = R.string.text_add_title),
                 isHeadline = true,
                 gap = MaterialTheme.spacing.spaceDoubleDp * 3,
@@ -108,9 +113,8 @@ fun SaveScreenContent(
             TopicSelector()
 
             BasicEntryTextField(
-                value = titleText,
-                onValueChange = onDescValueChange,
-                hint = stringResource(id = R.string.text_add_title),
+                textFieldValue = descriptionFieldValue,
+                hint = stringResource(id = R.string.text_add_description),
                 isHeadline = false,
                 gap = MaterialTheme.spacing.spaceDoubleDp * 3,
                 leadingContent = {
@@ -196,18 +200,15 @@ fun MoodSelectorBottomSheet(modifier: Modifier = Modifier) {
 private fun SaveScreenPreview() {
     EchoJournalTheme {
 
-
         SaveScreenContent(
-            titleText = "",
-            onTitleValueChange = {},
-            descText = "",
-            onDescValueChange = {},
+            titleFieldValue = TextFieldValue("Title"),
+            topicFieldValue = TextFieldValue("Topic"),
+            descriptionFieldValue = TextFieldValue("Description"),
             isPlaying = false,
             seekValue = 0.0f,
             onSeek = {},
             echoLength = 0,
             onTogglePlay = {},
-
             )
     }
 }
