@@ -1,44 +1,82 @@
 package com.tonyxlab.echojournal.presentation.home
 
+import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.presentation.components.AppTopBar
+import com.tonyxlab.echojournal.presentation.components.EchoCard
 import com.tonyxlab.echojournal.presentation.components.EmptyScreen
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
+import com.tonyxlab.echojournal.utils.generateRandomEchoItems
+import java.util.Collections.addAll
 
 @Composable
 fun HomeScreen(
-    list: List<Echo>, modifier: Modifier = Modifier
+    onClickEcho: (String) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
 
+    val echoes by viewModel.echoes.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+
+    HomeScreenContent(
+        echoes = echoes,
+        onClickEcho = onClickEcho,
+        isPlaying = uiState.isPlaying,
+        seekValue = uiState.seekValue,
+        onCreateEcho = viewModel::onCreateEcho,
+        onSeek = viewModel::onSeek,
+        onPlay = viewModel::play,
+        onStop = viewModel::stop
+    )
 }
 
 @Composable
 fun HomeScreenContent(
-    list: List<Echo>,
-    onAddEcho: () -> Unit,
+    echoes: List<Echo>,
+    onCreateEcho: () -> Unit,
+    onClickEcho: (String) -> Unit,
+    onPlay: (Uri) -> Unit,
+    onStop: () -> Unit,
+    onSeek: (Float) -> Unit,
+    isPlaying: Boolean,
+    seekValue: Float,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
-    Scaffold(modifier = modifier,
+
+    var currentPlayingIndex by remember { mutableIntStateOf(-1) }
+
+
+    var selectedIndex by remember { mutableIntStateOf(-1) }
+
+    val listState = rememberLazyListState()
+    Scaffold(
+        modifier = modifier,
         topBar = {
 
             AppTopBar(title = stringResource(id = R.string.title_text))
@@ -47,7 +85,7 @@ fun HomeScreenContent(
 
             FloatingActionButton(
                 modifier = Modifier.size(spacing.spaceSmall * 8),
-                onClick = onAddEcho,
+                onClick = onCreateEcho,
                 shape = CircleShape
             ) {
 
@@ -61,10 +99,49 @@ fun HomeScreenContent(
         }) { paddingValues ->
 
 
-        list.ifEmpty {
-
+        echoes.ifEmpty {
 
             EmptyScreen(modifier = Modifier.padding(paddingValues = paddingValues))
+        }
+
+
+        LazyColumn(contentPadding = paddingValues) {
+
+            itemsIndexed(items = echoes, key = { _, echo -> echo.id }) { i, echo ->
+                val isSelected = selectedIndex == i
+
+
+                EchoCard(
+                    modifier = modifier.padding(spacing.spaceMedium),
+                    echo = echo,
+                    isPlaying = isPlaying,
+                    seekValue = seekValue,
+                    onSeek = onSeek,
+                    onClickEcho = onClickEcho,
+                    onPlayPause = {
+                        selectedIndex = i
+
+                        if (currentPlayingIndex == i && isPlaying) {
+                            onStop()
+                            currentPlayingIndex = -1
+                        } else {
+
+                            if (isPlaying) {
+                                onStop()
+                            }
+
+                            onPlay(echo.uri)
+                            currentPlayingIndex = i
+                            //onChangeRingtone(ringtone)
+                        }
+
+
+                    }
+
+                )
+
+            }
+
         }
     }
 
@@ -76,9 +153,18 @@ fun HomeScreenContent(
 @Composable
 private fun HomeScreenContentPreview() {
 
-
     EchoJournalTheme {
 
-        HomeScreenContent(list = emptyList(), onAddEcho = {})
+        HomeScreenContent(
+            echoes = generateRandomEchoItems(),
+            onCreateEcho = {},
+            onClickEcho = {},
+            onPlay = {},
+            onStop = {},
+            onSeek = {},
+            isPlaying = false,
+            seekValue = 4.5f,
+        )
+
     }
 }

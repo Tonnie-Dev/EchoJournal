@@ -7,6 +7,7 @@ import com.tonyxlab.echojournal.utils.TextFieldValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,9 +15,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private val _echoes = MutableStateFlow<List<Echo>>(emptyList())
     val echoes = _echoes.asStateFlow()
-
-    private val _isPlaying = MutableStateFlow(false)
-    val isPlaying = _isPlaying.asStateFlow()
 
 
     private val _uiState = MutableStateFlow(UiState())
@@ -39,15 +37,14 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun play(uri: Uri) {
 
-
-        _isPlaying.value = true
+        _uiState.update { it.copy(isPlaying = true) }
     }
 
 
     fun stop() {
 
+        _uiState.update { it.copy(isPlaying = false) }
 
-        _isPlaying.value = false
     }
 
 }

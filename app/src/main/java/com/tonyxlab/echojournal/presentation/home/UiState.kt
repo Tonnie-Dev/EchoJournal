@@ -1,3 +1,3 @@
 package com.tonyxlab.echojournal.presentation.home
 
-data class UiState(val seekValue: Float = 0f)
+data class UiState(val seekValue: Float = 0f, val isPlaying:Boolean = false)
