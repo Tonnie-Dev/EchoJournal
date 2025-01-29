@@ -1,5 +1,6 @@
 package com.tonyxlab.echojournal.presentation.components
 
+import android.Manifest
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -27,15 +28,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
@@ -43,8 +50,10 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Primary90
 import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
 import com.tonyxlab.echojournal.presentation.ui.theme.gradient
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import androidx.compose.runtime.rememberUpdatedState
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun RecordingModalSheet(
     onStartRecording: () -> Unit,
@@ -55,6 +64,22 @@ fun RecordingModalSheet(
     recordingTime: String,
     modifier: Modifier = Modifier
 ) {
+
+    val recordPermission = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
+
+
+    LaunchedEffect(recordPermission) {
+        val permissionResult = recordPermission.status
+        if (permissionResult.isGranted.not()) {
+            if (permissionResult.shouldShowRationale) {
+                // TODO Show Alert to Grant Permission
+            } else {
+                recordPermission.launchPermissionRequest()
+            }
+        }
+     
+    }
+
     ModalBottomSheet(
         modifier = modifier,
         content = {

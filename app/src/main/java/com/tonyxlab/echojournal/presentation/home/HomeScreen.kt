@@ -36,6 +36,7 @@ import com.tonyxlab.echojournal.presentation.components.EmptyScreen
 import com.tonyxlab.echojournal.presentation.components.RecordingModalSheet
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
+import com.tonyxlab.echojournal.utils.RequestRecordPermission
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
 
 @Composable
@@ -68,6 +69,7 @@ fun HomeScreen(
 
     )
 }
+
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreenContent(
@@ -83,8 +85,8 @@ fun HomeScreenContent(
     isRecordingInProgress: Boolean,
     onStartRecording: () -> Unit,
     onStopRecording: () -> Unit,
-    onPauseRecording:() -> Unit,
-    onCancelRecording:()  -> Unit,
+    onPauseRecording: () -> Unit,
+    onCancelRecording: () -> Unit,
     onDismissRecordingModalSheet: () -> Unit,
     recordingTime: String,
     modifier: Modifier = Modifier
@@ -126,18 +128,7 @@ fun HomeScreenContent(
         }
 
         if (isRecordingActivated) {
-
-            RequestRecordPermission { isGranted ->
-                if (isGranted) {
-                    onStartRecording()
-                } else {
-                    // Handle permission denied case
-                }
-            }
-
             RecordingModalSheet(
-
-                isRecordingInProgress = isRecordingInProgress,
                 onStartRecording = onStartRecording,
                 onStopRecording = onStopRecording,
                 onDismissRecordingModalSheet = onDismissRecordingModalSheet,
