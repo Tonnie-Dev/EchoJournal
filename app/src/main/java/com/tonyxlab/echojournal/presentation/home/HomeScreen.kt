@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -28,6 +27,7 @@ import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.presentation.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.components.EchoCard
 import com.tonyxlab.echojournal.presentation.components.EmptyScreen
+import com.tonyxlab.echojournal.presentation.components.RecordingModalSheet
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
@@ -40,6 +40,7 @@ fun HomeScreen(
 
     val echoes by viewModel.echoes.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
+    val isRecordingActivated = uiState.isRecordingActivated
 
     HomeScreenContent(
         echoes = echoes,
@@ -49,7 +50,16 @@ fun HomeScreen(
         onCreateEcho = viewModel::onCreateEcho,
         onSeek = viewModel::onSeek,
         onPlay = viewModel::play,
-        onStop = viewModel::stop
+        onStop = viewModel::stop,
+        isRecordingActivated = uiState.isRecordingActivated,
+        isRecordingInProgress = uiState.isRecordingInProgress,
+        onStartRecording = viewModel::startRecording,
+        onStopRecording = viewModel::stopRecording,
+        onDismissRecordingModalSheet = viewModel::dismissRecordingModalSheet,
+        onCancelRecording = viewModel::dismissRecordingModalSheet,
+        onPauseRecording = viewModel::pauseRecording,
+        recordingTime = "02:02:02"
+
     )
 }
 
@@ -63,6 +73,14 @@ fun HomeScreenContent(
     onSeek: (Float) -> Unit,
     isPlaying: Boolean,
     seekValue: Float,
+    isRecordingActivated: Boolean,
+    isRecordingInProgress: Boolean,
+    onStartRecording: () -> Unit,
+    onStopRecording: () -> Unit,
+    onPauseRecording:() -> Unit,
+    onCancelRecording:()  -> Unit,
+    onDismissRecordingModalSheet: () -> Unit,
+    recordingTime: String,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
@@ -72,7 +90,6 @@ fun HomeScreenContent(
 
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
-    val listState = rememberLazyListState()
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -102,6 +119,19 @@ fun HomeScreenContent(
             EmptyScreen(modifier = Modifier.padding(paddingValues = paddingValues))
         }
 
+        if (isRecordingActivated) {
+
+            RecordingModalSheet(
+               // isRecordingActivated = isRecordingActivated,
+                isRecordingInProgress = isRecordingInProgress,
+                onStartRecording = onStartRecording,
+                onStopRecording = onStopRecording,
+                onDismissRecordingModalSheet = onDismissRecordingModalSheet,
+                recordingTime = recordingTime,
+                onPauseRecording = onPauseRecording,
+                onCancelRecording = onCancelRecording
+            )
+        }
 
         LazyColumn(contentPadding = paddingValues) {
 
@@ -162,6 +192,14 @@ private fun HomeScreenContentPreview() {
             onSeek = {},
             isPlaying = false,
             seekValue = 4.5f,
+            isRecordingActivated = false,
+            isRecordingInProgress = false,
+            onStartRecording = {},
+            onStopRecording = {},
+            onDismissRecordingModalSheet = {},
+            onPauseRecording = {},
+            onCancelRecording = {},
+            recordingTime = "02:02:02"
         )
 
     }

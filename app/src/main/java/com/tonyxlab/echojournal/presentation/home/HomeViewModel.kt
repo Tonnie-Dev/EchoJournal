@@ -31,7 +31,16 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         private set
 
 
-    fun onCreateEcho() {}
+    fun onCreateEcho() {
+
+        _uiState.update { it.copy(isRecordingActivated = true) }
+    }
+
+    fun dismissRecordingModalSheet() {
+
+
+        _uiState.update { it.copy(isRecordingActivated = false) }
+    }
 
     fun onSeek(value: Float) {}
 
@@ -46,5 +55,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         _uiState.update { it.copy(isPlaying = false) }
 
     }
+
+
+    fun startRecording() {}
+    fun stopRecording() {}
+    fun pauseRecording() {}
+
 
 }
