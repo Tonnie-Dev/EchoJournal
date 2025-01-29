@@ -54,12 +54,6 @@ fun SaveScreenContent(
     titleFieldValue: TextFieldValue<String>,
     topicFieldValue: TextFieldValue<String>,
     descriptionFieldValue: TextFieldValue<String>,
-/*
-    titleText: String,
-    onTitleValueChange: (String) -> Unit,
-    descText: String,
-    onDescValueChange: (String) -> Unit,
-*/
     isPlaying: Boolean,
     seekValue: Float,
     onSeek: (Float) -> Unit,

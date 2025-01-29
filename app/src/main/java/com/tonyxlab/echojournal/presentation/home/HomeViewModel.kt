@@ -9,11 +9,14 @@ import androidx.navigation.toRoute
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
 import com.tonyxlab.echojournal.domain.model.Echo
+import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.usecases.GetEchoByIdUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetEchoesUseCase
 import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.utils.Resource
 import com.tonyxlab.echojournal.utils.TextFieldValue
+import com.tonyxlab.echojournal.utils.fromLocalDateTimeToUtcTimeStamp
+import com.tonyxlab.echojournal.utils.now
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +25,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
 import java.io.File
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,30 +75,29 @@ class HomeViewModel @Inject constructor(
 
     var titleFieldValue = MutableStateFlow(
         TextFieldValue(
-            value = _uiState.value.seekValue,
-            onValueChange = this::onSeek
+            value = _uiState.value.title,
+            onValueChange = this::setTitle
 
         )
     )
         private set
 
-    var seekFieldValue = MutableStateFlow(
+    var topicFieldValue = MutableStateFlow(
         TextFieldValue(
-            value = _uiState.value.seekValue,
-            onValueChange = this::onSeek
+            value = _uiState.value.topic,
+            onValueChange = this::setTopic
 
         )
     )
         private set
-    var seekFieldValue = MutableStateFlow(
+    var descriptionFieldValue = MutableStateFlow(
         TextFieldValue(
-            value = _uiState.value.seekValue,
-            onValueChange = this::onSeek
+            value = _uiState.value.description,
+            onValueChange = this::setDescription
 
         )
     )
         private set
-
 
 
     private fun readEchoInfo(echoId: String?) {
@@ -108,6 +112,19 @@ class HomeViewModel @Inject constructor(
                 is Resource.Success -> {
 
                     echo = result.data
+
+                    with(result.data) {
+
+                        _uiState.update {
+                            it.copy(
+                                currentTopics = topics,
+                                description = description,
+                                title = name,
+
+
+                                )
+                        }
+                    }
                 }
 
                 is Resource.Error -> Unit
@@ -115,6 +132,20 @@ class HomeViewModel @Inject constructor(
         }
 
 
+    }
+
+    private fun doSave() {
+
+        val echoItem = Echo(
+            id = this.echo?.id ?: UUID.randomUUID().toString(),
+            name = titleFieldValue.value.value,
+            description = descriptionFieldValue.value.value,
+            timestamp = LocalDateTime.now().fromLocalDateTimeToUtcTimeStamp(),
+            length = 0,
+            mood = Mood.Other,
+            topics = listOf(),
+            uri = _uiState.value.recordingUri
+        )
     }
 
     fun onCreateEcho() {
@@ -146,14 +177,17 @@ class HomeViewModel @Inject constructor(
     fun startRecording() {
 
 
-        /*val file1 = File(context.cacheDir, "recording1").also {
-            recorder.start(it)
+        val file = File(
+            context.filesDir,
+            "recording${LocalDateTime.now().fromLocalDateTimeToUtcTimeStamp()}"
+        )
+            .also {
+                recorder.start(it)
 
-        }*/
-        val file2 = File(context.filesDir, "recording1").also {
-            recorder.start(it)
+            }
 
-        }
+        val fileUri = Uri.fromFile(file)
+        _uiState.update { it.copy(recordingUri = fileUri) }
     }
 
     fun stopRecording() {
@@ -163,5 +197,29 @@ class HomeViewModel @Inject constructor(
 
     fun pauseRecording() {}
 
+    private fun setTitle(value: String) {
 
+
+        /* if (value.isBlank()) {
+             // Show snackbar or handle the error
+             // Example: _uiState.update { it.copy(showSnackbar = true, snackbarMessage = "Title cannot be blank") }
+         } else {
+             titleFieldValue.update { it.copy(value = value) }
+         }*/
+        titleFieldValue.update { it.copy(value = value) }
+
+    }
+
+    private fun setTopic(value: String) {
+
+        topicFieldValue.update { it.copy(value = value) }
+
+    }
+
+    private fun setDescription(value: String) {
+
+        descriptionFieldValue.update { it.copy(value = value) }
+
+    }
 }
+
