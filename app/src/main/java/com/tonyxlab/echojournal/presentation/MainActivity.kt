@@ -13,6 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.tonyxlab.echojournal.presentation.navigation.NestedScreens
+import com.tonyxlab.echojournal.presentation.navigation.appDestinations
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,36 +28,20 @@ class MainActivity : ComponentActivity() {
 
         installSplashScreen().apply {
 
-            setKeepOnScreenCondition {!viewModel.isReady.value}
+            setKeepOnScreenCondition { !viewModel.isReady.value }
         }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContent {
             EchoJournalTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                            name = "Android",
-                            modifier = Modifier.padding(innerPadding)
-                    )
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = NestedScreens) {
+
+                    appDestinations(navController = navController)
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-            text = "Hello $name!",
-            modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    EchoJournalTheme {
-        Greeting("Android")
-    }
-}

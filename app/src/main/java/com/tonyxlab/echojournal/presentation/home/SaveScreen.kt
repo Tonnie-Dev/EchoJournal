@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.save
+package com.tonyxlab.echojournal.presentation.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,12 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,10 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.util.fastForEach
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberPermissionState
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.model.Mood.*
 import com.tonyxlab.echojournal.presentation.components.AppButton
 import com.tonyxlab.echojournal.presentation.components.AppIcon
@@ -44,6 +39,14 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 
+@Composable
+fun SaveScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+
+        Text("This is the Second Screen")
+
+    }
+}
 
 @Composable
 fun SaveScreenContent(
@@ -102,7 +105,7 @@ fun SaveScreenContent(
                 onTogglePlay = onTogglePlay
             )
 
-             TopicSelector()
+            TopicSelector()
 
             BasicEntryTextField(
                 value = titleText,
@@ -132,7 +135,6 @@ fun SaveScreenContent(
 
 
 }
-
 
 
 @Composable
