@@ -187,6 +187,17 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isRecordingActivated = false) }
     }
 
+    fun showMoodSelectionSheet(){
+
+        _uiState.update { it.copy(isShowMoodSelectionSheet = true) }
+
+    }
+
+    fun dismissMoodSelectionModalSheet() {
+
+
+        _uiState.update { it.copy(isShowMoodSelectionSheet = false) }
+    }
     fun onSeek(value: Float) {}
 
     fun play(uri: Uri) {

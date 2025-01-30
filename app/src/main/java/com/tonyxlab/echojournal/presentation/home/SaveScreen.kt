@@ -2,6 +2,7 @@ package com.tonyxlab.echojournal.presentation.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +39,6 @@ import com.tonyxlab.echojournal.presentation.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.components.BasicEntryTextField
 import com.tonyxlab.echojournal.presentation.components.PlayTrackUnit
 import com.tonyxlab.echojournal.presentation.components.TopicSelector
-import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
@@ -46,12 +48,13 @@ import com.tonyxlab.echojournal.utils.TextFieldValue
 @Composable
 fun SaveScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
 
-val seekFieldValue by viewModel.seekFieldValue.collectAsState()
+    val seekFieldValue by viewModel.seekFieldValue.collectAsState()
     val titleFieldValue by viewModel.titleFieldValue.collectAsState()
-val topicFieldValue by viewModel.topicFieldValue.collectAsState()
+    val topicFieldValue by viewModel.topicFieldValue.collectAsState()
     val descriptionFieldValue by viewModel.descriptionFieldValue.collectAsState()
 
     val uiState by viewModel.uiState.collectAsState()
+
     SaveScreenContent(
         titleFieldValue = titleFieldValue,
         topicFieldValue = topicFieldValue,
@@ -61,10 +64,14 @@ val topicFieldValue by viewModel.topicFieldValue.collectAsState()
         onSeek = {},
         echoLength = 0,
         onTogglePlay = {},
-        
+        onShowMoodSelectionSheet = viewModel::showMoodSelectionSheet,
+        isShowMoodSelectionSheet = uiState.isShowMoodSelectionSheet,
+        onDismissMoodSelectionSheet = viewModel::dismissMoodSelectionModalSheet
+
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SaveScreenContent(
     titleFieldValue: TextFieldValue<String>,
@@ -75,6 +82,9 @@ fun SaveScreenContent(
     onSeek: (Float) -> Unit,
     echoLength: Int,
     onTogglePlay: () -> Unit,
+    isShowMoodSelectionSheet: Boolean,
+    onShowMoodSelectionSheet: () -> Unit,
+    onDismissMoodSelectionSheet: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(topBar = {
@@ -95,7 +105,7 @@ fun SaveScreenContent(
         ) {
 
             BasicEntryTextField(
-               textFieldValue = titleFieldValue,
+                textFieldValue = titleFieldValue,
                 hint = stringResource(id = R.string.text_add_title),
                 isHeadline = true,
                 gap = MaterialTheme.spacing.spaceDoubleDp * 3,
@@ -105,6 +115,10 @@ fun SaveScreenContent(
                             .clip(CircleShape)
                             .background(Secondary90)
                             .size(MaterialTheme.spacing.spaceLarge)
+                            .clickable {
+
+                                onShowMoodSelectionSheet()
+                            }
                             .padding(MaterialTheme.spacing.spaceDoubleDp * 3),
                         imageVector = Icons.Default.Add,
                         tint = Secondary70
@@ -140,7 +154,18 @@ fun SaveScreenContent(
                 }
             )
 
-            MoodSelectorBottomSheet()
+            if (isShowMoodSelectionSheet) {
+
+                ModalBottomSheet(
+                    onDismissRequest = onDismissMoodSelectionSheet,
+                    content = {
+
+
+                        MoodSelectionSheetContent()
+
+                    })
+
+            }
 
         }
 
@@ -152,7 +177,7 @@ fun SaveScreenContent(
 
 
 @Composable
-fun MoodSelectorBottomSheet(modifier: Modifier = Modifier) {
+fun MoodSelectionSheetContent(modifier: Modifier = Modifier) {
 
 
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -219,6 +244,9 @@ private fun SaveScreenPreview() {
             onSeek = {},
             echoLength = 0,
             onTogglePlay = {},
-            )
+            onShowMoodSelectionSheet = {},
+            isShowMoodSelectionSheet = false,
+            onDismissMoodSelectionSheet = {}
+        )
     }
 }

@@ -79,8 +79,8 @@ fun RecordingModalSheet(
     }
 
     ModalBottomSheet(
-        modifier = modifier, content = {
-
+        modifier = modifier,
+        content = {
             RecordingModalSheetContent(
                 onStartRecording = onStartRecording,
                 onStopRecording = onStopRecording,
@@ -89,7 +89,8 @@ fun RecordingModalSheet(
                 modifier = Modifier,
                 recordingTime = recordingTime
             )
-        }, onDismissRequest = onDismissRecordingModalSheet
+        },
+        onDismissRequest = onDismissRecordingModalSheet
     )
 }
 
@@ -166,7 +167,6 @@ private fun RecordingModalSheetContent(
         RecordingButton(
             isRecording = isRecordingInProgress,
             onClick = {
-
 
 
                 if (isRecordingInProgress) {
@@ -297,7 +297,8 @@ private fun RecordingBottomSheetPreview() {
                 .fillMaxSize()
                 .padding(vertical = MaterialTheme.spacing.spaceFifty),
         ) {
-            RecordingModalSheet(onStartRecording = {},
+            RecordingModalSheet(
+                onStartRecording = {},
                 onStopRecording = {},
                 onPauseRecording = {},
                 onCancelRecording = {},

@@ -14,5 +14,6 @@ data class UiState(
     val isPlaying: Boolean = false,
     val isRecordingActivated: Boolean = false,
     val isRecordingInProgress: Boolean = false,
-    val recordingUri: Uri = Uri.EMPTY
+    val recordingUri: Uri = Uri.EMPTY,
+    val isShowMoodSelectionSheet:Boolean = false
 )
