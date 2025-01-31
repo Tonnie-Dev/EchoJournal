@@ -55,7 +55,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 
 @Composable
-fun TopicSelector(modifier: Modifier = Modifier) {
+fun TopicSelector(topicFieldValue: TextFieldValue<String>,modifier: Modifier = Modifier) {
     var selectedTopics by remember { mutableStateOf(setOf<String>()) }
     var savedTopics by remember {
         mutableStateOf(
@@ -81,8 +81,7 @@ fun TopicSelector(modifier: Modifier = Modifier) {
             onSelectTopic = { selectedTopics = it },
             isAddingTopic = isAddingTopic,
             onAddTopic = { isAddingTopic = it },
-            searchQuery = searchQuery,
-            onSearch = { searchQuery = it },
+            topicFieldValue = topicFieldValue,
             keyboardController = keyboardController,
             focusRequester = focusRequester
 
@@ -108,8 +107,7 @@ private fun TopicsListing(
     onSelectTopic: (Set<String>) -> Unit,
     isAddingTopic: Boolean,
     onAddTopic: (Boolean) -> Unit,
-    searchQuery: String,
-    onSearch: (String) -> Unit,
+    topicFieldValue: TextFieldValue<String>,
     focusRequester: FocusRequester,
     modifier: Modifier = Modifier,
     keyboardController: SoftwareKeyboardController? = null
@@ -121,7 +119,7 @@ private fun TopicsListing(
         onSelectTopic = onSelectTopic,
         isAddingTopic = isAddingTopic,
         onAddTopic = onAddTopic,
-        topicFieldValue = TextFieldValue(value = ""),
+        topicFieldValue = topicFieldValue,
         keyboardController = keyboardController,
         focusRequester = focusRequester
     )
@@ -372,7 +370,7 @@ private fun Preview() {
                 .padding(top = MaterialTheme.spacing.spaceExtraLarge),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
-          TopicSelector(modifier = Modifier.background(Color.Cyan))
+          TopicSelector(topicFieldValue = TextFieldValue(value = ""), modifier = Modifier.background(Color.Cyan))
         }
     }
 

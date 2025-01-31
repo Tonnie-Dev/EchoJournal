@@ -56,7 +56,7 @@ fun BasicEntryTextField(
 
 ) {
     val focusManager = LocalFocusManager.current
-val value = textFieldValue.value
+    val value = textFieldValue.value
     val bodyMediumTextStyle = TextStyle(
         color = MaterialTheme.colorScheme.onSurface,
         fontSize = 14.sp,
@@ -76,9 +76,9 @@ val value = textFieldValue.value
         BasicTextField(
             modifier = Modifier.onFocusChanged { isFocused = it.isFocused },
             value = value,
-            onValueChange = { textFieldValue.onValueChange?.invoke(it)},
+            onValueChange = { textFieldValue.onValueChange?.invoke(it) },
             textStyle = bodyMediumTextStyle,
-            decorationBox = {
+            decorationBox = { innerTextField ->
                 Box(contentAlignment = Alignment.Center) {
 
                     if (value.isBlank() && isFocused.not()) {
@@ -91,15 +91,9 @@ val value = textFieldValue.value
                             else
                                 MaterialTheme.typography.bodyMedium
                         )
-                    } else if (value.isNotBlank()) {
-                        Box(
-
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            it()
-
-                        }
                     }
+
+                    innerTextField()
                 }
             },
             singleLine = singleLine,
@@ -121,7 +115,7 @@ private fun EntryBasicTextFieldPreview() {
         Column(
             modifier = Modifier
                 .background(color = Color.White)
-                . fillMaxSize()
+                .fillMaxSize()
                 .padding(MaterialTheme.spacing.spaceMedium),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
@@ -143,7 +137,7 @@ private fun EntryBasicTextFieldPreview() {
             )
 
             BasicEntryTextField(
-              textFieldValue = TextFieldValue("My Topic"),
+                textFieldValue = TextFieldValue("My Topic"),
                 isHeadline = false,
                 hint = "Add Something ...",
                 leadingContent = {

@@ -134,7 +134,7 @@ fun SaveScreenContent(
                 onTogglePlay = onTogglePlay
             )
 
-            TopicSelector()
+            TopicSelector(topicFieldValue = topicFieldValue)
 
             BasicEntryTextField(
                 textFieldValue = descriptionFieldValue,
