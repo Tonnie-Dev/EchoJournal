@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -55,10 +57,15 @@ fun BasicEntryTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default
 
 ) {
-    val focusManager = LocalFocusManager.current
+
     val value = textFieldValue.value
-    val bodyMediumTextStyle = TextStyle(
+    val headlineTextStyle = TextStyle(
         color = MaterialTheme.colorScheme.onSurface,
+        fontSize = 26.sp,
+        fontWeight = FontWeight.W500
+    )
+    val bodyMediumTextStyle = TextStyle(
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         fontSize = 14.sp,
         fontWeight = FontWeight.W400
     )
@@ -66,9 +73,9 @@ fun BasicEntryTextField(
     var isFocused by remember { mutableStateOf(false) }
 
     Row(
-        modifier = modifier.wrapContentWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(gap),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
 
         leadingContent?.invoke()
@@ -77,13 +84,12 @@ fun BasicEntryTextField(
             modifier = Modifier.onFocusChanged { isFocused = it.isFocused },
             value = value,
             onValueChange = { textFieldValue.onValueChange?.invoke(it) },
-            textStyle = bodyMediumTextStyle,
+            textStyle = if (isHeadline)headlineTextStyle else bodyMediumTextStyle,
             decorationBox = { innerTextField ->
                 Box(contentAlignment = Alignment.Center) {
 
                     if (value.isBlank() && isFocused.not()) {
                         Text(
-
                             text = hint,
                             color = hintColor,
                             style = if (isHeadline)
@@ -96,6 +102,7 @@ fun BasicEntryTextField(
                     innerTextField()
                 }
             },
+            cursorBrush = SolidColor(Secondary70),
             singleLine = singleLine,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions
