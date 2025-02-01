@@ -53,18 +53,15 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
 import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
+import com.tonyxlab.echojournal.utils.conditionalModifier
 
 @Composable
-fun TopicSelector(topicFieldValue: TextFieldValue<String>,modifier: Modifier = Modifier) {
+fun TopicSelector(topicFieldValue: TextFieldValue<String>, modifier: Modifier = Modifier) {
     var selectedTopics by remember { mutableStateOf(setOf<String>()) }
     var savedTopics by remember {
         mutableStateOf(
             setOf(
-                "Work",
-                "Hobby",
-                "Personal",
-                "Office",
-                "Workout"
+                "Work", "Hobby", "Personal", "Office", "Workout"
             )
         )
     }
@@ -73,7 +70,7 @@ fun TopicSelector(topicFieldValue: TextFieldValue<String>,modifier: Modifier = M
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.conditionalModifier(isAddingTopic){ fillMaxSize()}) {
 
         TopicsListing(
             modifier = modifier,
@@ -87,14 +84,13 @@ fun TopicSelector(topicFieldValue: TextFieldValue<String>,modifier: Modifier = M
 
         )
 
-        if (searchQuery.isBlank()) return
+        if (topicFieldValue.value.isEmpty()) return
 
         TopicDropDown(modifier = modifier,
             selectedTopics = selectedTopics,
             onSelectedTopicsChange = { selectedTopics = it },
             onAddTopic = { isAddingTopic = it },
-            searchQuery = searchQuery,
-            onSearchQueryChange = { searchQuery = it },
+          topicFieldValue = topicFieldValue,
             savedTopics = savedTopics,
             onSavedTopicsChange = { savedTopics = it })
     }
@@ -151,8 +147,7 @@ fun TopicsFlowRow(
     }
 
     FlowRow(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center
+        modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
     ) {
 
         selectedTopics.forEach { topic ->
@@ -166,8 +161,7 @@ fun TopicsFlowRow(
         // Show Icon when not typing
         if (!isAddingTopic) {
 
-            IconButton(
-                onClick = { onAddTopic(true) },
+            IconButton(onClick = { onAddTopic(true) },
                 modifier = modifier
                     .padding(vertical = MaterialTheme.spacing.spaceSmall)
                     .background(color = Primary95, shape = CircleShape)
@@ -190,18 +184,17 @@ fun TopicsFlowRow(
                     .wrapContentWidth()
                     .padding(top = MaterialTheme.spacing.spaceMedium)
                     .focusRequester(focusRequester),
-               textFieldValue = topicFieldValue,
+                textFieldValue = topicFieldValue,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
                 ),
                 hint = stringResource(id = R.string.topics_text),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        onSelectTopic(selectedTopics + topicFieldValue.value)
-                        onAddTopic(false)
-                       topicFieldValue.onValueChange?.invoke("")
-                        keyboardController?.hide()
-                    })
+                keyboardActions = KeyboardActions(onDone = {
+                    onSelectTopic(selectedTopics + topicFieldValue.value)
+                    onAddTopic(false)
+                    topicFieldValue.onValueChange?.invoke("")
+                    keyboardController?.hide()
+                })
             )
         }
 
@@ -211,13 +204,10 @@ fun TopicsFlowRow(
 
 @Composable
 fun TopicChip(
-    topic: String,
-    modifier: Modifier = Modifier,
-    onDeleteTopic: (() -> Unit)? = null
+    topic: String, modifier: Modifier = Modifier, onDeleteTopic: (() -> Unit)? = null
 ) {
 
-    FilterChip(
-        modifier = modifier,
+    FilterChip(modifier = modifier,
         selected = true,
         onClick = {},
         shape = MaterialTheme.shapes.large,
@@ -225,7 +215,7 @@ fun TopicChip(
             selectedContainerColor = Primary95
         ),
         leadingIcon = {
-          Text("#", style = buttonSmallTextStyle)
+            Text("#", style = buttonSmallTextStyle)
         },
         trailingIcon = {
 
@@ -259,8 +249,7 @@ fun TopicDropDown(
     selectedTopics: Set<String>,
     onSelectedTopicsChange: (Set<String>) -> Unit,
     onAddTopic: (Boolean) -> Unit,
-    searchQuery: String,
-    onSearchQueryChange: (String) -> Unit,
+    topicFieldValue: TextFieldValue<String>,
     savedTopics: Set<String>,
     modifier: Modifier = Modifier,
     onSavedTopicsChange: ((Set<String>) -> Unit)? = null,
@@ -271,8 +260,7 @@ fun TopicDropDown(
             .fillMaxWidth()
             .padding(horizontal = MaterialTheme.spacing.spaceMedium)
             .shadow(
-                elevation = MaterialTheme.spacing.spaceSmall,
-                shape = MaterialTheme.shapes.medium
+                elevation = MaterialTheme.spacing.spaceSmall, shape = MaterialTheme.shapes.medium
             )
 
     ) {
@@ -285,8 +273,9 @@ fun TopicDropDown(
 
             val matchingSavedTopics = savedTopics.filter {
 
-                it.startsWith(prefix = searchQuery, ignoreCase = true)
-                        && !selectedTopics.contains(it)
+                it.startsWith(prefix = topicFieldValue.value, ignoreCase = true) && !selectedTopics.contains(
+                    it
+                )
             }
 
             matchingSavedTopics.forEach { topic ->
@@ -295,7 +284,7 @@ fun TopicDropDown(
                     .fillMaxWidth()
                     .clickable {
                         onSelectedTopicsChange(selectedTopics + topic)
-                        onSearchQueryChange("")
+                        topicFieldValue.onValueChange?.invoke("")
                         onAddTopic(false)
                     }
                     .padding(
@@ -313,16 +302,16 @@ fun TopicDropDown(
 
             // Show 'Create Chip' if topic does not exist
 
-            if (!savedTopics.any { it.equals(searchQuery, ignoreCase = true) }) {
+            if (!savedTopics.any { it.equals(topicFieldValue.value, ignoreCase = true) }) {
 
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
 
-                        val newTopic = searchQuery.trim()
+                        val newTopic = topicFieldValue.value.trim()
                         onSavedTopicsChange?.invoke(savedTopics + newTopic)
                         onSelectedTopicsChange(selectedTopics + newTopic)
-                        onSearchQueryChange("")
+                        topicFieldValue.onValueChange?.invoke("")
                         onAddTopic(false)
                     }
                     .padding(
@@ -340,7 +329,7 @@ fun TopicDropDown(
                     )
 
                     Text(
-                        text = "Create $searchQuery",
+                        text = "Create ${topicFieldValue.value}",
                         style = buttonSmallTextStyle,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -363,14 +352,17 @@ private fun Preview() {
     EchoJournalTheme {
 
 
-      Column(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
                 .padding(top = MaterialTheme.spacing.spaceExtraLarge),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
-          TopicSelector(topicFieldValue = TextFieldValue(value = ""), modifier = Modifier.background(Color.Cyan))
+            TopicSelector(
+                topicFieldValue = TextFieldValue(value = ""),
+                modifier = Modifier.background(Color.Cyan)
+            )
         }
     }
 
