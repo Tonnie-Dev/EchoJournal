@@ -48,7 +48,7 @@ fun HomeScreen(
         onClickEcho = onClickEcho,
         isPlaying = uiState.isPlaying,
         seekValue = uiState.seekValue,
-        onCreateEcho = viewModel::onCreateEcho,
+        onCreateEcho = viewModel::createEcho,
         onSeek = viewModel::onSeek,
         onPlay = viewModel::play,
         onStop = viewModel::stop,
