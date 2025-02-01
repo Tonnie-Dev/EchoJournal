@@ -30,25 +30,28 @@ fun NavGraphBuilder.appDestinations(navController: NavController) {
                     navController.navigate(route = SaveScreenObject(it))
                 },
 
-                navigateToSaveScreen = { navController.navigate(route =SaveScreenObject())},
+                navigateToSaveScreen = { navController.navigate(route = SaveScreenObject()) },
                 viewModel = viewModel
             )
         }
     }
 
+    composable<SaveScreenObject> { backstackEntry ->
 
-     composable<SaveScreenObject> {backstackEntry ->
+        val parentEntry = remember(backstackEntry) {
 
-         val parentEntry = remember(backstackEntry) {
+            navController.getBackStackEntry<NestedScreens>()
+        }
 
-             navController.getBackStackEntry<NestedScreens>()
-         }
+        val viewModel: HomeViewModel = hiltViewModel(parentEntry)
 
-         val viewModel:HomeViewModel = hiltViewModel(parentEntry)
+        SaveScreen(
+            onPresBack = { navController.popBackStack() },
+            onCancelEditor = { navController.popBackStack() },
+            viewModel = viewModel
+        )
 
-         SaveScreen(viewModel = viewModel)
-
-     }
+    }
 
 }
 

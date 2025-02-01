@@ -39,7 +39,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
 import com.tonyxlab.echojournal.presentation.ui.theme.SurfaceTint05
 import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
-import com.tonyxlab.echojournal.utils.addConditionalModifier
+import com.tonyxlab.echojournal.utils.conditionalModifier
 
 @Composable
 fun FilterExpandableMenu(
@@ -211,7 +211,7 @@ private fun MoodSelectionItem(
     var isSelected by remember { mutableStateOf(false) }
     Row(
             modifier = modifier
-                    .addConditionalModifier(isSelected) {
+                    .conditionalModifier(isSelected) {
                         background(
                                 color = SurfaceTint05,
                                 shape = RoundedCornerShape(
@@ -268,7 +268,7 @@ private fun TopicSelectionItem(
     var isSelected by remember { mutableStateOf(false) }
     Row(
             modifier = modifier
-                    .addConditionalModifier(isSelected) {
+                    .conditionalModifier(isSelected) {
                         background(
                                 color = SurfaceTint05,
                                 shape = RoundedCornerShape(

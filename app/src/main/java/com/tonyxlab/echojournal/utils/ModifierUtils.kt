@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun Modifier.addConditionalModifier(
+fun Modifier.conditionalModifier(
     condition: Boolean,
     modifier: @Composable Modifier.() -> Modifier
 ): Modifier {

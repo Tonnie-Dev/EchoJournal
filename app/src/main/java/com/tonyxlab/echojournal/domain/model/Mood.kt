@@ -1,6 +1,7 @@
 package com.tonyxlab.echojournal.domain.model
 
 import androidx.annotation.DrawableRes
+import androidx.compose.material3.Icon
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.tonyxlab.echojournal.R
@@ -32,8 +33,11 @@ import kotlinx.serialization.encoding.Encoder
 
 @Serializable
 sealed class Mood(
-    @DrawableRes val icon: Int,
+    @DrawableRes
+    val icon: Int,
     val name: String,
+    @DrawableRes
+    val outlinedIcon:Int,
     @Serializable(with = ColorSerializer::class)
     val accentColor1: Color,
     @Serializable(with = ColorSerializer::class)
@@ -44,6 +48,7 @@ sealed class Mood(
 
     data object Stressed : Mood(
         icon = R.drawable.mood_stressed,
+        outlinedIcon = R.drawable.mood_stressed_outline,
         name = "Stressed",
         accentColor1 = Stressed80,
         accentColor2 = Stressed35,
@@ -52,6 +57,9 @@ sealed class Mood(
 
     data object Sad : Mood(
         icon = R.drawable.mood_sad,
+
+        outlinedIcon = R.drawable.mood_sad_outline,
+
         name = "Sad",
         accentColor1 = Sad80,
         accentColor2 = Sad35,
@@ -60,6 +68,7 @@ sealed class Mood(
 
     data object Neutral : Mood(
         icon = R.drawable.mood_neutral,
+        outlinedIcon = R.drawable.mood_neutral_outline,
         name = "Neutral",
         accentColor1 = Neutral80,
         accentColor2 = Neutral35,
@@ -68,6 +77,7 @@ sealed class Mood(
 
     data object Peaceful : Mood(
         icon = R.drawable.mood_peaceful,
+        outlinedIcon = R.drawable.mood_peaceful_outline,
         name = "Peaceful",
         accentColor1 = Peaceful80,
         accentColor2 = Peaceful35,
@@ -76,6 +86,7 @@ sealed class Mood(
 
     data object Excited : Mood(
         icon = R.drawable.mood_excited,
+        outlinedIcon = R.drawable.mood_excited_outline,
         name = "Excited",
         accentColor1 = Excited80,
         accentColor2 = Excited35,
@@ -85,6 +96,7 @@ sealed class Mood(
 
     data object Other : Mood(
         icon = R.drawable.mood_excited,
+        outlinedIcon = R.drawable.mood_excited_outline,
         name = "Other",
         accentColor1 = Primary30,
         accentColor2 = Secondary80,

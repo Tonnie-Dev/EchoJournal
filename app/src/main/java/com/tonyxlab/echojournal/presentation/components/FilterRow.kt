@@ -35,7 +35,7 @@ import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
-import com.tonyxlab.echojournal.utils.addConditionalModifier
+import com.tonyxlab.echojournal.utils.conditionalModifier
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -91,7 +91,7 @@ fun MoodFilter(
 
     Row(
             modifier = modifier
-                    .addConditionalModifier(isMoodFilterClicked) {
+                    .conditionalModifier(isMoodFilterClicked) {
                         shadow(
                                 elevation = spacing.spaceExtraSmall,
                                 shape = RoundedCornerShape(spacing.spaceMedium)
@@ -177,7 +177,7 @@ fun TopicFilter(
 
     Row(
             modifier = modifier
-                    .addConditionalModifier(isTopicFilterClicked) {
+                    .conditionalModifier(isTopicFilterClicked) {
                         shadow(
                                 elevation = spacing.spaceExtraSmall,
                                 shape = RoundedCornerShape(spacing.spaceMedium)
