@@ -82,7 +82,7 @@ fun SaveScreen(
         onSeek = {},
         echoLength = 0,
         onTogglePlay = {},
-        onSaveEditor = {},
+        onSaveEditor = viewModel::doSave,
         isSave = viewModel.canSave(),
         onCancelEditor = onCancelEditor,
         mood = uiState.mood,

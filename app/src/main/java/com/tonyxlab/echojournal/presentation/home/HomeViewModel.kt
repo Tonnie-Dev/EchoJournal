@@ -139,7 +139,7 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    private fun doSave() {
+  fun doSave() {
 
         val echoItem = Echo(
             id = this.echo?.id ?: UUID.randomUUID().toString(),
@@ -147,7 +147,7 @@ class HomeViewModel @Inject constructor(
             description = descriptionFieldValue.value.value,
             timestamp = LocalDateTime.now().fromLocalDateTimeToUtcTimeStamp(),
             length = 0,
-            mood = Mood.Other,
+            mood = _uiState.value.mood,
             topics = listOf(),
             uri = _uiState.value.recordingUri
         )
@@ -166,8 +166,14 @@ class HomeViewModel @Inject constructor(
 
             when (result){
 
-                is Resource.Success -> {}
-                is Resource.Error -> {}
+                is Resource.Success -> {
+
+                    Timber.i("Saved")
+                }
+                is Resource.Error -> {
+
+                    Timber.i("Saving Failed: ${result.exception.message}")
+                }
             }
         }
 
@@ -242,12 +248,6 @@ class HomeViewModel @Inject constructor(
     private fun setTitle(value: String) {
 
 
-        /* if (value.isBlank()) {
-             // Show snackbar or handle the error
-             // Example: _uiState.update { it.copy(showSnackbar = true, snackbarMessage = "Title cannot be blank") }
-         } else {
-             titleFieldValue.update { it.copy(value = value) }
-         }*/
         titleFieldValue.update { it.copy(value = value) }
 
     }
@@ -281,7 +281,7 @@ class HomeViewModel @Inject constructor(
 
         return _uiState.value.mood != Mood.Other && titleFieldValue.value.value.isNotBlank()
 
-       
+
 
     }
 }

@@ -6,7 +6,8 @@ import com.tonyxlab.echojournal.domain.model.Mood
 
 data class UiState(
     val echoes: List<Echo> = emptyList(),
-    val savedTopics: List<String> = emptyList(),
+    val selectedTopics:Set<String> = emptySet(),
+    val savedTopics: Set<String> = emptySet(),
     val topic: String = "",
     val currentTopics: List<String> = emptyList(),
     val description: String = "",

@@ -37,7 +37,7 @@ sealed class Mood(
     val icon: Int,
     val name: String,
     @DrawableRes
-    val outlinedIcon:Int,
+    val outlinedIcon: Int,
     @Serializable(with = ColorSerializer::class)
     val accentColor1: Color,
     @Serializable(with = ColorSerializer::class)
@@ -46,6 +46,7 @@ sealed class Mood(
     val accentColor3: Color
 ) {
 
+    @Serializable
     data object Stressed : Mood(
         icon = R.drawable.mood_stressed,
         outlinedIcon = R.drawable.mood_stressed_outline,
@@ -55,6 +56,7 @@ sealed class Mood(
         accentColor3 = Stressed25
     )
 
+    @Serializable
     data object Sad : Mood(
         icon = R.drawable.mood_sad,
 
@@ -66,6 +68,7 @@ sealed class Mood(
         accentColor3 = Sad25
     )
 
+    @Serializable
     data object Neutral : Mood(
         icon = R.drawable.mood_neutral,
         outlinedIcon = R.drawable.mood_neutral_outline,
@@ -75,6 +78,7 @@ sealed class Mood(
         accentColor3 = Neutral25
     )
 
+    @Serializable
     data object Peaceful : Mood(
         icon = R.drawable.mood_peaceful,
         outlinedIcon = R.drawable.mood_peaceful_outline,
@@ -84,6 +88,7 @@ sealed class Mood(
         accentColor3 = Peaceful25
     )
 
+    @Serializable
     data object Excited : Mood(
         icon = R.drawable.mood_excited,
         outlinedIcon = R.drawable.mood_excited_outline,
@@ -93,6 +98,7 @@ sealed class Mood(
         accentColor3 = Excited25
     )
 
+    @Serializable
 
     data object Other : Mood(
         icon = R.drawable.mood_excited,

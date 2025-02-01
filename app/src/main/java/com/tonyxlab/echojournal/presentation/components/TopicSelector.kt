@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,7 +47,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tonyxlab.echojournal.R
+import com.tonyxlab.echojournal.presentation.home.HomeViewModel
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.NeutralVariant30
 import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
@@ -90,7 +94,7 @@ fun TopicSelector(topicFieldValue: TextFieldValue<String>, modifier: Modifier = 
             selectedTopics = selectedTopics,
             onSelectedTopicsChange = { selectedTopics = it },
             onAddTopic = { isAddingTopic = it },
-          topicFieldValue = topicFieldValue,
+            topicFieldValue = topicFieldValue,
             savedTopics = savedTopics,
             onSavedTopicsChange = { savedTopics = it })
     }
@@ -273,7 +277,10 @@ fun TopicDropDown(
 
             val matchingSavedTopics = savedTopics.filter {
 
-                it.startsWith(prefix = topicFieldValue.value, ignoreCase = true) && !selectedTopics.contains(
+                it.startsWith(
+                    prefix = topicFieldValue.value,
+                    ignoreCase = true
+                ) && !selectedTopics.contains(
                     it
                 )
             }
