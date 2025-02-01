@@ -31,8 +31,8 @@ import com.tonyxlab.echojournal.utils.generateLoremIpsum
 @Composable
 fun ExpandableText(
     echoText: String,
-    textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier: Modifier = Modifier,
+    textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     collapsedMaxLines: Int = 3,
     regularTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     showMoreText: String = stringResource(R.string.show_more_text),
@@ -62,7 +62,7 @@ fun ExpandableText(
                 withLink(
                         link = LinkAnnotation.Clickable(
                                 tag = showLessText,
-                                linkInteractionListener = { isExpanded.not() })
+                                linkInteractionListener = { isExpanded =isExpanded.not() })
                 ) {
 
                     withStyle(showLessStyle) {
