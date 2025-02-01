@@ -2,6 +2,7 @@ package com.tonyxlab.echojournal.presentation.home
 
 import android.net.Uri
 import com.tonyxlab.echojournal.domain.model.Echo
+import com.tonyxlab.echojournal.domain.model.Mood
 
 data class UiState(
     val echoes: List<Echo> = emptyList(),
@@ -15,5 +16,11 @@ data class UiState(
     val isRecordingActivated: Boolean = false,
     val isRecordingInProgress: Boolean = false,
     val recordingUri: Uri = Uri.EMPTY,
-    val isShowMoodSelectionSheet:Boolean = false
-)
+    val isShowMoodSelectionSheet: Boolean = false,
+    val isShowMoodTitleIcon: Boolean = false,
+    val mood: Mood = Mood.Other
+) {
+
+    var isMoodConfirmButtonHighlighted = mood != Mood.Other
+
+}
