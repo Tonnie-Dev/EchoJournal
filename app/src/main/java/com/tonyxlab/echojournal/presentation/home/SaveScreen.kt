@@ -70,7 +70,7 @@ fun SaveScreen(
     val descriptionFieldValue by viewModel.descriptionFieldValue.collectAsState()
 
     val uiState by viewModel.uiState.collectAsState()
-    
+
     SaveScreenContent(
         modifier = modifier,
         titleFieldValue = titleFieldValue,
