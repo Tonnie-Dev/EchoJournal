@@ -1,7 +1,6 @@
 package com.tonyxlab.echojournal.domain.model
 
 import androidx.annotation.DrawableRes
-import androidx.compose.material3.Icon
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.tonyxlab.echojournal.R
@@ -59,9 +58,7 @@ sealed class Mood(
     @Serializable
     data object Sad : Mood(
         icon = R.drawable.mood_sad,
-
         outlinedIcon = R.drawable.mood_sad_outline,
-
         name = "Sad",
         accentColor1 = Sad80,
         accentColor2 = Sad35,
@@ -99,7 +96,6 @@ sealed class Mood(
     )
 
     @Serializable
-
     data object Other : Mood(
         icon = R.drawable.mood_excited,
         outlinedIcon = R.drawable.mood_excited_outline,

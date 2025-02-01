@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 import com.tonyxlab.echojournal.utils.generateRandomEchoItem
 import com.tonyxlab.echojournal.utils.toAmPmTime
 
@@ -37,13 +38,13 @@ fun EchoCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.White)
             .shadow(
-                elevation = spacing.spaceSingleDp,
-                RoundedCornerShape(spacing.spaceDoubleDp * 5)
+                elevation = MaterialTheme.spacing.spaceExtraSmall,
+                RoundedCornerShape(spacing.spaceDoubleDp * 5),
+                clip = false
             )
+            .background(Color.White)
             .clickable {
-
                 onClickEcho(echo.id)
             }
             .padding(
@@ -51,7 +52,8 @@ fun EchoCard(
                 bottom = spacing.spaceDoubleDp * 7,
                 start = spacing.spaceDoubleDp * 7,
                 end = spacing.spaceDoubleDp * 7
-            ).padding(spacing.spaceMedium),
+            )
+            .padding(spacing.spaceMedium),
         verticalArrangement = Arrangement.spacedBy(spacing.spaceDoubleDp * 3)
     ) {
 
