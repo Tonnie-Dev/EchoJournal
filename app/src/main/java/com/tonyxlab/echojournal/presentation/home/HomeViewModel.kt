@@ -49,7 +49,8 @@ class HomeViewModel @Inject constructor(
 
     private val _echoes = MutableStateFlow<List<Echo>>(emptyList())
     val echoes = _echoes.asStateFlow()
-
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState.asStateFlow()
     init {
 
 
@@ -65,8 +66,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState = _uiState.asStateFlow()
+
 
     var seekFieldValue = MutableStateFlow(
         TextFieldValue(
@@ -176,7 +176,7 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    fun onCreateEcho() {
+    fun createEcho() {
 
         _uiState.update { it.copy(isRecordingActivated = true) }
     }
@@ -194,6 +194,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun dismissMoodSelectionModalSheet() {
+
 
 
         _uiState.update { it.copy(isShowMoodSelectionSheet = false) }
@@ -260,6 +261,27 @@ class HomeViewModel @Inject constructor(
     private fun setDescription(value: String) {
 
         descriptionFieldValue.update { it.copy(value = value) }
+
+    }
+
+
+    fun setMood(value: Mood) {
+
+        _uiState.update { it.copy(mood = value) }
+
+    }
+    fun confirmMoodSelection(){
+
+        setMood(uiState.value.mood)
+
+        _uiState.update { it.copy(isShowMoodTitleIcon = true) }
+    }
+
+     fun canSave():Boolean {
+
+        return _uiState.value.mood != Mood.Other && titleFieldValue.value.value.isNotBlank()
+
+       
 
     }
 }
