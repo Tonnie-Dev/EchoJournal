@@ -39,20 +39,18 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
-    val echoes by viewModel.echoes.collectAsState()
-    val uiState by viewModel.homeUiState.collectAsState()
-
+    val homeState by viewModel.homeUiState.collectAsState()
 
     HomeScreenContent(
-        echoes = echoes,
+        echoes = homeState.echoes,
         onClickEcho = onClickEcho,
-        isPlaying = uiState.isPlaying,
-        seekValue = uiState.seekValue,
+        isPlaying = homeState.isPlaying,
+        seekValue = homeState.seekValue,
         onCreateEcho = viewModel::createEcho,
         onSeek = viewModel::setSeek,
         onPlay = viewModel::play,
         onStop = viewModel::stop,
-        isRecordingActivated = uiState.isRecordingActivated,
+        isRecordingActivated = homeState.isRecordingActivated,
         onStartRecording = viewModel::startRecording,
         onStopRecording = {
            viewModel.dismissRecordingModalSheet()

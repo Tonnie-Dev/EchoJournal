@@ -32,22 +32,21 @@ class HomeViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _echoes = MutableStateFlow<List<Echo>>(emptyList())
-    val echoes = _echoes.asStateFlow()
+    private val _homeState = MutableStateFlow(HomeState())
+    val homeUiState = _homeState.asStateFlow()
 
     init {
 
-        getEchoesUseCase().onEach {
+        getEchoesUseCase().onEach {echoes ->
 
-            _echoes.value = it
+          _homeState.update { it.copy(echoes = echoes) }
 
         }.launchIn(viewModelScope)
 
     }
 
 
-    private val _homeState = MutableStateFlow(HomeState())
-    val homeUiState = _homeState.asStateFlow()
+
 
     var seekFieldValue = MutableStateFlow(
         TextFieldValue(

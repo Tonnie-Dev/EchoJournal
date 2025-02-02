@@ -40,12 +40,17 @@ class EditorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    var echo: Echo? = null
+    private var echo: Echo? = null
+
+    private var initialTitle: String? = null
+    private var initialMood: Mood? = null
+    private var initialDescription: String? = null
+    private var initialTopics: List<String>? = null
 
     init {
 
         val id = savedStateHandle.toRoute<SaveScreenObject>().id
-
+        Timber.i("The id is: $id")
         readEchoInfo(id = id)
     }
 
@@ -77,6 +82,7 @@ class EditorViewModel @Inject constructor(
         )
     )
         private set
+
     var descriptionFieldValue = MutableStateFlow(
         TextFieldValue(
             value = _editorState.value.description,
@@ -95,26 +101,29 @@ class EditorViewModel @Inject constructor(
 
             when (val result = getEchoByIdUseCase(id)) {
 
-
                 is Resource.Success -> {
 
                     echo = result.data
 
                     with(result.data) {
 
-                        this@EditorViewModel._editorState.update {
+                        _editorState.update {
                             it.copy(
+                                title = title,
                                 currentTopics = topics,
                                 description = description,
-                                title = title,
-
-
-                                )
+                                mood = mood
+                            )
                         }
 
                         setTitle(this.title)
                         setMood(mood)
                         setDescription(description)
+
+                        initialTitle = title
+                        initialTopics = topics
+                        initialDescription = description
+                        initialMood = mood
                     }
                 }
 
@@ -142,7 +151,7 @@ class EditorViewModel @Inject constructor(
         viewModelScope.launch {
 
 
-            val result = if (this@EditorViewModel != null) {
+            val result = if (this@EditorViewModel.echo != null) {
 
                 updateEchoUseCase(echo = echoItem)
             } else {
@@ -229,8 +238,15 @@ class EditorViewModel @Inject constructor(
     }
 
     fun canSave(): Boolean {
-
-        return _editorState.value.mood != Mood.Other && titleFieldValue.value.value.isNotBlank()
+        val state = _editorState.value
+        return state.mood != Mood.Other &&
+                titleFieldValue.value.value.isNotBlank() &&
+                (
+                        titleFieldValue.value.value != initialTitle ||
+                                state.mood != initialMood ||
+                                descriptionFieldValue.value.value != initialDescription ||
+                                state.selectedTopics != initialTopics
+                        )
 
 
     }
