@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.tonyxlab.echojournal.presentation.home.HomeScreen
-import com.tonyxlab.echojournal.presentation.home.SaveScreen
+import com.tonyxlab.echojournal.presentation.editor.EditorScreen
 import kotlinx.serialization.Serializable
 
 fun NavGraphBuilder.appDestinations(navController: NavController) {
@@ -21,7 +21,7 @@ fun NavGraphBuilder.appDestinations(navController: NavController) {
 
     composable<SaveScreenObject> {
 
-        SaveScreen(
+        EditorScreen(
             onPresBack = { navController.popBackStack() },
             onCancelEditor = { navController.popBackStack() },
 

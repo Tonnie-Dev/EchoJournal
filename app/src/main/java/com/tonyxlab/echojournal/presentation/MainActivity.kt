@@ -15,7 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.tonyxlab.echojournal.presentation.navigation.NestedScreens
+import com.tonyxlab.echojournal.presentation.navigation.HomeScreenObject
+
 import com.tonyxlab.echojournal.presentation.navigation.appDestinations
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             EchoJournalTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = NestedScreens) {
+                NavHost(navController = navController, startDestination = HomeScreenObject) {
 
                     appDestinations(navController = navController)
                 }

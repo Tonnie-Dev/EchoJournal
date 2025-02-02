@@ -40,7 +40,7 @@ fun HomeScreen(
 ) {
 
     val echoes by viewModel.echoes.collectAsState()
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.homeUiState.collectAsState()
 
 
     HomeScreenContent(
@@ -49,7 +49,7 @@ fun HomeScreen(
         isPlaying = uiState.isPlaying,
         seekValue = uiState.seekValue,
         onCreateEcho = viewModel::createEcho,
-        onSeek = viewModel::onSeek,
+        onSeek = viewModel::setSeek,
         onPlay = viewModel::play,
         onStop = viewModel::stop,
         isRecordingActivated = uiState.isRecordingActivated,
