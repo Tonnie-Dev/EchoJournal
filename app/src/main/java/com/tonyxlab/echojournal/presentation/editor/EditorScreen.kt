@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.home
+package com.tonyxlab.echojournal.presentation.editor
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -54,14 +53,13 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
-import timber.log.Timber
 
 @Composable
-fun SaveScreen(
+fun EditorScreen(
     onPresBack: () -> Unit,
     onCancelEditor: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: EditorViewModel = hiltViewModel()
 ) {
 
     val seekFieldValue by viewModel.seekFieldValue.collectAsState()
@@ -69,15 +67,15 @@ fun SaveScreen(
     val topicFieldValue by viewModel.topicFieldValue.collectAsState()
     val descriptionFieldValue by viewModel.descriptionFieldValue.collectAsState()
 
-    val uiState by viewModel.uiState.collectAsState()
+    val editorState by viewModel.editorState.collectAsState()
 
-    SaveScreenContent(
+    EditorScreenContent(
         modifier = modifier,
         titleFieldValue = titleFieldValue,
         topicFieldValue = topicFieldValue,
         descriptionFieldValue = descriptionFieldValue,
-        isPlaying = uiState.isPlaying,
-        seekValue = uiState.seekValue,
+        isPlaying = editorState.isPlaying,
+        seekValue = editorState.seekValue,
         onPressBack = onPresBack,
         onSeek = {},
         echoLength = 0,
@@ -85,11 +83,11 @@ fun SaveScreen(
         onSaveEditor = viewModel::doSave,
         isSave = viewModel.canSave(),
         onCancelEditor = onCancelEditor,
-        mood = uiState.mood,
-        isShowMoodTitleIcon = uiState.isShowMoodTitleIcon,
-        isMoodConfirmButtonHighlighted = uiState.isMoodConfirmButtonHighlighted,
+        mood = editorState.mood,
+        isShowMoodTitleIcon = editorState.isShowMoodTitleIcon,
+        isMoodConfirmButtonHighlighted = editorState.isMoodConfirmButtonHighlighted,
         onShowMoodSelectionSheet = viewModel::showMoodSelectionSheet,
-        isShowMoodSelectionSheet = uiState.isShowMoodSelectionSheet,
+        isShowMoodSelectionSheet = editorState.isShowMoodSelectionSheet,
         onDismissMoodSelectionSheet = viewModel::dismissMoodSelectionModalSheet,
         onSelectMood = viewModel::setMood,
         onConfirmMoodSelection = viewModel::confirmMoodSelection,
@@ -98,7 +96,7 @@ fun SaveScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SaveScreenContent(
+fun EditorScreenContent(
     titleFieldValue: TextFieldValue<String>,
     topicFieldValue: TextFieldValue<String>,
     descriptionFieldValue: TextFieldValue<String>,
@@ -374,7 +372,7 @@ private fun MoodItem(
 private fun SaveScreenPreview() {
     EchoJournalTheme {
 
-        SaveScreenContent(
+        EditorScreenContent(
             titleFieldValue = TextFieldValue("Title"),
             topicFieldValue = TextFieldValue("Topic"),
             descriptionFieldValue = TextFieldValue("Description"),
