@@ -8,7 +8,7 @@ import com.tonyxlab.echojournal.domain.model.Echo
 fun Echo.toEntityModel(): EchoEntity {
     return EchoEntity(
         id = id,
-        name = name,
+        title = title,
         description = description,
         timestamp = timestamp,
         length = length,
@@ -21,7 +21,7 @@ fun Echo.toEntityModel(): EchoEntity {
 fun EchoEntity.toDomainModel(): Echo {
     return Echo(
         id = id,
-        name = name,
+        title = title,
         description = description,
         timestamp = timestamp,
         length = length,

@@ -145,7 +145,7 @@ fun HomeScreenContent(
                     isPlaying = isPlaying,
                     seekValue = seekValue,
                     onSeek = onSeek,
-                    onClickEcho = onClickEcho,
+                    onClickEcho = {onClickEcho(echo.id)},
                     onPlayPause = {
                         selectedIndex = i
 

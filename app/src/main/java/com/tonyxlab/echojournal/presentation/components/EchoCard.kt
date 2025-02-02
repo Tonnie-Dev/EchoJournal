@@ -65,7 +65,7 @@ fun EchoCard(
         ) {
 
             Text(
-                text = echo.name,
+                text = echo.title,
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface
             )

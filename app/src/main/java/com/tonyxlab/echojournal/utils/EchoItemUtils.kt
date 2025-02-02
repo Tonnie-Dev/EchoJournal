@@ -16,7 +16,7 @@ fun generateRandomEchoItem(): Echo {
 
     return Echo(
         id = UUID.randomUUID().toString(),
-        name = "Day of The Jackal",
+        title = "Day of The Jackal",
         description = generateLoremIpsum(wordCount = 89),
         timestamp = LocalDateTime.now().toInstant(timeZone = TimeZone.currentSystemDefault())
             .toEpochMilliseconds(),

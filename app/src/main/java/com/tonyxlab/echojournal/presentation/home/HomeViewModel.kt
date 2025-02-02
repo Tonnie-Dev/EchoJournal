@@ -49,24 +49,24 @@ class HomeViewModel @Inject constructor(
 
     private val _echoes = MutableStateFlow<List<Echo>>(emptyList())
     val echoes = _echoes.asStateFlow()
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState = _uiState.asStateFlow()
+
     init {
 
+        val echoId = savedStateHandle.toRoute<SaveScreenObject>().id
 
+        Timber.i("Id is $echoId")
+        readEchoInfo(echoId = echoId)
         getEchoesUseCase().onEach {
 
             _echoes.value = it
 
         }.launchIn(viewModelScope)
 
-        val echoId = savedStateHandle.toRoute<SaveScreenObject>().id
-        readEchoInfo(echoId = echoId)
+
 
     }
-
-
-
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState.asStateFlow()
 
     var seekFieldValue = MutableStateFlow(
         TextFieldValue(
@@ -124,11 +124,15 @@ class HomeViewModel @Inject constructor(
                             it.copy(
                                 currentTopics = topics,
                                 description = description,
-                                title = name,
+                                title = title,
 
 
                                 )
                         }
+
+                        setTitle(this.title)
+                        setMood(mood)
+                       setDescription(description)
                     }
                 }
 
@@ -139,11 +143,11 @@ class HomeViewModel @Inject constructor(
 
     }
 
-  fun doSave() {
+    fun doSave() {
 
         val echoItem = Echo(
             id = this.echo?.id ?: UUID.randomUUID().toString(),
-            name = titleFieldValue.value.value,
+            title = titleFieldValue.value.value,
             description = descriptionFieldValue.value.value,
             timestamp = LocalDateTime.now().fromLocalDateTimeToUtcTimeStamp(),
             length = 0,
@@ -156,28 +160,26 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
 
 
-
-            val result = if (this@HomeViewModel.echo !=null){
+            val result = if (this@HomeViewModel.echo != null) {
 
                 updateEchoUseCase(echo = echoItem)
-            }else{
+            } else {
                 createEchoUseCase(echo = echoItem)
             }
 
-            when (result){
+            when (result) {
 
                 is Resource.Success -> {
 
                     Timber.i("Saved")
                 }
+
                 is Resource.Error -> {
 
                     Timber.i("Saving Failed: ${result.exception.message}")
                 }
             }
         }
-
-
 
 
     }
@@ -193,7 +195,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isRecordingActivated = false) }
     }
 
-    fun showMoodSelectionSheet(){
+    fun showMoodSelectionSheet() {
 
         _uiState.update { it.copy(isShowMoodSelectionSheet = true) }
 
@@ -202,12 +204,14 @@ class HomeViewModel @Inject constructor(
     fun dismissMoodSelectionModalSheet() {
 
 
-
         _uiState.update { it.copy(isShowMoodSelectionSheet = false) }
     }
+
     fun onSeek(value: Float) {}
 
     fun play(uri: Uri) {
+
+       
 
         _uiState.update { it.copy(isPlaying = true) }
     }
@@ -270,17 +274,17 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(mood = value) }
 
     }
-    fun confirmMoodSelection(){
+
+    fun confirmMoodSelection() {
 
         setMood(uiState.value.mood)
 
         _uiState.update { it.copy(isShowMoodTitleIcon = true) }
     }
 
-     fun canSave():Boolean {
+    fun canSave(): Boolean {
 
         return _uiState.value.mood != Mood.Other && titleFieldValue.value.value.isNotBlank()
-
 
 
     }

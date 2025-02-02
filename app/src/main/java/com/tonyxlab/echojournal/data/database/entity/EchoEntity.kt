@@ -10,8 +10,8 @@ data class EchoEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     val id: String,
-    @ColumnInfo(name = "name")
-    val name: String,
+    @ColumnInfo(name = "title")
+    val title: String,
     @ColumnInfo(name = "description")
     val description: String,
     @ColumnInfo(name = "timestamp")
