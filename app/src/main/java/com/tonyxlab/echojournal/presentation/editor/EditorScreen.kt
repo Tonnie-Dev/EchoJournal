@@ -53,6 +53,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
+import timber.log.Timber
 
 @Composable
 fun EditorScreen(
@@ -70,6 +71,7 @@ fun EditorScreen(
 
     val editorState by viewModel.editorState.collectAsState()
 
+    Timber.i("Editor Screen called with ${editorState.mood}")
     EditorScreenContent(
         modifier = modifier,
         titleFieldValue = titleFieldValue,

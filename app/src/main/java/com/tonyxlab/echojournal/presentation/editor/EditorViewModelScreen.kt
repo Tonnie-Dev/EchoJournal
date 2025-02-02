@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import androidx.navigation.toRoute
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.model.Echo
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
-import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
@@ -49,16 +47,19 @@ class EditorViewModel @Inject constructor(
     private var initialDescription: String? = null
     private var initialTopics: List<String>? = null
 
+    private val _editorState = MutableStateFlow(EditorState())
+    val editorState = _editorState.asStateFlow()
+
     init {
 
-        Timber.i("EditorViewModel Init Block called")
-        Timber.i("Editor-VW Hash Code Instance: ${this.hashCode()}")
+
         val id = savedStateHandle.toRoute<SaveScreenObject>().id
         readEchoInfo(id = id)
     }
 
-    private val _editorState = MutableStateFlow(EditorState())
-    val editorState = _editorState.asStateFlow()
+
+
+
 
     var seekFieldValue = MutableStateFlow(
         TextFieldValue(
@@ -100,6 +101,7 @@ class EditorViewModel @Inject constructor(
 
         id ?: return
 
+
         viewModelScope.launch {
 
             when (val result = getEchoByIdUseCase(id)) {
@@ -115,7 +117,8 @@ class EditorViewModel @Inject constructor(
                                 title = title,
                                 currentTopics = topics,
                                 description = description,
-                                mood = mood
+                                mood = mood,
+                                isShowMoodTitleIcon = true
                             )
                         }
 
@@ -127,6 +130,9 @@ class EditorViewModel @Inject constructor(
                         initialTopics = topics
                         initialDescription = description
                         initialMood = mood
+
+
+
                     }
                 }
 
@@ -170,7 +176,7 @@ class EditorViewModel @Inject constructor(
 
                 is Resource.Error -> {
 
-                    Timber.i("Saving Failed: ${result.exception.message}")
+                  
                 }
             }
         }

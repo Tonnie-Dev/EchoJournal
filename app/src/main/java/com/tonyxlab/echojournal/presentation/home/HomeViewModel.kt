@@ -38,8 +38,7 @@ class HomeViewModel @Inject constructor(
 
     init {
 
-        Timber.i("HomeViewModel Init Block called")
-        Timber.i("Home-VW Hash Code Instance: ${this.hashCode()}")
+
         getEchoesUseCase().onEach {echoes ->
 
           _homeState.update { it.copy(echoes = echoes) }
