@@ -7,13 +7,12 @@ data class EditorState(
 
     val seekValue: Float = 0f,
     val title: String = "",
-    val selectedTopics:Set<String> = emptySet(),
-    val savedTopics: Set<String> = emptySet(),
+    val savedTopics: List<String> = emptyList(),
+    val selectedTopics: List<String> = emptyList(),
     val topic: String = "",
-    val currentTopics: List<String> = emptyList(),
     val description: String = "",
     val recordingUri: Uri = Uri.EMPTY,
-    val isPlaying:Boolean = false,
+    val isPlaying: Boolean = false,
     val isShowMoodSelectionSheet: Boolean = false,
     val isShowMoodTitleIcon: Boolean = false,
     val mood: Mood = Mood.Other

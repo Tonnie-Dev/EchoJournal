@@ -77,6 +77,8 @@ fun EditorScreen(
         titleFieldValue = titleFieldValue,
         topicFieldValue = topicFieldValue,
         descriptionFieldValue = descriptionFieldValue,
+        savedTopics = editorState.savedTopics,
+        selectedTopics = editorState.selectedTopics,
         isPlaying = editorState.isPlaying,
         seekValue = editorState.seekValue,
         onPressBack = onPresBack,
@@ -99,6 +101,8 @@ fun EditorScreen(
         onDismissMoodSelectionSheet = viewModel::dismissMoodSelectionModalSheet,
         onSelectMood = viewModel::setMood,
         onConfirmMoodSelection = viewModel::confirmMoodSelection,
+        onCurrentSelectedTopicsChange = viewModel::setSelectedTopics,
+        onSavedTopicsChange = viewModel::setSavedTopics
     )
 }
 
@@ -108,6 +112,8 @@ fun EditorScreenContent(
     titleFieldValue: TextFieldValue<String>,
     topicFieldValue: TextFieldValue<String>,
     descriptionFieldValue: TextFieldValue<String>,
+    savedTopics: List<String>,
+    selectedTopics: List<String>,
     isPlaying: Boolean,
     seekValue: Float,
     onSeek: (Float) -> Unit,
@@ -115,6 +121,8 @@ fun EditorScreenContent(
     onTogglePlay: () -> Unit,
     onCancelEditor: () -> Unit,
     onSaveEditor: () -> Unit,
+    onSavedTopicsChange: (List<String>) -> Unit,
+    onCurrentSelectedTopicsChange: (List<String>) -> Unit,
     isSave: Boolean,
     mood: Mood,
     isShowMoodTitleIcon: Boolean,
@@ -174,7 +182,6 @@ fun EditorScreenContent(
                             .background(Secondary90)
                             .size(MaterialTheme.spacing.spaceLarge)
                             .clickable {
-
                                 onShowMoodSelectionSheet()
                             }
                             .padding(MaterialTheme.spacing.spaceDoubleDp * 3),
@@ -190,7 +197,13 @@ fun EditorScreenContent(
                 onTogglePlay = onTogglePlay
             )
 
-            TopicSelector(topicFieldValue = topicFieldValue)
+            TopicSelector(
+                topicFieldValue = topicFieldValue,
+                savedTopics = savedTopics,
+                currentSelectedTopics = selectedTopics,
+                onCurrentSelectedTopicsChange =onCurrentSelectedTopicsChange,
+                onSavedTopicsChange = onSavedTopicsChange
+            )
 
             BasicEntryTextField(modifier = Modifier.fillMaxWidth(),
                 textFieldValue = descriptionFieldValue,
@@ -235,8 +248,6 @@ fun EditorScreenContent(
                 ModalBottomSheet(
                     onDismissRequest = onDismissMoodSelectionSheet,
                     content = {
-
-
                         MoodSelectionSheetContent(
                             onSelectMood = onSelectMood,
                             onConfirmMoodSelection = {
@@ -259,9 +270,7 @@ fun EditorScreenContent(
 
     }
 
-
 }
-
 
 @Composable
 fun MoodSelectionSheetContent(
@@ -271,8 +280,6 @@ fun MoodSelectionSheetContent(
     isMoodConfirmButtonHighlighted: Boolean,
     modifier: Modifier = Modifier
 ) {
-
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -313,13 +320,10 @@ fun MoodSelectionSheetContent(
             }
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceExtraSmall * 3))
-
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
-
 
             //Sheet Buttons
             AppButton(
@@ -400,7 +404,11 @@ private fun SaveScreenPreview() {
             onCancelEditor = {},
             mood = Mood.Other,
             onSelectMood = {},
-            isSave = false
+            selectedTopics = emptyList(),
+            savedTopics = emptyList(),
+            isSave = false,
+            onSavedTopicsChange = {},
+            onCurrentSelectedTopicsChange = {}
         )
     }
 }

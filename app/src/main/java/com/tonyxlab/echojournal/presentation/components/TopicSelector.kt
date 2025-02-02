@@ -1,6 +1,7 @@
 package com.tonyxlab.echojournal.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,7 +28,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,10 +47,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.home.HomeViewModel
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.NeutralVariant30
 import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
@@ -60,26 +57,33 @@ import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.conditionalModifier
 
 @Composable
-fun TopicSelector(topicFieldValue: TextFieldValue<String>, modifier: Modifier = Modifier) {
-    var selectedTopics by remember { mutableStateOf(setOf<String>()) }
-    var savedTopics by remember {
-        mutableStateOf(
-            setOf(
-                "Work", "Hobby", "Personal", "Office", "Workout"
-            )
-        )
-    }
+fun TopicSelector(
+    topicFieldValue: TextFieldValue<String>,
+    savedTopics: List<String>,
+    onSavedTopicsChange: (List<String>) -> Unit,
+    currentSelectedTopics: List<String>,
+    onCurrentSelectedTopicsChange: (List<String>) -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    var selectedTopics = currentSelectedTopics.toSet()
+
+    var storedTopics = savedTopics.toSet()
+
     var isAddingTopic by remember { mutableStateOf(false) }
-    var searchQuery by remember { mutableStateOf("") }
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
 
-    Column(modifier = modifier.conditionalModifier(isAddingTopic){ fillMaxSize()}) {
+    Column(modifier = modifier.conditionalModifier(isAddingTopic) { fillMaxSize() }) {
 
         TopicsListing(
             modifier = modifier,
             selectedTopics = selectedTopics,
-            onSelectTopic = { selectedTopics = it },
+            onSelectTopic = {
+                selectedTopics = it
+                onCurrentSelectedTopicsChange(it.toList())
+            },
             isAddingTopic = isAddingTopic,
             onAddTopic = { isAddingTopic = it },
             topicFieldValue = topicFieldValue,
@@ -90,13 +94,21 @@ fun TopicSelector(topicFieldValue: TextFieldValue<String>, modifier: Modifier = 
 
         if (topicFieldValue.value.isEmpty()) return
 
-        TopicDropDown(modifier = modifier,
+        TopicDropDown(
+            modifier = modifier,
             selectedTopics = selectedTopics,
-            onSelectedTopicsChange = { selectedTopics = it },
+            onSelectedTopicsChange = {
+                selectedTopics = it
+                onCurrentSelectedTopicsChange(it.toList())
+            },
             onAddTopic = { isAddingTopic = it },
             topicFieldValue = topicFieldValue,
-            savedTopics = savedTopics,
-            onSavedTopicsChange = { savedTopics = it })
+            savedTopics = storedTopics,
+            onSavedTopicsChange = {
+                storedTopics = it
+                onSavedTopicsChange(it.toList())
+            }
+        )
     }
 }
 
@@ -193,12 +205,13 @@ fun TopicsFlowRow(
                     keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
                 ),
                 hint = stringResource(id = R.string.topics_text),
-                keyboardActions = KeyboardActions(onDone = {
-                    onSelectTopic(selectedTopics + topicFieldValue.value)
-                    onAddTopic(false)
-                    topicFieldValue.onValueChange?.invoke("")
-                    keyboardController?.hide()
-                })
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onSelectTopic(selectedTopics + topicFieldValue.value)
+                        onAddTopic(false)
+                        topicFieldValue.onValueChange?.invoke("")
+                        keyboardController?.hide()
+                    })
             )
         }
 
@@ -354,11 +367,7 @@ fun TopicDropDown(
 @PreviewLightDark
 @Composable
 private fun Preview() {
-
-
     EchoJournalTheme {
-
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -368,11 +377,19 @@ private fun Preview() {
         ) {
             TopicSelector(
                 topicFieldValue = TextFieldValue(value = ""),
-                modifier = Modifier.background(Color.Cyan)
+                modifier = Modifier
+                    .background(Color.White)
+                    .border(
+                        width = MaterialTheme.spacing.spaceSingleDp,
+                        color = MaterialTheme.colorScheme.primary
+                    ),
+                currentSelectedTopics = emptyList(),
+                savedTopics = emptyList(),
+                onSavedTopicsChange = {},
+                onCurrentSelectedTopicsChange = {}
             )
         }
     }
-
 
 }
 

@@ -16,7 +16,6 @@ import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.utils.Resource
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.fromLocalDateTimeToDefaultTimestamp
-import com.tonyxlab.echojournal.utils.fromLocalDateTimeToUtcTimeStamp
 import com.tonyxlab.echojournal.utils.now
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -25,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
+import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
@@ -113,7 +113,7 @@ class EditorViewModel @Inject constructor(
                         _editorState.update {
                             it.copy(
                                 title = title,
-                                currentTopics = topics,
+                                selectedTopics = topics,
                                 description = description,
                                 mood = mood,
                                 isShowMoodTitleIcon = true
@@ -121,7 +121,6 @@ class EditorViewModel @Inject constructor(
                         }
 
                         setTitle(this.title)
-                        setMood(mood)
                         setDescription(description)
 
                         initialTitle = title
@@ -130,6 +129,8 @@ class EditorViewModel @Inject constructor(
                         initialMood = mood
 
                     }
+
+                    Timber.i("Topics: ${_editorState.value.selectedTopics}")
                 }
 
                 is Resource.Error -> Unit
@@ -148,7 +149,7 @@ class EditorViewModel @Inject constructor(
             timestamp = LocalDateTime.now().fromLocalDateTimeToDefaultTimestamp(),
             length = 0,
             mood = _editorState.value.mood,
-            topics = listOf(),
+            topics = _editorState.value.selectedTopics,
             uri = _editorState.value.recordingUri
         )
 
@@ -166,11 +167,9 @@ class EditorViewModel @Inject constructor(
 
                 is Resource.Success -> {
 
-
                 }
 
                 is Resource.Error -> {
-
 
                 }
             }
@@ -227,6 +226,16 @@ class EditorViewModel @Inject constructor(
 
     }
 
+    fun setSelectedTopics(value: List<String>) {
+
+        _editorState.update { it.copy(selectedTopics = value) }
+    }
+
+
+    fun setSavedTopics(value: List<String>) {
+
+        _editorState.update { it.copy(savedTopics = value) }
+    }
 
     fun setMood(value: Mood) {
 
@@ -235,7 +244,6 @@ class EditorViewModel @Inject constructor(
     }
 
     fun confirmMoodSelection() {
-
 
 
         _editorState.update { it.copy(isShowMoodTitleIcon = true) }
@@ -255,7 +263,7 @@ class EditorViewModel @Inject constructor(
 
     }
 
-    fun navigateToHomeScreen(){
+    fun navigateToHomeScreen() {
 
         player.stop()
     }
