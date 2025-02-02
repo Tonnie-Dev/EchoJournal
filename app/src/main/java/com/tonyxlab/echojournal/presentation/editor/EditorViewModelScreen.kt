@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import androidx.navigation.toRoute
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.model.Echo
@@ -37,6 +38,7 @@ class EditorViewModel @Inject constructor(
     private val getEchoByIdUseCase: GetEchoByIdUseCase,
     private val updateEchoUseCase: UpdateEchoUseCase,
     private val createEchoUseCase: CreateEchoUseCase,
+
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -49,8 +51,9 @@ class EditorViewModel @Inject constructor(
 
     init {
 
+        Timber.i("EditorViewModel Init Block called")
+        Timber.i("Editor-VW Hash Code Instance: ${this.hashCode()}")
         val id = savedStateHandle.toRoute<SaveScreenObject>().id
-        Timber.i("The id is: $id")
         readEchoInfo(id = id)
     }
 
@@ -162,7 +165,7 @@ class EditorViewModel @Inject constructor(
 
                 is Resource.Success -> {
 
-                    Timber.i("Saved")
+
                 }
 
                 is Resource.Error -> {
@@ -232,7 +235,7 @@ class EditorViewModel @Inject constructor(
 
     fun confirmMoodSelection() {
 
-        setMood(_editorState.value.mood)
+
 
         _editorState.update { it.copy(isShowMoodTitleIcon = true) }
     }
@@ -249,5 +252,10 @@ class EditorViewModel @Inject constructor(
                         )
 
 
+    }
+
+    fun navigateToHomeScreen(){
+
+        player.stop()
     }
 }

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDateTime
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -37,6 +38,8 @@ class HomeViewModel @Inject constructor(
 
     init {
 
+        Timber.i("HomeViewModel Init Block called")
+        Timber.i("Home-VW Hash Code Instance: ${this.hashCode()}")
         getEchoesUseCase().onEach {echoes ->
 
           _homeState.update { it.copy(echoes = echoes) }

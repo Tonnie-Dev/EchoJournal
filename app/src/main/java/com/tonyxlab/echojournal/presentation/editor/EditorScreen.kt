@@ -58,6 +58,7 @@ import com.tonyxlab.echojournal.utils.TextFieldValue
 fun EditorScreen(
     onPresBack: () -> Unit,
     onCancelEditor: () -> Unit,
+    onSaveEditor: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: EditorViewModel = hiltViewModel()
 ) {
@@ -80,7 +81,12 @@ fun EditorScreen(
         onSeek = {},
         echoLength = 0,
         onTogglePlay = {},
-        onSaveEditor = viewModel::doSave,
+        onSaveEditor = {
+
+            viewModel.doSave()
+            onSaveEditor()
+
+        },
         isSave = viewModel.canSave(),
         onCancelEditor = onCancelEditor,
         mood = editorState.mood,

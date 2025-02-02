@@ -23,9 +23,9 @@ fun NavGraphBuilder.appDestinations(navController: NavController) {
 
         EditorScreen(
             onPresBack = { navController.popBackStack() },
-            onCancelEditor = { navController.popBackStack() },
-
-            )
+            onCancelEditor = { navController.navigateUp() },
+            onSaveEditor = {navController.navigate(route = HomeScreenObject) }
+        )
 
     }
 
