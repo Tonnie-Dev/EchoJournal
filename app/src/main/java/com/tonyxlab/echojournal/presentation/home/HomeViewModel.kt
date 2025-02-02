@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
-import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.domain.usecases.GetEchoesUseCase
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.fromLocalDateTimeToUtcTimeStamp
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDateTime
-import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -31,7 +29,7 @@ class HomeViewModel @Inject constructor(
     getEchoesUseCase: GetEchoesUseCase,
 
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     private val _homeState = MutableStateFlow(HomeState())
     val homeUiState = _homeState.asStateFlow()
@@ -39,15 +37,13 @@ class HomeViewModel @Inject constructor(
     init {
 
 
-        getEchoesUseCase().onEach {echoes ->
+        getEchoesUseCase().onEach { echoes ->
 
-          _homeState.update { it.copy(echoes = echoes) }
+            _homeState.update { it.copy(echoes = echoes) }
 
         }.launchIn(viewModelScope)
 
     }
-
-
 
 
     var seekFieldValue = MutableStateFlow(
@@ -95,7 +91,7 @@ class HomeViewModel @Inject constructor(
             }
 
         val fileUri = Uri.fromFile(file)
-      //  _homeState.update { it.copy(recordingUri = fileUri) }
+        //  _homeState.update { it.copy(recordingUri = fileUri) }
     }
 
     fun stopRecording() {
@@ -103,7 +99,7 @@ class HomeViewModel @Inject constructor(
         recorder.stop()
     }
 
-    fun pauseRecording()  {
+    fun pauseRecording() {
 
 
     }

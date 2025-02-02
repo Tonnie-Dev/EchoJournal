@@ -15,6 +15,7 @@ import com.tonyxlab.echojournal.domain.usecases.UpdateEchoUseCase
 import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.utils.Resource
 import com.tonyxlab.echojournal.utils.TextFieldValue
+import com.tonyxlab.echojournal.utils.fromLocalDateTimeToDefaultTimestamp
 import com.tonyxlab.echojournal.utils.fromLocalDateTimeToUtcTimeStamp
 import com.tonyxlab.echojournal.utils.now
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,9 +57,6 @@ class EditorViewModel @Inject constructor(
         val id = savedStateHandle.toRoute<SaveScreenObject>().id
         readEchoInfo(id = id)
     }
-
-
-
 
 
     var seekFieldValue = MutableStateFlow(
@@ -131,8 +129,6 @@ class EditorViewModel @Inject constructor(
                         initialDescription = description
                         initialMood = mood
 
-
-
                     }
                 }
 
@@ -149,7 +145,7 @@ class EditorViewModel @Inject constructor(
             id = this.echo?.id ?: UUID.randomUUID().toString(),
             title = titleFieldValue.value.value,
             description = descriptionFieldValue.value.value,
-            timestamp = LocalDateTime.now().fromLocalDateTimeToUtcTimeStamp(),
+            timestamp = LocalDateTime.now().fromLocalDateTimeToDefaultTimestamp(),
             length = 0,
             mood = _editorState.value.mood,
             topics = listOf(),
@@ -158,7 +154,6 @@ class EditorViewModel @Inject constructor(
 
 
         viewModelScope.launch {
-
 
             val result = if (this@EditorViewModel.echo != null) {
 
@@ -176,7 +171,7 @@ class EditorViewModel @Inject constructor(
 
                 is Resource.Error -> {
 
-                  
+
                 }
             }
         }

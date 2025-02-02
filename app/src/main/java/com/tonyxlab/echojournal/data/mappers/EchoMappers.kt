@@ -3,6 +3,8 @@ package com.tonyxlab.echojournal.data.mappers
 import android.net.Uri
 import com.tonyxlab.echojournal.data.database.entity.EchoEntity
 import com.tonyxlab.echojournal.domain.model.Echo
+import com.tonyxlab.echojournal.utils.fromUtcTimestampToDefaultTimeStamp
+import com.tonyxlab.echojournal.utils.toUtcTimeStamp
 
 
 fun Echo.toEntityModel(): EchoEntity {
@@ -10,7 +12,7 @@ fun Echo.toEntityModel(): EchoEntity {
         id = id,
         title = title,
         description = description,
-        timestamp = timestamp,
+        timestamp = timestamp.toUtcTimeStamp(),
         length = length,
         mood = mood,
         topics = topics,
@@ -23,7 +25,7 @@ fun EchoEntity.toDomainModel(): Echo {
         id = id,
         title = title,
         description = description,
-        timestamp = timestamp,
+        timestamp = timestamp.fromUtcTimestampToDefaultTimeStamp(),
         length = length,
         mood = mood,
         topics = topics,

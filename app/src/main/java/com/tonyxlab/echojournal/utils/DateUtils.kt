@@ -10,12 +10,39 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-//Time Now
+// LocalDateTime Now()
 fun LocalDateTime.Companion.now(): LocalDateTime {
     val instant = Clock.System.now()
     return instant.toLocalDateTime(TimeZone.currentSystemDefault())
 }
 
+
+// LocalDateTime -> Milliseconds
+fun  LocalDateTime.fromLocalDateTimeToDefaultTimestamp():Long{
+
+    return this.toInstant(timeZone = TimeZone.currentSystemDefault())
+        .toEpochMilliseconds()
+}
+
+// MilliSecs in Current Timezone -> UTC
+fun Long.toUtcTimeStamp():Long{
+
+
+    return Instant.fromEpochMilliseconds(this)
+        .toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
+        .toInstant(TimeZone.UTC)
+        .toEpochMilliseconds()
+}
+
+// MilliSecs in UTC -> Current Timezone
+fun Long.fromUtcTimestampToDefaultTimeStamp():Long{
+
+    return Instant.fromEpochMilliseconds(this)
+        .toLocalDateTime(TimeZone.UTC)
+        .toInstant(TimeZone.currentSystemDefault())
+        .toEpochMilliseconds()
+
+}
 
 // In DB - EchoEntity
 fun LocalDateTime.fromLocalDateTimeToUtcTimeStamp(): Long {
