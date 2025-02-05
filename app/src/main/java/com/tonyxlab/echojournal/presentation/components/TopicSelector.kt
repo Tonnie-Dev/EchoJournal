@@ -55,6 +55,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
 import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.conditionalModifier
+import timber.log.Timber
 
 @Composable
 fun TopicSelector(
@@ -65,7 +66,7 @@ fun TopicSelector(
     onCurrentSelectedTopicsChange: (List<String>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
+Timber.i("Saved Topics on UI: $savedTopics")
     var selectedTopics = currentSelectedTopics.toSet()
 
     var storedTopics = savedTopics.toSet()
