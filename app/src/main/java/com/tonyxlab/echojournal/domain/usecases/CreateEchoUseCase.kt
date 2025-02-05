@@ -9,6 +9,6 @@ class CreateEchoUseCase @Inject constructor(private val repository: EchoReposito
 
     suspend operator fun invoke(echo: Echo): Resource<Boolean> {
 
-        return repository.createEcho(echo)
+        return repository.insertEchoWithTopics(echo = echo)
     }
 }
