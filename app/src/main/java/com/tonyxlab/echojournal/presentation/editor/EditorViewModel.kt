@@ -11,6 +11,7 @@ import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.usecases.CreateEchoUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetEchoByIdUseCase
+
 import com.tonyxlab.echojournal.domain.usecases.UpdateEchoUseCase
 import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.utils.Resource
@@ -21,6 +22,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
@@ -35,9 +38,9 @@ class EditorViewModel @Inject constructor(
     private val context: Context,
     private val player: AudioPlayer,
     private val getEchoByIdUseCase: GetEchoByIdUseCase,
+
     private val updateEchoUseCase: UpdateEchoUseCase,
     private val createEchoUseCase: CreateEchoUseCase,
-
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -53,9 +56,11 @@ class EditorViewModel @Inject constructor(
 
     init {
 
-
         val id = savedStateHandle.toRoute<SaveScreenObject>().id
         readEchoInfo(id = id)
+
+
+        Timber.i("Saved Topics: ${_editorState.value.savedTopics}")
     }
 
 
@@ -110,6 +115,7 @@ class EditorViewModel @Inject constructor(
 
                     with(result.data) {
 
+                        Timber.i("On Read() EchoWithTopic - Selected Topics: ${this.topics}")
                         _editorState.update {
                             it.copy(
                                 title = title,
@@ -130,7 +136,8 @@ class EditorViewModel @Inject constructor(
 
                     }
 
-                    Timber.i("Topics: ${_editorState.value.selectedTopics}")
+                    Timber.i("On Read() State - Selected Topics: ${_editorState.value.selectedTopics}")
+                    Timber.i("On Read() State - Saved Topics: ${_editorState.value.savedTopics}")
                 }
 
                 is Resource.Error -> Unit
@@ -157,9 +164,11 @@ class EditorViewModel @Inject constructor(
         viewModelScope.launch {
 
             val result = if (this@EditorViewModel.echo != null) {
-
+                Timber.i("Update Called: ${echoItem.topics}")
                 updateEchoUseCase(echo = echoItem)
             } else {
+
+                Timber.i("Creation Called")
                 createEchoUseCase(echo = echoItem)
             }
 
