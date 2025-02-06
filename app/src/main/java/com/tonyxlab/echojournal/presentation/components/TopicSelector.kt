@@ -170,6 +170,7 @@ fun TopicsFlowRow(
 
             TopicChip(modifier = Modifier.padding(end = MaterialTheme.spacing.spaceExtraSmall),
                 topic = topic,
+                hasTrailingIcon = true,
                 onDeleteTopic = { onSelectTopic(selectedTopics - topic) })
         }
 
@@ -215,48 +216,6 @@ fun TopicsFlowRow(
         }
 
     }
-}
-
-
-@Composable
-fun TopicChip(
-    topic: String, modifier: Modifier = Modifier, onDeleteTopic: (() -> Unit)? = null
-) {
-
-    FilterChip(modifier = modifier,
-        selected = true,
-        onClick = {},
-        shape = MaterialTheme.shapes.large,
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = Primary95
-        ),
-        leadingIcon = {
-            Text("#", style = buttonSmallTextStyle)
-        },
-        trailingIcon = {
-
-            AppIcon(
-                modifier = Modifier
-                    .size(MaterialTheme.spacing.spaceMedium)
-                    .clickable { onDeleteTopic?.invoke() },
-                imageVector = Icons.Outlined.Close,
-                contentDescription = stringResource(R.string.text_cancel),
-                tint = MaterialTheme.colorScheme.inverseOnSurface
-            )
-
-        },
-
-        label = {
-
-            Text(
-                text = topic,
-                style = buttonSmallTextStyle,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        })
 }
 
 @Composable
