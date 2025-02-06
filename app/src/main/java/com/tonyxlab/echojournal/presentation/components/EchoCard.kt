@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +24,7 @@ import com.tonyxlab.echojournal.presentation.ui.theme.spacing
 import com.tonyxlab.echojournal.utils.generateRandomEchoItem
 import com.tonyxlab.echojournal.utils.toAmPmTime
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EchoCard(
     echo: Echo,
@@ -92,6 +95,21 @@ fun EchoCard(
 
             ExpandableText(echoText = echo.description)
         }
+
+        with(echo.topics) {
+
+            if (isNotEmpty()) {
+
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
+                    maxLines = 1
+                ) {
+                    forEach { TopicChip(topic = it) }
+                }
+            }
+
+        }
     }
 }
 
@@ -129,7 +147,6 @@ private fun TrackerPreview() {
         }
 
     }
-
 
 
 }
