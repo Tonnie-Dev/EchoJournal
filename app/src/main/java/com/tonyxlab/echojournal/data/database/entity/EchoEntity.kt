@@ -4,8 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+
 import com.tonyxlab.echojournal.domain.model.Mood
 
 @Entity(tableName = "echo_table")
@@ -31,18 +33,21 @@ data class EchoEntity(
 
 @Entity(
     tableName = "topic_table",
-    foreignKeys = [ForeignKey(
-        entity = EchoEntity::class,
-        parentColumns = ["id"],
-        childColumns = ["echo_id"],
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE
-    )]
+    foreignKeys = [
+        ForeignKey(
+            entity = EchoEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["echo_id"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["echo_id"])]
 )
 data class TopicEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "topic_id")
-    val topicId: Long =0 ,
+    val topicId: Long = 0,
     @ColumnInfo(name = "echo_id")
     val echoId: String,
     @ColumnInfo(name = "topic")
@@ -54,5 +59,5 @@ data class EchoWithTopics(
     @Embedded
     val echoEntity: EchoEntity,
     @Relation(parentColumn = "id", entityColumn = "echo_id")
-    val topicEntities:List<TopicEntity>
+    val topicEntities: List<TopicEntity>
 )

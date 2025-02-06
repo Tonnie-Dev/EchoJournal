@@ -11,7 +11,6 @@ import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.usecases.CreateEchoUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetEchoByIdUseCase
-
 import com.tonyxlab.echojournal.domain.usecases.UpdateEchoUseCase
 import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.utils.Resource
@@ -22,8 +21,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
@@ -38,7 +35,6 @@ class EditorViewModel @Inject constructor(
     private val context: Context,
     private val player: AudioPlayer,
     private val getEchoByIdUseCase: GetEchoByIdUseCase,
-
     private val updateEchoUseCase: UpdateEchoUseCase,
     private val createEchoUseCase: CreateEchoUseCase,
     savedStateHandle: SavedStateHandle
@@ -58,7 +54,6 @@ class EditorViewModel @Inject constructor(
 
         val id = savedStateHandle.toRoute<SaveScreenObject>().id
         readEchoInfo(id = id)
-
 
         Timber.i("Saved Topics: ${_editorState.value.savedTopics}")
     }
