@@ -10,9 +10,7 @@ import androidx.room.Update
 import com.tonyxlab.echojournal.data.database.entity.EchoEntity
 import com.tonyxlab.echojournal.data.database.entity.EchoWithTopics
 import com.tonyxlab.echojournal.data.database.entity.TopicEntity
-import com.tonyxlab.echojournal.data.mappers.toDomainModel
 import kotlinx.coroutines.flow.Flow
-import timber.log.Timber
 
 @Dao
 interface EchoDao : BaseDao<EchoEntity> {
@@ -22,6 +20,9 @@ interface EchoDao : BaseDao<EchoEntity> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTopics(topics: List<TopicEntity>)
+
+    @Query("SELECT * FROM topic_table ORDER BY topic")
+    fun getTopics():Flow<List<TopicEntity>>
 
     @Query("SELECT * FROM echo_table WHERE id=:id")
     fun getEchoWithTopicsById(id: String): EchoWithTopics?

@@ -66,7 +66,7 @@ fun TopicSelector(
     onCurrentSelectedTopicsChange: (List<String>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-Timber.i("Saved Topics on UI: $savedTopics")
+
     var selectedTopics = currentSelectedTopics.toSet()
 
     var storedTopics = savedTopics.toSet()
@@ -152,7 +152,6 @@ fun TopicsFlowRow(
     keyboardController: SoftwareKeyboardController? = null,
 ) {
 
-
     LaunchedEffect(key1 = isAddingTopic) {
         // Do not show keyboard when not adding a topic 
         if (isAddingTopic.not()) return@LaunchedEffect
@@ -173,7 +172,6 @@ fun TopicsFlowRow(
                 topic = topic,
                 onDeleteTopic = { onSelectTopic(selectedTopics - topic) })
         }
-
 
         // Show Icon when not typing
         if (!isAddingTopic) {
@@ -261,7 +259,6 @@ fun TopicChip(
         })
 }
 
-
 @Composable
 fun TopicDropDown(
     selectedTopics: Set<String>,
@@ -272,9 +269,9 @@ fun TopicDropDown(
     modifier: Modifier = Modifier,
     onSavedTopicsChange: ((Set<String>) -> Unit)? = null,
 ) {
+
     Box(
         modifier = modifier
-
             .fillMaxWidth()
             .padding(horizontal = MaterialTheme.spacing.spaceMedium)
             .shadow(
@@ -324,11 +321,9 @@ fun TopicDropDown(
             // Show 'Create Chip' if topic does not exist
 
             if (!savedTopics.any { it.equals(topicFieldValue.value, ignoreCase = true) }) {
-
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-
                         val newTopic = topicFieldValue.value.trim()
                         onSavedTopicsChange?.invoke(savedTopics + newTopic)
                         onSelectedTopicsChange(selectedTopics + newTopic)
@@ -341,7 +336,6 @@ fun TopicDropDown(
                     ),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
                     verticalAlignment = Alignment.CenterVertically) {
-
 
                     AppIcon(
                         modifier = Modifier.size(MaterialTheme.spacing.spaceDoubleDp * 6),
@@ -357,9 +351,7 @@ fun TopicDropDown(
                 }
             }
 
-
         }
-
 
     }
 }

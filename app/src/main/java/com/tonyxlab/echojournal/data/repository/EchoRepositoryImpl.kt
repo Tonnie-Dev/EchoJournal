@@ -3,6 +3,7 @@ package com.tonyxlab.echojournal.data.repository
 
 
 import com.tonyxlab.echojournal.data.database.dao.EchoDao
+import com.tonyxlab.echojournal.data.database.entity.TopicEntity
 import com.tonyxlab.echojournal.data.mappers.toDomainModel
 import com.tonyxlab.echojournal.data.mappers.toEchoWithTopics
 import com.tonyxlab.echojournal.data.mappers.toEntityModel
@@ -28,51 +29,77 @@ class EchoRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getTopics(): Flow<List<String>> {
+      return dao.getTopics().map { it.map (TopicEntity::topic) }
+    }
+
     override suspend fun insertEchoWithTopics(echo: Echo): Resource<Boolean> {
         return withContext(dispatchers.io) {
             return@withContext try {
 
                 val existingTopics = dao.getTopicsByEchoId(echo.id)
                 val echoWithTopics = echo.toEchoWithTopics(existingTopics                                                                                )
+
                 dao.insertEchoWithTopics(echoWithTopics)
                 Resource.Success(true)
+
             } catch (e: Exception) {
+
                 Resource.Error(e)
+
             }
         }
     }
 
     override suspend fun getEchoById(id: String): Resource<Echo> {
+
         return withContext(dispatchers.io) {
+
             return@withContext try {
                 dao.getEchoWithTopicsById(id = id)?.let {
+
                     Resource.Success(it.toDomainModel())
+
                 } ?: Resource.Error(KotlinNullPointerException())
+
             } catch (e: Exception) {
+
                 Resource.Error(exception = e)
+
             }
         }
     }
 
     override suspend fun updateEcho(echo: Echo): Resource<Boolean> {
+
         return withContext(dispatchers.io) {
+
             return@withContext try {
 
                 val existingTopics = dao.getTopicsByEchoId(echo.id)
                 dao.updateEchoWithTopics(echo.toEchoWithTopics(existingTopics))
+
                 Resource.Success(true)
+
             } catch (e: Exception) {
+
                 Resource.Error(e)
+
             }
         }
     }
 
     override suspend fun deleteEcho(echo: Echo): Resource<Boolean> {
+
         return withContext(dispatchers.io) {
+
             return@withContext try {
+
                 val result = dao.delete(echo.toEntityModel())
                 Resource.Success(result != -1)
+
             } catch (e: Exception) {
+
                 Resource.Error(e)
             }
         }

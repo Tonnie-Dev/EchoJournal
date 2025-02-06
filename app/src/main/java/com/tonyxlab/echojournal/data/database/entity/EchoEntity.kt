@@ -30,7 +30,6 @@ data class EchoEntity(
     val uri: String
 )
 
-
 @Entity(
     tableName = "topic_table",
     foreignKeys = [
