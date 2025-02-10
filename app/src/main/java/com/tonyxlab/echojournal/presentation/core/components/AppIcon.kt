@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.components
+package com.tonyxlab.echojournal.presentation.core.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add

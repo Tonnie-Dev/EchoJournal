@@ -24,10 +24,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Echo
-import com.tonyxlab.echojournal.presentation.components.AppTopBar
-import com.tonyxlab.echojournal.presentation.components.EchoCard
-import com.tonyxlab.echojournal.presentation.components.EmptyScreen
-import com.tonyxlab.echojournal.presentation.components.RecordingModalSheet
+import com.tonyxlab.echojournal.presentation.core.components.AppTopBar
+import com.tonyxlab.echojournal.presentation.core.components.EchoCard
+import com.tonyxlab.echojournal.presentation.core.components.EmptyScreen
+import com.tonyxlab.echojournal.presentation.core.components.RecordingModalSheet
 import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems

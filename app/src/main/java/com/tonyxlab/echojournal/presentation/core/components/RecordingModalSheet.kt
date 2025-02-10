@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.components
+package com.tonyxlab.echojournal.presentation.core.components
 
 import android.Manifest
 import androidx.compose.animation.core.RepeatMode

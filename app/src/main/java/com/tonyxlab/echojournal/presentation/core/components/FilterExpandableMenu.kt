@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.components
+package com.tonyxlab.echojournal.presentation.core.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
