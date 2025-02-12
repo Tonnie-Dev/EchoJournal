@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.theme.LocalSpacing
 
 
 @Composable

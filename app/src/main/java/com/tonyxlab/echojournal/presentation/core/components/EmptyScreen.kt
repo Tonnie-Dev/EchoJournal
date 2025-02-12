@@ -16,8 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.LocalSpacing
 
 @Composable
 fun EmptyScreen(modifier: Modifier = Modifier) {

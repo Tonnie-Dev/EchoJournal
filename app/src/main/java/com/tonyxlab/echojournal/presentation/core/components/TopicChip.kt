@@ -19,10 +19,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
-import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
-import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.Primary95
+import com.tonyxlab.echojournal.presentation.theme.buttonSmallTextStyle
+import com.tonyxlab.echojournal.presentation.theme.spacing
 
 @Composable
 fun TopicChip(

@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.editor
+package com.tonyxlab.echojournal.presentation.screens.editor
 
 import android.net.Uri
 import com.tonyxlab.echojournal.domain.model.Mood

@@ -18,9 +18,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.domain.model.Echo
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
-import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.theme.spacing
 import com.tonyxlab.echojournal.utils.generateRandomEchoItem
 import com.tonyxlab.echojournal.utils.toAmPmTime
 

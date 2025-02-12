@@ -33,7 +33,6 @@ abstract class BaseViewModel<S : UiState, E : UiEvent, A : ActionEvent> : ViewMo
         _uiState.update(block)
     }
 
-
     protected fun sendActionEvent(actionEvent: A) {
 
         viewModelScope.launch { _actionEvent.send(actionEvent) }
@@ -44,6 +43,6 @@ abstract class BaseViewModel<S : UiState, E : UiEvent, A : ActionEvent> : ViewMo
         block: suspend CoroutineScope.() -> Unit
     ) = viewModelScope.launch(context = context, block = block)
 
-    abstract fun onEvent(event:E)
+    abstract fun onEvent(event: E)
 
 }

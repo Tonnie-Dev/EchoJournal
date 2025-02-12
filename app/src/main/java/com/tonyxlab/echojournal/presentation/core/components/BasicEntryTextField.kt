@@ -34,10 +34,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
-import com.tonyxlab.echojournal.presentation.ui.theme.Secondary95
-import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.Secondary70
+import com.tonyxlab.echojournal.presentation.theme.Secondary95
+import com.tonyxlab.echojournal.presentation.theme.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 
 @Composable

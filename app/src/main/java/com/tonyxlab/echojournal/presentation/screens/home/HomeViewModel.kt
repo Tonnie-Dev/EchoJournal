@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.home
+package com.tonyxlab.echojournal.presentation.screens.home
 
 import android.content.Context
 import android.net.Uri

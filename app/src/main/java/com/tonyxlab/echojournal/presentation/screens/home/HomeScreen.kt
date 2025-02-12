@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.home
+package com.tonyxlab.echojournal.presentation.screens.home
 
 import android.net.Uri
 import androidx.compose.foundation.layout.padding
@@ -28,8 +28,8 @@ import com.tonyxlab.echojournal.presentation.core.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.core.components.EchoCard
 import com.tonyxlab.echojournal.presentation.core.components.EmptyScreen
 import com.tonyxlab.echojournal.presentation.core.components.RecordingModalSheet
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.ui.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.LocalSpacing
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
 
 @Composable

@@ -43,11 +43,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.ui.theme.NeutralVariant30
-import com.tonyxlab.echojournal.presentation.ui.theme.Primary95
-import com.tonyxlab.echojournal.presentation.ui.theme.buttonSmallTextStyle
-import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.NeutralVariant30
+import com.tonyxlab.echojournal.presentation.theme.Primary95
+import com.tonyxlab.echojournal.presentation.theme.buttonSmallTextStyle
+import com.tonyxlab.echojournal.presentation.theme.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.conditionalModifier
 

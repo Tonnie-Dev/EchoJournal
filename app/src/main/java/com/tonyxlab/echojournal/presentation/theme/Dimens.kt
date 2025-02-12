@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.ui.theme
+package com.tonyxlab.echojournal.presentation.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -32,6 +32,6 @@ data class Dimens(
 
 val LocalSpacing = staticCompositionLocalOf { Dimens() }
 
-val MaterialTheme.spacing:Dimens
+val MaterialTheme.spacing: Dimens
     @Composable @ReadOnlyComposable
     get() = LocalSpacing.current

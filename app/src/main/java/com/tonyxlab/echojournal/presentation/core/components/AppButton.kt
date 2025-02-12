@@ -24,10 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.ui.theme.buttonMediumTextStyle
-import com.tonyxlab.echojournal.presentation.ui.theme.gradient
-import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.buttonMediumTextStyle
+import com.tonyxlab.echojournal.presentation.theme.gradient
+import com.tonyxlab.echojournal.presentation.theme.spacing
 import com.tonyxlab.echojournal.utils.conditionalModifier
 
 @Composable

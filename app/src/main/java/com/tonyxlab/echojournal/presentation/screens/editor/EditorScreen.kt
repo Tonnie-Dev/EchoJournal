@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.editor
+package com.tonyxlab.echojournal.presentation.screens.editor
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,10 +48,10 @@ import com.tonyxlab.echojournal.presentation.core.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.core.components.BasicEntryTextField
 import com.tonyxlab.echojournal.presentation.core.components.PlayTrackUnit
 import com.tonyxlab.echojournal.presentation.core.components.TopicSelector
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.ui.theme.Secondary70
-import com.tonyxlab.echojournal.presentation.ui.theme.Secondary90
-import com.tonyxlab.echojournal.presentation.ui.theme.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.Secondary70
+import com.tonyxlab.echojournal.presentation.theme.Secondary90
+import com.tonyxlab.echojournal.presentation.theme.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import timber.log.Timber
 

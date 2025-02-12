@@ -8,9 +8,9 @@ import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.tonyxlab.echojournal.presentation.navigation.HomeScreenObject
-import com.tonyxlab.echojournal.presentation.navigation.appDestinations
-import com.tonyxlab.echojournal.presentation.ui.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.navigation.HomeScreenObject
+import com.tonyxlab.echojournal.navigation.appDestinations
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

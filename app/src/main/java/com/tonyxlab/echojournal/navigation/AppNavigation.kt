@@ -1,10 +1,10 @@
-package com.tonyxlab.echojournal.presentation.navigation
+package com.tonyxlab.echojournal.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.tonyxlab.echojournal.presentation.editor.EditorScreen
-import com.tonyxlab.echojournal.presentation.home.HomeScreen
+import com.tonyxlab.echojournal.presentation.screens.editor.EditorScreen
+import com.tonyxlab.echojournal.presentation.screens.home.HomeScreen
 import kotlinx.serialization.Serializable
 
 fun NavGraphBuilder.appDestinations(navController: NavController) {

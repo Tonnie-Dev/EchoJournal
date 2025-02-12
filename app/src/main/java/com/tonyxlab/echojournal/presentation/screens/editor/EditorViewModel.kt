@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.editor
+package com.tonyxlab.echojournal.presentation.screens.editor
 
 import android.content.Context
 import android.net.Uri
@@ -13,7 +13,7 @@ import com.tonyxlab.echojournal.domain.usecases.CreateEchoUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetEchoByIdUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetTopicsUseCase
 import com.tonyxlab.echojournal.domain.usecases.UpdateEchoUseCase
-import com.tonyxlab.echojournal.presentation.navigation.SaveScreenObject
+import com.tonyxlab.echojournal.navigation.SaveScreenObject
 import com.tonyxlab.echojournal.utils.Resource
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.fromLocalDateTimeToDefaultTimestamp

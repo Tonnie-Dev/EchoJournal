@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.ui.theme
+package com.tonyxlab.echojournal.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
