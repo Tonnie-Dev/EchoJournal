@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.data.audioimpl
+package com.tonyxlab.echojournal.data.audio
 
 import android.content.Context
 import android.media.MediaRecorder
@@ -9,7 +9,7 @@ import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
-class AudioRecorderImpl @Inject constructor(@ApplicationContext private val context: Context) :
+class MediaAudioRecorder @Inject constructor(@ApplicationContext private val context: Context) :
     AudioRecorder {
 
     private var recorder: MediaRecorder? = null

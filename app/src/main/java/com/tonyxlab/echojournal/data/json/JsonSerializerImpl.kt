@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.data.jsonimpl
+package com.tonyxlab.echojournal.data.json
 
 import com.tonyxlab.echojournal.domain.json.JsonSerializer
 import kotlinx.serialization.KSerializer

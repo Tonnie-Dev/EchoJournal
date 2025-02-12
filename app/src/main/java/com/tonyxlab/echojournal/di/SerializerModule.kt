@@ -1,6 +1,6 @@
 package com.tonyxlab.echojournal.di
 
-import com.tonyxlab.echojournal.data.jsonimpl.JsonSerializerImpl
+import com.tonyxlab.echojournal.data.json.JsonSerializerImpl
 import com.tonyxlab.echojournal.domain.json.JsonSerializer
 import dagger.Binds
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.data.audioimpl
+package com.tonyxlab.echojournal.data.audio
 
 import android.content.Context
 import android.media.MediaPlayer
@@ -8,7 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 
-class AudioPlayerImpl @Inject constructor(@ApplicationContext private val context: Context) :
+class MediaAudioPlayer @Inject constructor(@ApplicationContext private val context: Context) :
     AudioPlayer {
 
     private var player: MediaPlayer? = null
