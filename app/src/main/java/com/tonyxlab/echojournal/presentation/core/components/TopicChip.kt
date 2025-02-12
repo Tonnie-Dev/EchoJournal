@@ -22,7 +22,7 @@ import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.Primary95
 import com.tonyxlab.echojournal.presentation.theme.buttonSmallTextStyle
-import com.tonyxlab.echojournal.presentation.theme.spacing
+import com.tonyxlab.echojournal.presentation.core.utils.spacing
 
 @Composable
 fun TopicChip(

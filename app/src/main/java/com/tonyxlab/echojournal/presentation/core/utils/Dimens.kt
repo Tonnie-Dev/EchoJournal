@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.theme
+package com.tonyxlab.echojournal.presentation.core.utils
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

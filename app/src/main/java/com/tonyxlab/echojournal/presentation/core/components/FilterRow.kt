@@ -34,7 +34,7 @@ import androidx.compose.ui.util.fastJoinToString
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 import com.tonyxlab.echojournal.utils.conditionalModifier
 
 

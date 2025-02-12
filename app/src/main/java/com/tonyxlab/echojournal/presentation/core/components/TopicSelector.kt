@@ -47,7 +47,7 @@ import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.NeutralVariant30
 import com.tonyxlab.echojournal.presentation.theme.Primary95
 import com.tonyxlab.echojournal.presentation.theme.buttonSmallTextStyle
-import com.tonyxlab.echojournal.presentation.theme.spacing
+import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.conditionalModifier
 

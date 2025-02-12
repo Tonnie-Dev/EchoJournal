@@ -5,6 +5,10 @@ import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import com.tonyxlab.echojournal.presentation.core.utils.Dimens
+import com.tonyxlab.echojournal.presentation.core.utils.Gradients
+import com.tonyxlab.echojournal.presentation.core.utils.LocalGradient
+import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 
 @Composable
 fun EchoJournalTheme(content: @Composable () -> Unit) {

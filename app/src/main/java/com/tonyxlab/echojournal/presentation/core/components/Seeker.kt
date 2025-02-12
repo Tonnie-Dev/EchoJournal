@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

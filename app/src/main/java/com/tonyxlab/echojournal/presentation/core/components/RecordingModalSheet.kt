@@ -44,11 +44,11 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 import com.tonyxlab.echojournal.presentation.theme.Primary90
 import com.tonyxlab.echojournal.presentation.theme.Primary95
-import com.tonyxlab.echojournal.presentation.theme.gradient
-import com.tonyxlab.echojournal.presentation.theme.spacing
+import com.tonyxlab.echojournal.presentation.core.utils.gradient
+import com.tonyxlab.echojournal.presentation.core.utils.spacing
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)

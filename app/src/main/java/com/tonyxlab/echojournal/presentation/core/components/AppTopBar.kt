@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.theme.spacing
+import com.tonyxlab.echojournal.presentation.core.utils.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

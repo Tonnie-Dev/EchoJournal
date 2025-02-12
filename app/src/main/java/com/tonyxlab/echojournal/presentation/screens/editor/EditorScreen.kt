@@ -51,7 +51,7 @@ import com.tonyxlab.echojournal.presentation.core.components.TopicSelector
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.theme.Secondary90
-import com.tonyxlab.echojournal.presentation.theme.spacing
+import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import timber.log.Timber
 

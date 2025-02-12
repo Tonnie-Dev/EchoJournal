@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.theme.Secondary95
-import com.tonyxlab.echojournal.presentation.theme.spacing
+import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 
 @Composable

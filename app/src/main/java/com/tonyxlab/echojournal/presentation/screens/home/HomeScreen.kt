@@ -29,7 +29,7 @@ import com.tonyxlab.echojournal.presentation.core.components.EchoCard
 import com.tonyxlab.echojournal.presentation.core.components.EmptyScreen
 import com.tonyxlab.echojournal.presentation.core.components.RecordingModalSheet
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.theme.LocalSpacing
+import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
 
 @Composable
