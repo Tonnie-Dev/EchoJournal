@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.screens.home
+package com.tonyxlab.echojournal.presentation.screens.entry
 
 import com.tonyxlab.echojournal.domain.model.Echo
 

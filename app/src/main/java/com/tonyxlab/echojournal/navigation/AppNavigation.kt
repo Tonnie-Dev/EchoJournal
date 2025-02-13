@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.tonyxlab.echojournal.presentation.screens.editor.EditorScreen
-import com.tonyxlab.echojournal.presentation.screens.home.HomeScreen
+import com.tonyxlab.echojournal.presentation.screens.entry.HomeScreen
 import kotlinx.serialization.Serializable
 
 fun NavGraphBuilder.appDestinations(navController: NavController) {

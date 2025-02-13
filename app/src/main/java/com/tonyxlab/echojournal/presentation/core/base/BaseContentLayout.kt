@@ -64,14 +64,16 @@ fun <S : UiState, E : UiEvent, A : ActionEvent> BaseContentLayout(
         }
     }
 
-    BackHandler(enabled = onBackPressed != null,
+    BackHandler(
+        enabled = onBackPressed != null,
         onBack = { onBackPressed?.invoke() }
     )
 
     Surface(modifier = Modifier.fillMaxWidth(), color = containerColor) {
-        Scaffold(modifier = Modifier
-            .windowInsetsPadding(WindowInsets.safeDrawing)
-            .fillMaxWidth(),
+        Scaffold(
+            modifier = Modifier
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .fillMaxWidth(),
             topBar = { topBar(uiState) },
             bottomBar = { bottomBar(uiState) },
             snackbarHost = snackBarHost,
