@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.screens.entry
+package com.tonyxlab.echojournal.presentation.screens.home
 
 import android.net.Uri
 import androidx.compose.foundation.layout.padding
