@@ -104,6 +104,11 @@ sealed class Mood(
         accentColor2 = Secondary80,
         accentColor3 = Primary95
     )
+
+    companion object {
+
+        fun allMoods():List<Mood > = listOf()
+    }
 }
 
 object ColorSerializer : KSerializer<Color> {
