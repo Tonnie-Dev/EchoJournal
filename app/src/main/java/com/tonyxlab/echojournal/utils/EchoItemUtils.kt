@@ -20,7 +20,7 @@ fun generateRandomEchoItem(): Echo {
         description = generateLoremIpsum(wordCount = 89),
         timestamp = LocalDateTime.now().toInstant(timeZone = TimeZone.currentSystemDefault())
             .toEpochMilliseconds(),
-        length = randomInt,
+        duration = randomInt,
         mood = Mood.Sad,
         topics = listOf("Topic 1", "Topic 2", "Topic 3"),
         uri = Uri.EMPTY

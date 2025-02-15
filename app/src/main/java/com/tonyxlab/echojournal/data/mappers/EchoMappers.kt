@@ -15,7 +15,7 @@ fun Echo.toEntityModel(): EchoEntity {
         title = title,
         description = description,
         timestamp = timestamp.toUtcTimeStamp(),
-        length = length,
+        length = duration,
         mood = mood,
 
         uri = uri.toString()
@@ -28,7 +28,7 @@ fun EchoEntity.toDomainModel(topics:List<TopicEntity>): Echo {
         title = title,
         description = description,
         timestamp = timestamp.fromUtcTimestampToDefaultTimeStamp(),
-        length = length,
+        duration = length,
         mood = mood,
         topics = topics.map { it.topic },
         uri = Uri.parse(uri)

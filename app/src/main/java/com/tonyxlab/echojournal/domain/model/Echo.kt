@@ -7,7 +7,7 @@ data class Echo(
     val title: String,
     val description: String,
     val timestamp: Long,
-    val length: Int,
+    val duration: Int,
     val mood: Mood,
     val topics: List<String>,
     val uri:Uri

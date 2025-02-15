@@ -155,7 +155,7 @@ class EditorViewModel @Inject constructor(
             title = titleFieldValue.value.value,
             description = descriptionFieldValue.value.value,
             timestamp = LocalDateTime.now().fromLocalDateTimeToDefaultTimestamp(),
-            length = 0,
+            duration = 0,
             mood = _editorState.value.mood,
             topics = _editorState.value.selectedTopics,
             uri = _editorState.value.recordingUri

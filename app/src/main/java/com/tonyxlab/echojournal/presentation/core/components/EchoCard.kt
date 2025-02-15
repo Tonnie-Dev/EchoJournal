@@ -85,7 +85,7 @@ fun EchoCard(
             isPlaying = isPlaying,
             seekValue = seekValue,
             onSeek = onSeek,
-            echoLength = echo.length,
+            echoLength = echo.duration,
             onTogglePlay = onPlayPause,
 
             )
