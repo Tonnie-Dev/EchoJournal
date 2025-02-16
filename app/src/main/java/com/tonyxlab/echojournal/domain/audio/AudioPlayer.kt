@@ -1,12 +1,13 @@
 package com.tonyxlab.echojournal.domain.audio
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import java.io.File
 
 
 interface AudioPlayer{
 
-    val currentPositionFlow:Flow<Int>
+    val currentPositionFlow: StateFlow<Int>
 
     fun initializeFile(filePath:String)
     fun play ()
