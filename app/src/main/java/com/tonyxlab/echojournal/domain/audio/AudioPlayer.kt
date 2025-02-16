@@ -1,10 +1,20 @@
 package com.tonyxlab.echojournal.domain.audio
 
+import kotlinx.coroutines.flow.Flow
 import java.io.File
 
 
 interface AudioPlayer{
 
-    fun play (file: File)
+    val currentPositionFlow:Flow<Int>
+
+    fun initializeFile(filePath:String)
+    fun play ()
+    fun pause()
+    fun resume()
     fun stop()
+    fun setOnCompletionListener(listener:() -> Unit)
+    fun getDuration():Int
+    fun isPlaying():Boolean
+
 }
