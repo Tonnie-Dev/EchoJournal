@@ -1,8 +1,9 @@
 package com.tonyxlab.echojournal.presentation.screens.home.handling
 
 import com.tonyxlab.echojournal.domain.model.Mood
+import com.tonyxlab.echojournal.presentation.core.base.handling.UiEvent
 
-sealed interface HomeUiEvent {
+sealed interface HomeUiEvent:UiEvent {
 
     data object MoodFilterToggle : HomeUiEvent
     data class MoodItemSelection(val mood: Mood) : HomeUiEvent
