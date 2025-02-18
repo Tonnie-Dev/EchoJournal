@@ -11,7 +11,7 @@ import com.tonyxlab.echojournal.utils.Constants
 @Stable
 data class HomeUiState(
     val entries: Map<Long, List<EchoHolderState>> = mapOf(),
-    val filter: FilterState = FilterState(),
+    val filterState: FilterState = FilterState(),
     val isFilterActive: Boolean = false,
     val homeSheetState: HomeSheetState = HomeSheetState(),
     val isPermissionDialogOpen: Boolean = false
