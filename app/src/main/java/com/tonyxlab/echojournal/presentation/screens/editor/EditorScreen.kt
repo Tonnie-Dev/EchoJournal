@@ -402,7 +402,7 @@ private fun SaveScreenPreview() {
             onConfirmMoodSelection = {},
             onSaveEditor = {},
             onCancelEditor = {},
-            mood = Mood.Other,
+            mood = Mood.Undefined,
             onSelectMood = {},
             selectedTopics = emptyList(),
             savedTopics = emptyList(),

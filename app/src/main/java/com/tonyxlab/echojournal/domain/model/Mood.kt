@@ -96,10 +96,10 @@ sealed class Mood(
     )
 
     @Serializable
-    data object Other : Mood(
+    data object Undefined : Mood(
         icon = R.drawable.mood_excited,
         outlinedIcon = R.drawable.mood_excited_outline,
-        name = "Other",
+        name = "Undefined",
         accentColor1 = Primary30,
         accentColor2 = Secondary80,
         accentColor3 = Primary95
@@ -124,4 +124,20 @@ object ColorSerializer : KSerializer<Color> {
         val argb = decoder.decodeInt()
         return Color(argb)
     }
+}
+
+
+fun String.toMood():Mood{
+
+    return when(this){
+
+       "Stressed" -> Mood.Stressed
+       "Sad" -> Mood.Sad
+       "Neutral" -> Mood.Neutral
+       "Peaceful" -> Mood.Peaceful
+       "Excited" -> Mood.Excited
+       else -> Mood.Undefined
+
+    }
+
 }

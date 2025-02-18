@@ -33,7 +33,7 @@ fun PlayTrackUnit(
     echoLength: Int,
     onTogglePlay: () -> Unit,
     modifier: Modifier = Modifier,
-    mood: Mood = Mood.Other,
+    mood: Mood = Mood.Undefined,
     isPlaying: Boolean = false,
 ) {
     val spacing = LocalSpacing.current
@@ -111,7 +111,7 @@ private fun PlayTrackUnitPreview() {
 
             // Appearance On Save Screen
             PlayTrackUnit(
-                mood = Mood.Other,
+                mood = Mood.Undefined,
                 isPlaying = false,
                 seekValue = 0.3f,
                 onSeek = {},

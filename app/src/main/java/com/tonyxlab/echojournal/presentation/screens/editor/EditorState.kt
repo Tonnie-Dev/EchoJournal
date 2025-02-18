@@ -15,9 +15,9 @@ data class EditorState(
     val isPlaying: Boolean = false,
     val isShowMoodSelectionSheet: Boolean = false,
     val isShowMoodTitleIcon: Boolean = false,
-    val mood: Mood = Mood.Other
+    val mood: Mood = Mood.Undefined
 ) {
 
-    var isMoodConfirmButtonHighlighted = mood != Mood.Other
+    var isMoodConfirmButtonHighlighted = mood != Mood.Undefined
 
 }

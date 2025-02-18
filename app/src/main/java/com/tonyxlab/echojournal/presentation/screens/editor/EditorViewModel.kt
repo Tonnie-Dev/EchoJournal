@@ -261,7 +261,7 @@ class EditorViewModel @Inject constructor(
 
     fun canSave(): Boolean {
         val state = _editorState.value
-        return state.mood != Mood.Other &&
+        return state.mood != Mood.Undefined &&
                 titleFieldValue.value.value.isNotBlank() &&
                 (
                         titleFieldValue.value.value != initialTitle ||
