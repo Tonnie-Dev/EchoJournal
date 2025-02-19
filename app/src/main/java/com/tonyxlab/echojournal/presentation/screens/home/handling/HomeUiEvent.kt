@@ -5,15 +5,15 @@ import com.tonyxlab.echojournal.presentation.core.base.handling.UiEvent
 
 sealed interface HomeUiEvent:UiEvent {
 
-    data object MoodFilterToggle : HomeUiEvent
-    data class MoodItemSelection(val mood: Mood) : HomeUiEvent
-    data object MoodItemCleared : HomeUiEvent
+    data object ActivateMoodFilter : HomeUiEvent
+    data class SelectMoodItem(val mood: Mood) : HomeUiEvent
+    data object ClearMoodItem : HomeUiEvent
 
-    data object TopicFilterToggle : HomeUiEvent
-    data class TopicItemSelection(val topic: String) : HomeUiEvent
-    data object TopicItemCleared : HomeUiEvent
+    data object ActivateTopicFilter : HomeUiEvent
+    data class SelectTopicItem(val topic: String) : HomeUiEvent
+    data object ClearTopicItem : HomeUiEvent
 
-    data class PermissionDialogOpened(val isOpen: Boolean) : HomeUiEvent
+    data class OpenPermissionDialog(val isOpen: Boolean) : HomeUiEvent
 
     data object StartRecording : HomeUiEvent
     data object PauseRecording : HomeUiEvent

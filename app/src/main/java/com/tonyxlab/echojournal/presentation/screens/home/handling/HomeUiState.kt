@@ -10,7 +10,7 @@ import com.tonyxlab.echojournal.utils.Constants
 
 @Stable
 data class HomeUiState(
-    val entries: Map<Long, List<EchoHolderState>> = mapOf(),
+    val echoes: Map<Long, List<EchoHolderState>> = mapOf(),
     val filterState: FilterState = FilterState(),
     val isFilterActive: Boolean = false,
     val homeSheetState: HomeSheetState = HomeSheetState(),
@@ -33,8 +33,8 @@ data class HomeUiState(
 
     @Stable
     data class FilterState(
-        val isMoodFilterSelected: Boolean = false,
-        val isTopicFilterSelected: Boolean = false,
+        val isMoodFilterOpen: Boolean = false,
+        val isTopicFilterOpen: Boolean = false,
         val moodFilterItems: List<FilterItem> = Mood.allMoods().map { FilterItem(title = it.name) },
         val topicFilterItems: List<FilterItem> = listOf()
     ) {

@@ -137,7 +137,6 @@ fun String.toMood():Mood{
        "Peaceful" -> Mood.Peaceful
        "Excited" -> Mood.Excited
        else -> Mood.Undefined
-
     }
 
 }

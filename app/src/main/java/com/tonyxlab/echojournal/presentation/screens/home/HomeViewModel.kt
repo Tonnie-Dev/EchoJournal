@@ -2,30 +2,32 @@ package com.tonyxlab.echojournal.presentation.screens.home
 
 import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
 import com.tonyxlab.echojournal.domain.model.Echo
+import com.tonyxlab.echojournal.domain.model.Mood
+import com.tonyxlab.echojournal.domain.model.toMood
 import com.tonyxlab.echojournal.domain.usecases.GetEchoesUseCase
 import com.tonyxlab.echojournal.presentation.core.base.BaseViewModel
+import com.tonyxlab.echojournal.presentation.core.state.PlayerState
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeActionEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.*
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState.*
 import com.tonyxlab.echojournal.utils.AppCoroutineDispatchers
 import com.tonyxlab.echojournal.utils.StopWatch
 import com.tonyxlab.echojournal.utils.TextFieldValue
+import com.tonyxlab.echojournal.utils.formatMillisToTime
 import com.tonyxlab.echojournal.utils.fromLocalDateTimeToUtcTimeStamp
 import com.tonyxlab.echojournal.utils.now
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDateTime
 import java.io.File
@@ -39,7 +41,7 @@ class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
     private val recorder: AudioRecorder,
-    private val player: AudioPlayer,
+    private val audioPlayer: AudioPlayer,
     private val getEchoesUseCase: GetEchoesUseCase,
 ) : HomeBaseViewModel() {
 
@@ -47,16 +49,25 @@ class HomeViewModel @Inject constructor(
     override val initialState: HomeUiState
         get() = HomeUiState()
 
+    override fun onEvent(event: HomeUiEvent) {
+
+        when (event) {
+
+            ActivateMoodFilter -> activateMoodFilter()
+            is SelectMoodItem -> selectMoodItem()
+        }
+    }
+
     private val stopWatch = StopWatch(appCoroutineDispatchers)
     private var stopWatchJob: Job? = null
 
     private val selectedMoodFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
     private val selectedTopicFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
-    private val filteredEchoes = MutableStateFlow<Map<Long, List<EchoHolderState>>>(emptyMap())
+    private val filteredEchoes = MutableStateFlow<Map<Long, List<EchoHolderState>>?>(emptyMap())
     private var fetchedEchoes: Map<Long, List<EchoHolderState>> = emptyMap()
 
 
-    private var playingEntryId = MutableStateFlow("")
+    private var playingEchoId = MutableStateFlow("")
 
 
     init {
@@ -64,6 +75,8 @@ class HomeViewModel @Inject constructor(
 
         observeEntries()
         observeFilters()
+        setUpAudioPlayerListeners()
+        observeAudionPLayerCurrentPosition()
 
     }
 
@@ -90,12 +103,12 @@ class HomeViewModel @Inject constructor(
 
             updateState {
                 it.copy(
-                    entries = sortedEchoes,
+                    echoes = sortedEchoes,
                     filterState = currentState.filterState.copy(topicFilterItems = updatedTopicFilterItems)
                 )
             }
 
-            if (isFirstLoad){
+            if (isFirstLoad) {
                 sendActionEvent(HomeActionEvent.DataLoaded)
                 isFirstLoad = false
             }
@@ -106,14 +119,21 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun observeFilters(){
+    private fun observeFilters() {
 
-        combine(selectedMoodFilters, selectedTopicFilters){ moodFilters, topicFilters ->
+        combine(selectedMoodFilters, selectedTopicFilters) { moodFilters, topicFilters ->
 
 
-           val moodTypes = moodFilters.map { it.title }
+            val moodTypes = moodFilters.map { it.title.toMood() }
+            val topicTitles = topicFilters.map { it.title }
+            val isFilterActive = moodFilters.isNotEmpty() || topicFilters.isNotEmpty()
 
-        }
+            filteredEchoes.value = if (isFilterActive) {
+                getFilteredEchoes(fetchedEchoes, moodTypes, topicTitles)
+
+            } else emptyMap()
+
+        }.launchIn(viewModelScope)
     }
 
     private fun groupEchoesByDate(
@@ -138,6 +158,26 @@ class HomeViewModel @Inject constructor(
 
     }
 
+
+    private fun getFilteredEchoes(
+        echoes: Map<Long, List<EchoHolderState>>,
+        moodFilters: List<Mood>,
+        topicsFilters: List<String>
+    ): Map<Long, List<EchoHolderState>>? {
+
+        return echoes.mapValues { (_, echoesList) ->
+
+            echoesList.filter { echoHolderState ->
+                val echo = echoHolderState.echo
+                echo.mood in moodFilters || echo.topics.any { it in topicsFilters }
+            }
+
+
+        }.filterValues { it.isNotEmpty() }.ifEmpty { null }
+
+
+    }
+
     private fun addNewTopicFilterItems(topics: List<String>): List<FilterState.FilterItem> {
 
 
@@ -157,6 +197,186 @@ class HomeViewModel @Inject constructor(
 
         return newTopicItems
     }
+
+
+    private fun setUpAudioPlayerListeners() {
+        audioPlayer.setOnCompletionListener {
+
+            with(playingEchoId.value) {
+                updatePlayerStateAction(this, PlayerState.Action.Initializing)
+                audioPlayer.stop()
+            }
+        }
+    }
+
+
+    private fun updatePlayerStateAction(echoId: String, action: PlayerState.Action) {
+
+        val echoHolderState = getCurrentEchoHolderState(echoId)
+        val updatedPlayerState = echoHolderState.playerState.copy(action = action)
+        updatePlayerState(echoId = echoId, newPlayerState = updatedPlayerState)
+
+    }
+
+    private fun updatePlayerState(echoId: String, newPlayerState: PlayerState) {
+
+        val updatedEchoes = currentState.echoes.mapValues { (_, echoesList) ->
+
+            echoesList.map { echoHolderState ->
+
+                if (echoHolderState.echo.id == echoId) {
+
+                    echoHolderState.copy(playerState = newPlayerState)
+                } else echoHolderState
+
+
+            }
+        }
+
+        updateState { it.copy(echoes = updatedEchoes) }
+    }
+
+    private fun getCurrentEchoHolderState(id: String): EchoHolderState {
+
+        return currentState.echoes.values
+            .flatten()
+            .firstOrNull { it.echo.id == id }
+            ?: throw IllegalStateException("Audio file path not found for entry Id $id ")
+
+
+    }
+
+    private fun observeAudionPLayerCurrentPosition() {
+
+        launch {
+
+            audioPlayer.currentPositionFlow.collect { positionMillis ->
+
+                val currentPosition = positionMillis.toLong().formatMillisToTime()
+                updatePlayerSateCurrentPosition(
+                    echoId = playingEchoId.value,
+                    currentPosition = positionMillis,
+                    currentPositionText = currentPosition
+                )
+
+            }
+        }
+
+    }
+
+    private fun updatePlayerSateCurrentPosition(
+        echoId: String,
+        currentPosition: Int,
+        currentPositionText: String
+    ) {
+
+        val echoHolderState = getCurrentEchoHolderState(id = echoId)
+        val updatedPlayerState = echoHolderState.playerState.copy(
+
+            currentPosition = currentPosition,
+            currentPositionText = currentPositionText
+        )
+        updatePlayerState(echoId, updatedPlayerState)
+    }
+
+    private fun updateMoodFilterItems(
+        updatedMoodItems: List<FilterState.FilterItem>,
+        moodFilterSelectionOpen: Boolean = true
+    ) {
+        updateState {
+
+            it.copy(
+                filterState = currentState.filterState.copy(
+
+                    moodFilterItems = updatedMoodItems,
+                    isMoodFilterOpen = moodFilterSelectionOpen
+                )
+            )
+        }
+    }
+
+    private fun activateMoodFilter() {
+
+        val updatedFilterState = currentState.filterState.copy(
+            isMoodFilterOpen = !currentState.filterState.isMoodFilterOpen,
+            isTopicFilterOpen = false
+        )
+
+        updateState { it.copy(filterState = updatedFilterState) }
+    }
+
+    private fun selectMoodItem(title: String) {
+
+        val updatedMoodItems = currentState.filterState.moodFilterItems.map {
+
+            if (it.title == title) it.copy(isChecked = !it.isChecked) else it
+        }
+        selectedMoodFilters.value = updatedMoodItems.filter { it.isChecked }
+        updateMoodFilterItems(updatedMoodItems = updatedMoodItems)
+    }
+
+
+    private fun clearMoodFilter() {
+        selectedMoodFilters.value = emptyList()
+        val updatedMoodItems = currentState.filterState.moodFilterItems.map {
+            if (it.isChecked) it.copy(isChecked = false) else it
+        }
+
+        updateMoodFilterItems(updatedMoodItems = updatedMoodItems, moodFilterSelectionOpen = false)
+    }
+
+    fun updateTopicFilterItems(
+        updatedItems: List<FilterState.FilterItem>,
+        topicFilterSelectionOpen: Boolean = true
+    ) {
+
+        updateState {
+
+            it.copy(
+                filterState = currentState.filterState.copy(
+                    topicFilterItems = updatedItems,
+                    isTopicFilterOpen = topicFilterSelectionOpen
+                )
+            )
+        }
+
+
+    }
+
+    private fun activateTopicFilter() {
+
+        val updatedFilterState = currentState.filterState.copy(
+            isTopicFilterOpen = !currentState.filterState.isTopicFilterOpen,
+            isMoodFilterOpen = false
+        )
+
+        updateState { it.copy(filterState = updatedFilterState) }
+    }
+
+
+    private fun selectTopicItem(title: String) {
+
+
+        val updatedTopicItems = currentState.filterState.topicFilterItems.map {
+
+            if (it.title == title) it.copy(isChecked = !it.isChecked) else it
+        }
+
+        selectedTopicFilters.value = updatedTopicItems
+
+        updateTopicFilterItems(updatedTopicItems)
+    }
+
+    private fun clearTopicFilter() {
+
+        selectedTopicFilters.value = emptyList()
+
+        val updatedTopicItems = currentState.filterState.topicFilterItems.map {
+
+            if (it.isChecked) it.copy(isChecked = false) else it
+        }
+    }
+
 
     var seekFieldValue = MutableStateFlow(
         TextFieldValue(
