@@ -30,7 +30,7 @@ class MediaAudioRecorder @Inject constructor(@ApplicationContext private val con
     }
 
 
-    override fun start(outputFile: File) {
+    override fun start() {
 
         val audioFileNme = "temp_${System.currentTimeMillis()}.mp3"
         audioFile = File(outputDir, audioFileNme)
@@ -41,7 +41,7 @@ class MediaAudioRecorder @Inject constructor(@ApplicationContext private val con
             setAudioSamplingRate(44_100)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-            setOutputFile(FileOutputStream(outputFile).fd)
+            setOutputFile(audioFile?.absolutePath)
 
             prepare()
             start()

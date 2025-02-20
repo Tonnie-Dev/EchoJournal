@@ -13,7 +13,7 @@ data class HomeUiState(
     val echoes: Map<Long, List<EchoHolderState>> = mapOf(),
     val filterState: FilterState = FilterState(),
     val isFilterActive: Boolean = false,
-    val homeSheetState: HomeSheetState = HomeSheetState(),
+    val recordingSheetState: RecordingSheetState = RecordingSheetState(),
     val isPermissionDialogOpen: Boolean = false
 ) : UiState {
 
@@ -25,7 +25,7 @@ data class HomeUiState(
     )
 
     @Stable
-    data class HomeSheetState(
+    data class RecordingSheetState(
         val isVisibleBoolean: Boolean = false,
         val isRecording: Boolean = true,
         val recordingTime: String = Constants.DEFAULT_FORMATTED_TIME

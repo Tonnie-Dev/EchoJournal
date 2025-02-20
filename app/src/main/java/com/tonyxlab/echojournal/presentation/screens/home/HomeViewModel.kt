@@ -20,8 +20,6 @@ import com.tonyxlab.echojournal.utils.AppCoroutineDispatchers
 import com.tonyxlab.echojournal.utils.StopWatch
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.formatMillisToTime
-import com.tonyxlab.echojournal.utils.fromLocalDateTimeToUtcTimeStamp
-import com.tonyxlab.echojournal.utils.now
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
@@ -29,8 +27,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
-import kotlinx.datetime.LocalDateTime
-import java.io.File
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -40,7 +37,7 @@ private typealias HomeBaseViewModel = BaseViewModel<HomeUiState, HomeUiEvent, Ho
 class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
-    private val recorder: AudioRecorder,
+    private val audioRecorder: AudioRecorder,
     private val audioPlayer: AudioPlayer,
     private val getEchoesUseCase: GetEchoesUseCase,
 ) : HomeBaseViewModel() {
@@ -54,7 +51,18 @@ class HomeViewModel @Inject constructor(
         when (event) {
 
             ActivateMoodFilter -> activateMoodFilter()
-            is SelectMoodItem -> selectMoodItem()
+            is SelectMoodItem -> selectMoodItem(event.mood.name)
+            ClearMoodItem -> clearMoodFilterItem()
+
+            ActivateTopicFilter -> activateTopicFilter()
+            is SelectTopicItem -> selectTopicItem(event.topic)
+            ClearTopicItem -> clearTopicFilterItem()
+
+            is OpenPermissionDialog -> updateState { it.copy(isPermissionDialogOpen = event.isOpen) }
+
+            StartRecording -> {
+                startRecording()
+            }
         }
     }
 
@@ -316,7 +324,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun clearMoodFilter() {
+    private fun clearMoodFilterItem() {
         selectedMoodFilters.value = emptyList()
         val updatedMoodItems = currentState.filterState.moodFilterItems.map {
             if (it.isChecked) it.copy(isChecked = false) else it
@@ -367,7 +375,7 @@ class HomeViewModel @Inject constructor(
         updateTopicFilterItems(updatedTopicItems)
     }
 
-    private fun clearTopicFilter() {
+    private fun clearTopicFilterItem() {
 
         selectedTopicFilters.value = emptyList()
 
@@ -378,31 +386,96 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    var seekFieldValue = MutableStateFlow(
-        TextFieldValue(
-            value = _homeState.value.seekValue,
-            onValueChange = this::setSeek
+    private fun updateRecordingSheetState(updatedRecordingSheetState: RecordingSheetState) {
 
-        )
-    )
-        private set
+        updateState { it.copy(recordingSheetState = updatedRecordingSheetState) }
+    }
 
-    fun createEcho() {
+    private fun flipRecordingState() {
 
-        _homeState.update { it.copy(isRecordingActivated = true) }
+        val updatedRecordingSheetState =
+            currentState.recordingSheetState.copy(isRecording = !currentState.recordingSheetState.isRecording)
+        updateRecordingSheetState(updatedRecordingSheetState)
+    }
+
+    private fun startRecording() {
+
+        audioRecorder.start()
+        stopWatch.start()
+
+        viewModelScope.launch {
+
+            stopWatch.formattedTime.collect {
+                val updatedRecordingSheetState =
+                    currentState.recordingSheetState.copy(recordingTime = it)
+                updateRecordingSheetState(updatedRecordingSheetState)
+
+            }
+        }
+
+    }
+
+    private fun pauseRecording() {
+
+        audioRecorder.pause()
+        stopWatch.pause()
+        flipRecordingState()
+
+    }
+
+    private fun resumeRecording() {
+
+        audioRecorder.resume()
+        stopWatch.start()
+        flipRecordingState()
+    }
+
+    private fun stopRecording(isSaveFile: Boolean) {
+
+        val audioFilePath = audioRecorder.stop(isSaveFile)
+        stopWatch.reset()
+        stopWatchJob?.cancel()
+
+        if (isSaveFile) {
+
+
+        }
     }
 
 
-    fun play(uri: Uri) {
+    fun playEcho(uri: Uri) {
 
 
-        _homeState.update { it.copy(isPlaying = true) }
+        if (audioPlayer.isPlaying()) {
+            stopPlayingEcho()
+        }
     }
 
 
-    fun stop() {
+    private fun stopPlayingEcho() {
 
-        _homeState.update { it.copy(isPlaying = false) }
+        val updatedEcho = currentState.echoes.mapValues {
+            (_, echoHolderStateList) ->
+
+            echoHolderStateList.map { echoHolderState ->
+
+                if (
+                    echoHolderState.playerState.action == PlayerState.Action.Playing ||
+                    echoHolderState.playerState.action == PlayerState.Action.Paused
+                ) {
+
+                    val updatedPlayerState = echoHolderState.playerState.copy(
+                        action = PlayerState.Action.Initializing,
+                        currentPosition = 0,
+                        currentPositionText = "00:00"
+
+                    )
+                    echoHolderState.copy(playerState = updatedPlayerState)
+                } else echoHolderState
+
+
+            }
+        }
 
     }
 
@@ -411,32 +484,14 @@ class HomeViewModel @Inject constructor(
         _homeState.update { it.copy(isRecordingActivated = false) }
     }
 
-    fun startRecording() {
+    var seekFieldValue = MutableStateFlow(
+        TextFieldValue(
+            value = _homeState.value.seekValue,
+            onValueChange = this::setSeek
 
-        val file = File(
-            context.filesDir,
-            "recording${LocalDateTime.now().fromLocalDateTimeToUtcTimeStamp()}"
         )
-            .also {
-                recorder.start(it)
-
-            }
-
-        val fileUri = Uri.fromFile(file)
-        //  _homeState.update { it.copy(recordingUri = fileUri) }
-    }
-
-    fun stopRecording() {
-
-        recorder.stop()
-    }
-
-    fun pauseRecording() {
-
-
-    }
-
-    fun setSeek(value: Float) {}
+    )
+        private set
 
 }
 
