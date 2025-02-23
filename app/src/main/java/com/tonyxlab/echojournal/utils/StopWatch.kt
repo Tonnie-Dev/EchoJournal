@@ -55,7 +55,6 @@ class StopWatch @Inject constructor(private val appCoroutineDispatchers: AppCoro
 
     fun reset() {
 
-
         coroutineScope.cancel()
         coroutineScope = CoroutineScope(appCoroutineDispatchers.main)
         timeMillis = 0L

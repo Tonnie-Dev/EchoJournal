@@ -21,10 +21,10 @@ sealed interface HomeUiEvent:UiEvent {
     data class StopRecording(val saveFile: Boolean) : HomeUiEvent
 
     data object ActionButtonStartRecording : HomeUiEvent
-    data class ActionButtonStopRecording(val saveFile: Boolean = true)
+    data class ActionButtonStopRecording(val saveFile: Boolean = true):HomeUiEvent
 
 
-    data class PlayEcho(val echoId: String) : HomeUiEvent
-    data class PauseEcho(val echoId: String) : HomeUiEvent
-    data class ResumeEcho(val echoId: String) : HomeUiEvent
+    data class StartPlay(val echoId: String) : HomeUiEvent
+    data class PausePlay(val echoId: String) : HomeUiEvent
+    data class ResumePlay(val echoId: String) : HomeUiEvent
 }

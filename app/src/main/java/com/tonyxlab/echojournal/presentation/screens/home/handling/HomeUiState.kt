@@ -26,7 +26,7 @@ data class HomeUiState(
 
     @Stable
     data class RecordingSheetState(
-        val isVisibleBoolean: Boolean = false,
+        val isVisible: Boolean = false,
         val isRecording: Boolean = true,
         val recordingTime: String = Constants.DEFAULT_FORMATTED_TIME
     )

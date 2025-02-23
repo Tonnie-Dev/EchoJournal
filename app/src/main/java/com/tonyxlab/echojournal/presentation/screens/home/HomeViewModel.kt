@@ -11,14 +11,31 @@ import com.tonyxlab.echojournal.domain.model.toMood
 import com.tonyxlab.echojournal.domain.usecases.GetEchoesUseCase
 import com.tonyxlab.echojournal.presentation.core.base.BaseViewModel
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
+import com.tonyxlab.echojournal.presentation.core.state.PlayerState.Action
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeActionEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
-import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.*
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActionButtonStartRecording
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActionButtonStopRecording
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActivateMoodFilter
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActivateTopicFilter
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ClearMoodItem
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ClearTopicItem
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.OpenPermissionDialog
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.PausePlay
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.PauseRecording
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ResumePlay
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ResumeRecording
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.SelectMoodItem
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.SelectTopicItem
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.StartPlay
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.StartRecording
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.StopRecording
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
-import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState.*
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState.EchoHolderState
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState.FilterState
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState.RecordingSheetState
 import com.tonyxlab.echojournal.utils.AppCoroutineDispatchers
 import com.tonyxlab.echojournal.utils.StopWatch
-import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.formatMillisToTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,7 +43,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,8 +51,8 @@ private typealias HomeBaseViewModel = BaseViewModel<HomeUiState, HomeUiEvent, Ho
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val appCoroutineDispatchers: AppCoroutineDispatchers,
+   
+    appCoroutineDispatchers: AppCoroutineDispatchers,
     private val audioRecorder: AudioRecorder,
     private val audioPlayer: AudioPlayer,
     private val getEchoesUseCase: GetEchoesUseCase,
@@ -61,8 +77,25 @@ class HomeViewModel @Inject constructor(
             is OpenPermissionDialog -> updateState { it.copy(isPermissionDialogOpen = event.isOpen) }
 
             StartRecording -> {
+                flipRecordingState()
                 startRecording()
             }
+
+            PauseRecording -> pauseRecording()
+            ResumeRecording -> resumeRecording()
+
+            is StopRecording -> {
+                flipRecordingState()
+                stopRecording(isSaveFile = event.saveFile)
+            }
+
+            ActionButtonStartRecording -> startRecording()
+
+            is ActionButtonStopRecording -> stopRecording(isSaveFile = event.saveFile)
+
+            is StartPlay -> startPlay(echoId = event.echoId)
+            is PausePlay -> pausePlay(echoId = event.echoId)
+            is ResumePlay -> resumePlay(echoId = event.echoId)
         }
     }
 
@@ -99,14 +132,24 @@ class HomeViewModel @Inject constructor(
 
             val topics = mutableSetOf<String>()
 
-            val sortedEchoes = currentlyFilteredEchoes.ifEmpty {
-                fetchedEchoes = groupEchoesByDate(
-                    echoes = echoes,
-                    topics = topics
-                )
-                fetchedEchoes
+            val sortedEchoes =
+                if (currentlyFilteredEchoes != null && currentlyFilteredEchoes.isEmpty()) {
+                    fetchedEchoes = groupEchoesByDate(
+                        echoes = echoes,
+                        topics = topics
+                    )
 
-            }
+                    fetchedEchoes
+
+                } else currentlyFilteredEchoes ?: emptyMap()
+            /* val sortedEchoes = currentlyFilteredEchoes?.ifEmpty {
+                 fetchedEchoes = groupEchoesByDate(
+                     echoes = echoes,
+                     topics = topics
+                 )*/
+            fetchedEchoes
+
+
             val updatedTopicFilterItems = addNewTopicFilterItems(topics = topics.toList())
 
             updateState {
@@ -211,14 +254,13 @@ class HomeViewModel @Inject constructor(
         audioPlayer.setOnCompletionListener {
 
             with(playingEchoId.value) {
-                updatePlayerStateAction(this, PlayerState.Action.Initializing)
+                updatePlayerStateAction(this, Action.Stopped)
                 audioPlayer.stop()
             }
         }
     }
 
-
-    private fun updatePlayerStateAction(echoId: String, action: PlayerState.Action) {
+    private fun updatePlayerStateAction(echoId: String, action: Action) {
 
         val echoHolderState = getCurrentEchoHolderState(echoId)
         val updatedPlayerState = echoHolderState.playerState.copy(action = action)
@@ -236,8 +278,6 @@ class HomeViewModel @Inject constructor(
 
                     echoHolderState.copy(playerState = newPlayerState)
                 } else echoHolderState
-
-
             }
         }
 
@@ -333,7 +373,7 @@ class HomeViewModel @Inject constructor(
         updateMoodFilterItems(updatedMoodItems = updatedMoodItems, moodFilterSelectionOpen = false)
     }
 
-    fun updateTopicFilterItems(
+    private fun updateTopicFilterItems(
         updatedItems: List<FilterState.FilterItem>,
         topicFilterSelectionOpen: Boolean = true
     ) {
@@ -394,7 +434,10 @@ class HomeViewModel @Inject constructor(
     private fun flipRecordingState() {
 
         val updatedRecordingSheetState =
-            currentState.recordingSheetState.copy(isRecording = !currentState.recordingSheetState.isRecording)
+            currentState.recordingSheetState.copy(
+                isVisible = !currentState.recordingSheetState.isVisible,
+                isRecording = true
+            )
         updateRecordingSheetState(updatedRecordingSheetState)
     }
 
@@ -437,35 +480,56 @@ class HomeViewModel @Inject constructor(
         stopWatchJob?.cancel()
 
         if (isSaveFile) {
-
-
+            stopPlay()
+            sendActionEvent(HomeActionEvent.NavigateToEditorScreen(Uri.encode(audioFilePath)))
         }
     }
 
 
-    fun playEcho(uri: Uri) {
+    fun startPlay(echoId: String) {
 
 
         if (audioPlayer.isPlaying()) {
-            stopPlayingEcho()
+            stopPlay()
+            audioPlayer.stop()
         }
+
+        playingEchoId.value = echoId
+
+        updatePlayerStateAction(
+            echoId = echoId,
+            action = Action.Playing
+        )
+
+        val audioFilePath = getCurrentEchoHolderState(echoId).echo.uri.toString()
+        audioPlayer.initializeFile(audioFilePath)
+        audioPlayer.play()
+
     }
 
+    private fun resumePlay(echoId: String) {
+        updatePlayerStateAction(echoId = echoId, action = Action.Resumed)
+        audioPlayer.resume()
+    }
 
-    private fun stopPlayingEcho() {
+    private fun pausePlay(echoId: String) {
+        updatePlayerStateAction(echoId = echoId, action = Action.Paused)
+        audioPlayer.pause()
+    }
 
-        val updatedEcho = currentState.echoes.mapValues {
-            (_, echoHolderStateList) ->
+    private fun stopPlay() {
+
+        val updatedEchoes = currentState.echoes.mapValues { (_, echoHolderStateList) ->
 
             echoHolderStateList.map { echoHolderState ->
 
                 if (
-                    echoHolderState.playerState.action == PlayerState.Action.Playing ||
-                    echoHolderState.playerState.action == PlayerState.Action.Paused
+                    echoHolderState.playerState.action == Action.Playing ||
+                    echoHolderState.playerState.action == Action.Paused
                 ) {
 
                     val updatedPlayerState = echoHolderState.playerState.copy(
-                        action = PlayerState.Action.Initializing,
+                        action = Action.Stopped,
                         currentPosition = 0,
                         currentPositionText = "00:00"
 
@@ -473,25 +537,22 @@ class HomeViewModel @Inject constructor(
                     echoHolderState.copy(playerState = updatedPlayerState)
                 } else echoHolderState
 
-
             }
         }
 
+        updateState { it.copy(echoes = updatedEchoes) }
+
     }
 
-    fun dismissRecordingModalSheet() {
 
-        _homeState.update { it.copy(isRecordingActivated = false) }
-    }
+    /* var seekFieldValue = MutableStateFlow(
+         TextFieldValue(
+             value = _homeState.value.seekValue,
+             onValueChange = this::setSeek
 
-    var seekFieldValue = MutableStateFlow(
-        TextFieldValue(
-            value = _homeState.value.seekValue,
-            onValueChange = this::setSeek
-
-        )
-    )
-        private set
+         )
+     )
+         private set*/
 
 }
 
