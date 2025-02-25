@@ -17,8 +17,8 @@ import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.A
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActionButtonStopRecording
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActivateMoodFilter
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActivateTopicFilter
-import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ClearMoodItem
-import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ClearTopicItem
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.CancelMoodFilter
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.CancelTopicFilter
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.OpenPermissionDialog
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.PausePlay
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.PauseRecording
@@ -65,11 +65,11 @@ class HomeViewModel @Inject constructor(
 
             ActivateMoodFilter -> activateMoodFilter()
             is SelectMoodItem -> selectMoodItem(event.mood.name)
-            ClearMoodItem -> clearMoodFilterItem()
+            CancelMoodFilter -> clearMoodFilterItem()
 
             ActivateTopicFilter -> activateTopicFilter()
             is SelectTopicItem -> selectTopicItem(event.topic)
-            ClearTopicItem -> clearTopicFilterItem()
+            CancelTopicFilter -> clearTopicFilterItem()
 
             is OpenPermissionDialog -> updateState { it.copy(isPermissionDialogOpen = event.isOpen) }
 

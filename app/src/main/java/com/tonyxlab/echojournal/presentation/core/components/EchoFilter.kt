@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -26,8 +27,58 @@ import androidx.compose.ui.util.fastJoinToString
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.toMood
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 
+
+@Composable
+fun EchoFilter(
+    filterState: HomeUiState.FilterState,
+    onEvent: (HomeUiEvent) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    // TODO: Enclose Lazy Row in a Column if no Error is Detected
+    /*
+       Column(modifier = modifier){
+
+
+       }
+    */
+
+    LazyRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
+    ) {
+        item {
+
+            FilterChip(
+                defaultTitle = stringResource(id = R.string.all_moods_filter_text),
+                filterItems = filterState.moodFilterItems,
+                isFilterItemSelected = filterState.isMoodFilterOpen,
+                onClickFilter = { onEvent(HomeUiEvent.ActivateMoodFilter) },
+                onClearFilter = { onEvent(HomeUiEvent.CancelMoodFilter) },
+                leadingIcon = {
+                    if (filterState.moodFilterItems.isNotEmpty()) {
+                        SelectedMoodIcons(moodFilterItems = filterState.moodFilterItems)
+                    }
+                })
+        }
+
+        item {
+
+            //Topic Chip
+            FilterChip(
+                defaultTitle = stringResource(id = R.string.all_topics_filter_text),
+                filterItems = filterState.topicFilterItems,
+                isFilterItemSelected = filterState.isTopicFilterOpen,
+                onClickFilter = { onEvent(HomeUiEvent.ActivateTopicFilter) },
+                onClearFilter = { onEvent(HomeUiEvent.CancelTopicFilter) }
+            )
+        }
+
+    }
+
+}
 
 @Composable
 fun SelectedMoodIcons(
@@ -55,7 +106,7 @@ private fun FilterChip(
     defaultTitle: String,
     filterItems: List<HomeUiState.FilterState.FilterItem>,
     isFilterItemSelected: Boolean,
-    onSelectItem: () -> Unit,
+    onClickFilter: () -> Unit,
     onClearFilter: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -65,7 +116,7 @@ private fun FilterChip(
     AssistChip(
         modifier = modifier,
         enabled = enabled,
-        onClick = onSelectItem,
+        onClick = onClickFilter,
         shape = RoundedCornerShape(MaterialTheme.spacing.spaceTen * 5),
         colors = AssistChipDefaults.assistChipColors(
             containerColor = when {

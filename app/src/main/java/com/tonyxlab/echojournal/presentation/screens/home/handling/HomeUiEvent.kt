@@ -7,11 +7,11 @@ sealed interface HomeUiEvent:UiEvent {
 
     data object ActivateMoodFilter : HomeUiEvent
     data class SelectMoodItem(val mood: Mood) : HomeUiEvent
-    data object ClearMoodItem : HomeUiEvent
+    data object CancelMoodFilter : HomeUiEvent
 
     data object ActivateTopicFilter : HomeUiEvent
     data class SelectTopicItem(val topic: String) : HomeUiEvent
-    data object ClearTopicItem : HomeUiEvent
+    data object CancelTopicFilter : HomeUiEvent
 
     data class OpenPermissionDialog(val isOpen: Boolean) : HomeUiEvent
 
