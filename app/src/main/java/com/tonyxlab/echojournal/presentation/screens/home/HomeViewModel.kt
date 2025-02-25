@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.home
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
@@ -38,7 +37,6 @@ import com.tonyxlab.echojournal.utils.AppCoroutineDispatchers
 import com.tonyxlab.echojournal.utils.StopWatch
 import com.tonyxlab.echojournal.utils.formatMillisToTime
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -51,7 +49,6 @@ private typealias HomeBaseViewModel = BaseViewModel<HomeUiState, HomeUiEvent, Ho
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-   
     appCoroutineDispatchers: AppCoroutineDispatchers,
     private val audioRecorder: AudioRecorder,
     private val audioPlayer: AudioPlayer,
