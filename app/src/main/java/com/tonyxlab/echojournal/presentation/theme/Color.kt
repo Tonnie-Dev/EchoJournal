@@ -2,14 +2,6 @@ package com.tonyxlab.echojournal.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
-/*val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)*/
-
 // Primary
 val Primary10 = Color(0xFF001945)
 val Primary30 = Color(0xFF004CB4)
@@ -81,3 +73,19 @@ val Stressed25 = Color(0xFFF8EFEF)
 val Stressed35 = Color(0xFFE9C5C5)
 val Stressed80 = Color(0xFFDE3A3A)
 val Stressed95 = Color(0xFF6B0303)
+
+// Extra Colors
+val EchoLightBlue = Color(0xFFF2F5FF)
+val EchoPaleBlue = Color(0xFFEEF0FF)
+val EchoSofBlue = Color(0xFFE1E2EC)
+val EchoDeepBlue = Color(0xFF475D92)
+val EchoBlue = Color(0xFF00419C)
+val EchoGrayBlue = Color(0xFF40434F)
+val EchoDustyBlue = Color(0xFF6B7796)
+val EchoDark = Color(0xFF191A20)
+val EchoDarkSteel = Color(0xFF3B4663)
+val EchoMutedGray = Color(0xFF6C7085)
+val EchoLightGray = Color(0xFFC1C3CE)
+val EchoUltraLightGray = Color(0xFFF2F2F7)
+val EchoRed = Color(0xFF680014)
+val EchoSoftPeach = Color(0xFFFFEDEC)
