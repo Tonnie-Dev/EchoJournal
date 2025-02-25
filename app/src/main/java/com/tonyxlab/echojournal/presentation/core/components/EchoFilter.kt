@@ -1,6 +1,10 @@
 package com.tonyxlab.echojournal.presentation.core.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -13,13 +17,38 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.util.fastFilter
+import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastJoinToString
 import com.tonyxlab.echojournal.R
+import com.tonyxlab.echojournal.domain.model.toMood
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
+
+
+@Composable
+fun SelectedMoodIcons(
+    moodFilterItems: List<HomeUiState.FilterState.FilterItem>,
+    modifier: Modifier = Modifier
+) {
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(-MaterialTheme.spacing.spaceExtraSmall)
+    ) {
+        moodFilterItems.fastForEach { filterItem ->
+            val mood = filterItem.title.toMood()
+            Image(
+                modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 11),
+                painter = painterResource(mood.icon),
+                contentDescription = null
+            )
+        }
+    }
+}
 
 @Composable
 private fun FilterChip(
