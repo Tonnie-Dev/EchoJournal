@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.presentation.core.components
+package com.tonyxlab.echojournal.presentation.screens.home.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
