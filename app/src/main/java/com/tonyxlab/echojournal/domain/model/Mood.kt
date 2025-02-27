@@ -38,11 +38,11 @@ sealed class Mood(
     @DrawableRes
     val outlinedIcon: Int,
     @Serializable(with = ColorSerializer::class)
-    val accentColor1: Color,
+    val moodButtonColor: Color,
     @Serializable(with = ColorSerializer::class)
-    val accentColor2: Color,
+    val moodTrackColor: Color,
     @Serializable(with = ColorSerializer::class)
-    val accentColor3: Color
+    val moodBackgroundColor: Color
 ) {
 
     @Serializable
@@ -50,9 +50,9 @@ sealed class Mood(
         icon = R.drawable.mood_stressed,
         outlinedIcon = R.drawable.mood_stressed_outline,
         name = "Stressed",
-        accentColor1 = Stressed80,
-        accentColor2 = Stressed35,
-        accentColor3 = Stressed25
+        moodButtonColor = Stressed80,
+        moodTrackColor = Stressed35,
+        moodBackgroundColor = Stressed25
     )
 
     @Serializable
@@ -60,9 +60,9 @@ sealed class Mood(
         icon = R.drawable.mood_sad,
         outlinedIcon = R.drawable.mood_sad_outline,
         name = "Sad",
-        accentColor1 = Sad80,
-        accentColor2 = Sad35,
-        accentColor3 = Sad25
+        moodButtonColor = Sad80,
+        moodTrackColor = Sad35,
+        moodBackgroundColor = Sad25
     )
 
     @Serializable
@@ -70,9 +70,9 @@ sealed class Mood(
         icon = R.drawable.mood_neutral,
         outlinedIcon = R.drawable.mood_neutral_outline,
         name = "Neutral",
-        accentColor1 = Neutral80,
-        accentColor2 = Neutral35,
-        accentColor3 = Neutral25
+        moodButtonColor = Neutral80,
+        moodTrackColor = Neutral35,
+        moodBackgroundColor = Neutral25
     )
 
     @Serializable
@@ -80,9 +80,9 @@ sealed class Mood(
         icon = R.drawable.mood_peaceful,
         outlinedIcon = R.drawable.mood_peaceful_outline,
         name = "Peaceful",
-        accentColor1 = Peaceful80,
-        accentColor2 = Peaceful35,
-        accentColor3 = Peaceful25
+        moodButtonColor = Peaceful80,
+        moodTrackColor = Peaceful35,
+        moodBackgroundColor = Peaceful25
     )
 
     @Serializable
@@ -90,9 +90,9 @@ sealed class Mood(
         icon = R.drawable.mood_excited,
         outlinedIcon = R.drawable.mood_excited_outline,
         name = "Excited",
-        accentColor1 = Excited80,
-        accentColor2 = Excited35,
-        accentColor3 = Excited25
+        moodButtonColor = Excited80,
+        moodTrackColor = Excited35,
+        moodBackgroundColor = Excited25
     )
 
     @Serializable
@@ -100,9 +100,9 @@ sealed class Mood(
         icon = R.drawable.mood_excited,
         outlinedIcon = R.drawable.mood_excited_outline,
         name = "Undefined",
-        accentColor1 = Primary30,
-        accentColor2 = Secondary80,
-        accentColor3 = Primary95
+        moodButtonColor = Primary30,
+        moodTrackColor = Secondary80,
+        moodBackgroundColor = Primary95
     )
 
     companion object {
