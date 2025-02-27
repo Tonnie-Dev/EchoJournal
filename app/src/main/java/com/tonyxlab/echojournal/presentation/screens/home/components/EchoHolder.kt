@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -42,7 +44,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.tonyxlab.echojournal.domain.model.Echo
+import com.tonyxlab.echojournal.data.database.entity.EchoWithTopics
+import com.tonyxlab.echojournal.presentation.core.components.ExpandableText
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
@@ -50,6 +53,7 @@ import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.EchoUltraLightGray
 import com.tonyxlab.echojournal.utils.formatMillisToTime
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EchoHolder(
     echoHolderState: HomeUiState.EchoHolderState,
@@ -84,17 +88,52 @@ fun EchoHolder(
                 }
 
             }
-            .padding(vertical = MaterialTheme.spacing.spaceSmall)
-        , shape = RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 5),
+            .padding(vertical = MaterialTheme.spacing.spaceSmall),
+            shape = RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 5),
             shadowElevation = MaterialTheme.spacing.spaceDoubleDp * 3) {
 
-            Column (modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceDoubleDp * 7).padding(top = MaterialTheme.spacing.spaceDoubleDp * 6, bottom = MaterialTheme.spacing.spaceDoubleDp * 7)){
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.spacing.spaceDoubleDp * 7)
+                    .padding(
+                        top = MaterialTheme.spacing.spaceDoubleDp * 6,
+                        bottom = MaterialTheme.spacing.spaceDoubleDp * 7
+                    )
+            ) {
+
                 EchoHeader(
                     title = echo.title,
                     creationTime = echo.timestamp.formatMillisToTime()
                 )
+
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 5))
 
+                MoodPlayer(mood = mood,
+                    playerState = echoHolderState.playerState,
+                    onPlayClick = { onEvent(HomeUiEvent.StartPlay(echoId = echo.id)) },
+                    onPauseClick = { onEvent(HomeUiEvent.PausePlay(echoId = echo.id)) },
+                    onResumeClick = { onEvent(HomeUiEvent.StartPlay(echoId = echo.id)) }
+                )
+
+                // Echo Description
+
+                if (echo.description.isNotEmpty()) {
+
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 5))
+                    ExpandableText(echoText = echo.description)
+                }
+
+                // Topic Tags
+                if (echo.topics.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceSmall))
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
+                    ) {
+                        echo.topics.forEach { topic -> TopicChip(title = topic) }
+                    }
+                }
             }
         }
     }
