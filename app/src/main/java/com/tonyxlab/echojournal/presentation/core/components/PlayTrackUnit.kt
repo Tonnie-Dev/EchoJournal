@@ -40,7 +40,7 @@ fun PlayTrackUnit(
     Row(
         modifier = modifier
             .background(
-                color = mood.accentColor3,
+                color = mood.moodBackgroundColor,
                 RoundedCornerShape(spacing.spaceExtraLarge)
             )
             .padding(
@@ -58,7 +58,7 @@ fun PlayTrackUnit(
             modifier = Modifier
                 .size(spacing.spaceLarge + spacing.spaceSmall)
                 .shadow(spacing.spaceSmall, CircleShape),
-            playArrowColor = mood.accentColor1,
+            playArrowColor = mood.moodButtonColor,
             isPlaying = isPlaying,
             onTogglePlay = onTogglePlay
         )

@@ -10,7 +10,7 @@ import com.tonyxlab.echojournal.domain.model.toMood
 import com.tonyxlab.echojournal.domain.usecases.GetEchoesUseCase
 import com.tonyxlab.echojournal.presentation.core.base.BaseViewModel
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
-import com.tonyxlab.echojournal.presentation.core.state.PlayerState.Action
+import com.tonyxlab.echojournal.presentation.core.state.PlayerState.Mode
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeActionEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActionButtonStartRecording
@@ -251,16 +251,16 @@ class HomeViewModel @Inject constructor(
         audioPlayer.setOnCompletionListener {
 
             with(playingEchoId.value) {
-                updatePlayerStateAction(this, Action.Stopped)
+                updatePlayerStateAction(this, Mode.Stopped)
                 audioPlayer.stop()
             }
         }
     }
 
-    private fun updatePlayerStateAction(echoId: String, action: Action) {
+    private fun updatePlayerStateAction(echoId: String, mode: Mode) {
 
         val echoHolderState = getCurrentEchoHolderState(echoId)
-        val updatedPlayerState = echoHolderState.playerState.copy(action = action)
+        val updatedPlayerState = echoHolderState.playerState.copy(mode = mode)
         updatePlayerState(echoId = echoId, newPlayerState = updatedPlayerState)
 
     }
@@ -495,7 +495,7 @@ class HomeViewModel @Inject constructor(
 
         updatePlayerStateAction(
             echoId = echoId,
-            action = Action.Playing
+            mode = Mode.Playing
         )
 
         val audioFilePath = getCurrentEchoHolderState(echoId).echo.uri.toString()
@@ -505,12 +505,12 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun resumePlay(echoId: String) {
-        updatePlayerStateAction(echoId = echoId, action = Action.Resumed)
+        updatePlayerStateAction(echoId = echoId, mode = Mode.Resumed)
         audioPlayer.resume()
     }
 
     private fun pausePlay(echoId: String) {
-        updatePlayerStateAction(echoId = echoId, action = Action.Paused)
+        updatePlayerStateAction(echoId = echoId, mode = Mode.Paused)
         audioPlayer.pause()
     }
 
@@ -521,12 +521,12 @@ class HomeViewModel @Inject constructor(
             echoHolderStateList.map { echoHolderState ->
 
                 if (
-                    echoHolderState.playerState.action == Action.Playing ||
-                    echoHolderState.playerState.action == Action.Paused
+                    echoHolderState.playerState.mode == Mode.Playing ||
+                    echoHolderState.playerState.mode == Mode.Paused
                 ) {
 
                     val updatedPlayerState = echoHolderState.playerState.copy(
-                        action = Action.Stopped,
+                        mode = Mode.Stopped,
                         currentPosition = 0,
                         currentPositionText = "00:00"
 

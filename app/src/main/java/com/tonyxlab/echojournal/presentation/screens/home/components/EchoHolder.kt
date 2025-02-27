@@ -6,7 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,7 +17,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -37,19 +42,74 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.EchoUltraLightGray
+import com.tonyxlab.echojournal.utils.formatMillisToTime
 
 @Composable
-private fun EntryHeader(
+fun EchoHolder(
+    echoHolderState: HomeUiState.EchoHolderState,
+    echoPosition: EchoListPosition,
+    onEvent: (HomeUiEvent) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val echo = echoHolderState.echo
+    val mood = echo.mood
+
+    Row(modifier = modifier.height(IntrinsicSize.Min)) {
+
+        var holderHeight by remember { mutableIntStateOf(0) }
+        var isHolderCollapsed by remember { mutableStateOf(false) }
+
+        MoodTimeline(
+            moodRes = mood.icon,
+            echoPosition = echoPosition,
+            modifier = Modifier.fillMaxHeight(),
+            isHolderCollapsed = isHolderCollapsed,
+            holderHeight = holderHeight
+        )
+
+        Surface(modifier = Modifier
+            .fillMaxWidth()
+            .onSizeChanged { size ->
+                with(size.height) {
+                    if (this != holderHeight) {
+                        isHolderCollapsed = this < holderHeight
+                        holderHeight = this
+                    }
+                }
+
+            }
+            .padding(vertical = MaterialTheme.spacing.spaceSmall)
+        , shape = RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 5),
+            shadowElevation = MaterialTheme.spacing.spaceDoubleDp * 3) {
+
+            Column (modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceDoubleDp * 7).padding(top = MaterialTheme.spacing.spaceDoubleDp * 6, bottom = MaterialTheme.spacing.spaceDoubleDp * 7)){
+                EchoHeader(
+                    title = echo.title,
+                    creationTime = echo.timestamp.formatMillisToTime()
+                )
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 5))
+
+            }
+        }
+    }
+
+}
+
+@Composable
+private fun EchoHeader(
     title: String,
     creationTime: String,
     modifier: Modifier = Modifier
 ) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

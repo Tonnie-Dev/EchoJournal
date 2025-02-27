@@ -9,17 +9,17 @@ data class PlayerState(
     val duration: Int = 0,
     val currentPosition: Int = 0,
     val currentPositionText: String = "00:00",
-    val action: Action = Action.Stopped
+    val mode: Mode = Mode.Stopped
 ) {
 
     val durationText = duration.toLong().formatMillisToTime()
 
-    sealed interface Action {
+    sealed interface Mode {
 
-        data object Playing : Action
-        data object Paused : Action
-        data object Resumed : Action
-        data object Stopped : Action
+        data object Playing : Mode
+        data object Paused : Mode
+        data object Resumed : Mode
+        data object Stopped : Mode
     }
 
 }

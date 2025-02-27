@@ -36,8 +36,8 @@ fun Seeker(
                         modifier = Modifier.height(spacing.spaceExtraSmall),
                         sliderState = it,
                         colors = SliderDefaults.colors(
-                                activeTrackColor = mood.accentColor1,
-                                inactiveTrackColor = mood.accentColor2
+                                activeTrackColor = mood.moodButtonColor,
+                                inactiveTrackColor = mood.moodTrackColor
                         ),
                         thumbTrackGapSize = 0.dp,
                         trackInsideCornerSize = 0.dp,
