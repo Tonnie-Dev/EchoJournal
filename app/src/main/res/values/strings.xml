@@ -26,4 +26,5 @@
     <string name="text_how_are_you_doing">How are you doing?</string>
     <string name="text_confirm">Confirm</string>
     <string name="text_save">Save</string>
+    <string name="text_no_entries">Try adjusting your filters to find what you\'re looking for</string>
 </resources>

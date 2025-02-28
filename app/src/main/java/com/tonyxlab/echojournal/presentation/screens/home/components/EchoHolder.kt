@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.tonyxlab.echojournal.data.database.entity.EchoWithTopics
 import com.tonyxlab.echojournal.presentation.core.components.ExpandableText
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
@@ -221,7 +220,7 @@ private fun MoodTimeline(
 
         derivedStateOf {
 
-            if (echoPosition is EchoListPosition.Center || echoPosition is EchoListPosition.Bottom)
+            if (echoPosition is EchoListPosition.Middle || echoPosition is EchoListPosition.Last)
                 0
             else centerMoodOffsetY
         }
@@ -232,9 +231,9 @@ private fun MoodTimeline(
         derivedStateOf {
 
             when (echoPosition) {
-                EchoListPosition.Top -> elementHeight - centerMoodOffsetY
-                EchoListPosition.Bottom -> centerMoodOffsetY
-                EchoListPosition.Center -> if (isHolderCollapsed) holderHeight else elementHeight
+                EchoListPosition.First -> elementHeight - centerMoodOffsetY
+                EchoListPosition.Last -> centerMoodOffsetY
+                EchoListPosition.Middle -> if (isHolderCollapsed) holderHeight else elementHeight
                 EchoListPosition.Single -> 0
             }
         }

@@ -1,6 +1,7 @@
 package com.tonyxlab.echojournal.presentation.screens.home
 
 import android.net.Uri
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,11 +17,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Echo
@@ -30,7 +35,45 @@ import com.tonyxlab.echojournal.presentation.core.components.EmptyScreen
 import com.tonyxlab.echojournal.presentation.core.components.RecordingModalSheet
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
+import com.tonyxlab.echojournal.presentation.screens.home.components.EchoFilter
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
+
+
+@Composable
+private fun HomeScreen(
+    uiState: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit
+) {
+
+var filterOffset by remember { mutableStateOf(IntOffset.Zero) }
+    Column {
+
+        EchoFilter(
+            filterState = uiState.filterState,
+            onEvent = onEvent,
+            modifier = Modifier.onGloballyPositioned {  coordinates ->
+                filterOffset = IntOffset(
+                    x = coordinates.positionInParent().x.toInt(),
+                    y = coordinates.positionInParent().y.toInt() + coordinates.size.height
+                )
+            }
+
+        )
+
+        if (uiState.echoes.isEmpty() && uiState.isFilterActive){
+
+            EmptyScreen(
+                supportingText = stringResource(id = R.string.text_no_entries)
+            )
+
+        }
+
+
+    }
+}
+
 
 @Composable
 fun HomeScreen(
@@ -53,7 +96,7 @@ fun HomeScreen(
         isRecordingActivated = homeState.isRecordingActivated,
         onStartRecording = viewModel::startRecording,
         onStopRecording = {
-           viewModel.dismissRecordingModalSheet()
+            viewModel.dismissRecordingModalSheet()
             viewModel.stopRecording()
             navigateToSaveScreen()
         },
@@ -143,7 +186,7 @@ fun HomeScreenContent(
                     isPlaying = isPlaying,
                     seekValue = seekValue,
                     onSeek = onSeek,
-                    onClickEcho = {onClickEcho(echo.id)},
+                    onClickEcho = { onClickEcho(echo.id) },
                     onPlayPause = {
                         selectedIndex = i
 
