@@ -36,6 +36,8 @@ import com.tonyxlab.echojournal.presentation.core.components.RecordingModalSheet
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoFilter
+import com.tonyxlab.echojournal.presentation.screens.home.components.EchoListPosition
+import com.tonyxlab.echojournal.presentation.screens.home.components.EchoesList
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
@@ -47,13 +49,13 @@ private fun HomeScreen(
     onEvent: (HomeUiEvent) -> Unit
 ) {
 
-var filterOffset by remember { mutableStateOf(IntOffset.Zero) }
+    var filterOffset by remember { mutableStateOf(IntOffset.Zero) }
     Column {
 
         EchoFilter(
             filterState = uiState.filterState,
             onEvent = onEvent,
-            modifier = Modifier.onGloballyPositioned {  coordinates ->
+            modifier = Modifier.onGloballyPositioned { coordinates ->
                 filterOffset = IntOffset(
                     x = coordinates.positionInParent().x.toInt(),
                     y = coordinates.positionInParent().y.toInt() + coordinates.size.height
@@ -62,11 +64,21 @@ var filterOffset by remember { mutableStateOf(IntOffset.Zero) }
 
         )
 
-        if (uiState.echoes.isEmpty() && uiState.isFilterActive){
+        if (uiState.echoes.isEmpty() && uiState.isFilterActive) {
 
             EmptyScreen(
                 supportingText = stringResource(id = R.string.text_no_entries)
             )
+
+        }
+
+        EchoesList(
+            echoes = uiState.echoes,
+            onEvent = onEvent
+        )
+
+        if(uiState.filterState.isMoodFilterOpen){
+
 
         }
 
