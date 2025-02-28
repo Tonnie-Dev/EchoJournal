@@ -20,39 +20,43 @@ import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 
 @Composable
-fun EmptyScreen(modifier: Modifier = Modifier) {
+fun EmptyScreen(
+    modifier: Modifier = Modifier,
+    text: String = stringResource(id = R.string.no_entries_text),
+    supportingText: String = stringResource(id = R.string.start_recording_text)
+) {
     val spacing = LocalSpacing.current
 
     Box(
-            modifier = modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
-            contentAlignment = Alignment.Center
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
     ) {
 
 
         Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
 
             Image(
-                    modifier = Modifier.padding(bottom = spacing.spaceLarge),
-                    painter = painterResource(R.drawable.empty_screen_icon),
-                    contentDescription = "Empty Icon"
+                modifier = Modifier.padding(bottom = spacing.spaceLarge),
+                painter = painterResource(R.drawable.empty_screen_icon),
+                contentDescription = "Empty Icon"
             )
             Text(
 
-                    modifier = Modifier.padding(bottom = spacing.spaceDoubleDp * 3),
-                    text = stringResource(R.string.no_entries_text),
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                modifier = Modifier.padding(bottom = spacing.spaceDoubleDp * 3),
+                text = text,
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Text(
-                    text = stringResource(R.string.start_recording_text),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                text = supportingText,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -65,6 +69,6 @@ private fun EmptyScreenPreview() {
 
         EmptyScreen()
 
-       
+
     }
 }
