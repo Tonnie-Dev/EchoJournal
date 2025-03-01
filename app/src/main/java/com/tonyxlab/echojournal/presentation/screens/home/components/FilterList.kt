@@ -42,8 +42,6 @@ fun FilterList(
     modifier: Modifier = Modifier,
     startOffset: IntOffset = IntOffset.Zero
 ) {
-
-
     Box(modifier = modifier
         .offset {
             startOffset
@@ -68,13 +66,10 @@ fun FilterList(
                 modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall)
             ) {
-
                 items(filterItems) { filterItem ->
-
                     FilterItem(
                         filterItem = filterItem,
                         onClick = { onItemClick(it) })
-
                 }
 
             }

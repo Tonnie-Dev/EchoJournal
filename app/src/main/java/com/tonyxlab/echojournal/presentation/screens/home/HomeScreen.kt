@@ -38,6 +38,7 @@ import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoFilter
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoListPosition
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoesList
+import com.tonyxlab.echojournal.presentation.screens.home.components.FilterList
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
@@ -65,24 +66,37 @@ private fun HomeScreen(
         )
 
         if (uiState.echoes.isEmpty() && uiState.isFilterActive) {
-
             EmptyScreen(
                 supportingText = stringResource(id = R.string.text_no_entries)
             )
 
         }
-
         EchoesList(
             echoes = uiState.echoes,
             onEvent = onEvent
         )
 
-        if(uiState.filterState.isMoodFilterOpen){
+    }
+
+    if (uiState.filterState.isMoodFilterOpen) {
+
+        FilterList(
+            filterItems = uiState.filterState.moodFilterItems,
+            onItemClick = { onEvent(HomeUiEvent.ActivateMoodFilter) },
+            onDismissClicked = { onEvent(HomeUiEvent.CancelMoodFilter) },
+            startOffset = filterOffset
+        )
 
 
-        }
+    }
 
-
+    if (uiState.filterState.isTopicFilterOpen) {
+        FilterList(
+            filterItems = uiState.filterState.topicFilterItems,
+            onItemClick = { onEvent(HomeUiEvent.ActivateMoodFilter) },
+            onDismissClicked = { onEvent(HomeUiEvent.CancelMoodFilter) },
+            startOffset = filterOffset
+        )
     }
 }
 
