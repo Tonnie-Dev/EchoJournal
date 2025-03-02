@@ -27,5 +27,6 @@
     <string name="text_confirm">Confirm</string>
     <string name="text_save">Save</string>
     <string name="your_echo_journal">Your EchoJournal</string>
+    <string name="cancel_recording">Cancel recording?</string>
     <string name="text_no_entries">Try adjusting your filters to find what you\'re looking for</string>
 </resources>
