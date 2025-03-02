@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Echo
+import com.tonyxlab.echojournal.presentation.core.base.BaseContentLayout
 import com.tonyxlab.echojournal.presentation.core.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.core.components.EchoCard
 import com.tonyxlab.echojournal.presentation.core.components.EmptyScreen
@@ -39,10 +40,37 @@ import com.tonyxlab.echojournal.presentation.screens.home.components.EchoFilter
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoListPosition
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoesList
 import com.tonyxlab.echojournal.presentation.screens.home.components.FilterList
+import com.tonyxlab.echojournal.presentation.screens.home.components.HomeTopBar
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.utils.generateRandomEchoItems
 
+@Composable
+fun HomeScreenRoot(
+    isDataLoaded: () -> Unit,
+    isLaunchedFromWidget: Boolean,
+     navigateToSettingScreen:()-> Unit
+    modifier: Modifier = Modifier
+) {
+
+    val viewModel:HomeViewModel = hiltViewModel()
+
+    BaseContentLayout(
+        modifier = modifier,
+        viewModel = viewModel,
+        topBar = {
+
+            HomeTopBar(
+                title = stringResource(id = R.string.your_echo_journal),
+                onSettingsClick = navigateToSettingScreen
+            )
+        },
+        floatingActionButton = {
+
+        }
+
+    ) { }
+}
 
 @Composable
 private fun HomeScreen(
