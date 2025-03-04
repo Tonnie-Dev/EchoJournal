@@ -57,6 +57,7 @@ import com.tonyxlab.echojournal.presentation.core.utils.GradientScheme
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 
 @Composable
 fun HomeFab(
@@ -169,7 +170,8 @@ fun HomeFab(
             modifier = Modifier.offset { recordButtonOffset },
             contentAlignment = Alignment.Center
         ) {
-            RecordButton(isRecording = isLongPressed,
+            RecordButton(
+                isRecording = isLongPressed,
                 onClick = { recordAudioPermissionResultLauncher.launch(Manifest.permission.RECORD_AUDIO) },
                 onLongClick = {
                     isLongPressed = true
@@ -182,7 +184,7 @@ fun HomeFab(
                 buttonSize = buttonSize
             )
 
-            if (isLongPressed){
+            if (isLongPressed) {
 
                 ButtonPulsatingCircle(
                     baseSize = (pulsatingCircleSize.value - 20.dp.value).dp,
@@ -192,9 +194,21 @@ fun HomeFab(
         }
     }
 
-    if (isPermissionDialogOpen){
+    if (isPermissionDialogOpen) {
         PermissionDialog(
-            isPermanentlyDeclined
+            isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
+                activity,
+                Manifest.permission.RECORD_AUDIO
+            ),
+            onDismiss = { isPermissionDialogOpen = false },
+            onOkClick = {
+                isPermissionDialogOpen = false
+                recordAudioPermissionResultLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            },
+            navigateToAppSettings = {
+                isPermissionDialogOpen = false
+                activity.openAppSettings()
+            }
         )
     }
 }
