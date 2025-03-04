@@ -62,7 +62,7 @@ import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 @Composable
 fun HomeFab(
     onResult: (isGranted: Boolean, isLongClicked: Boolean) -> Unit,
-    onLongPressRelease: (isCancelled: Boolean) -> Unit,
+    onLongPressRelease: (isEchoCancelled: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     buttonSize: Dp = MaterialTheme.spacing.spaceExtraLarge,
     pulsatingCircleSize: Dp = MaterialTheme.spacing.spaceOneTwentyEight
@@ -78,11 +78,9 @@ fun HomeFab(
     val hapticFeedback = LocalHapticFeedback.current
     var isEntryCancelled by remember { mutableStateOf(false) }
 
-
     val recordAudioPermissionResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
-
             isPermissionDialogOpen = !isGranted
             onResult(isGranted, isLongPressed)
         }
@@ -97,6 +95,7 @@ fun HomeFab(
         animationSpec = tween(durationMillis = 100),
         label = "Scale Cancel Icon"
     )
+
     LaunchedEffect(isEntryCancelled) {
 
         if (isEntryCancelled) {
@@ -125,8 +124,10 @@ fun HomeFab(
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         val density = LocalDensity.current
         val adjustmentRecordButtonOffsetX by remember {
+
             derivedStateOf {
                 val pulsatingCircleSizePx = with(density) {
                     pulsatingCircleSize.toPx()
@@ -137,6 +138,7 @@ fun HomeFab(
             }
         }
         val recordButtonOffset by remember {
+
             derivedStateOf {
                 IntOffset(
                     x = if (isLongPressed) adjustmentRecordButtonOffsetX.toInt() else 0,
