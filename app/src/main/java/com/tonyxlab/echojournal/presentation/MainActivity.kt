@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainDummyViewModel>()
+    private var showSplashScreen = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,6 +36,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(SPLASH_SCREEN_KEY,showSplashScreen)
+    }
+    companion object{
+
+        private const val SPLASH_SCREEN_KEY = "splash_screen_key"
     }
 }
 
