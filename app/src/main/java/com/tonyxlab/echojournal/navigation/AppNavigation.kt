@@ -4,35 +4,41 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.tonyxlab.echojournal.presentation.screens.editor.EditorScreen
-import com.tonyxlab.echojournal.presentation.screens.home.HomeScreen
+import com.tonyxlab.echojournal.presentation.screens.home.HomeScreenRoot
 import kotlinx.serialization.Serializable
 
-fun NavGraphBuilder.appDestinations(navController: NavController) {
+fun NavGraphBuilder.appDestinations(
+    navController: NavController, isDataLoaded: () -> Unit, isLaunchedFromWidget: Boolean
+) {
 
-    composable<HomeScreenObject> {
+    composable<HomeRouteObject> {
 
-        HomeScreen(
-            onClickEcho = {
-                navController.navigate(route = SaveScreenObject(it))
-            },
-            navigateToSaveScreen = { navController.navigate(route = SaveScreenObject()) },
-        )
+        HomeScreenRoot(
+            isDataLoaded = isDataLoaded,
+            isLaunchedFromWidget = isLaunchedFromWidget,
+            navigateToEditorScreen = { navController.navigate(EditorRouteObject(audioFilePath = it, id = "ss")) },
+            navigateToSettingScreen = { navController.navigate(SettingsRouteObject) })
     }
 
-    composable<SaveScreenObject> {
+    composable<EditorRouteObject> {
 
         EditorScreen(
             onPresBack = { navController.popBackStack() },
             onCancelEditor = { navController.navigateUp() },
-            onSaveEditor = {navController.navigate(route = HomeScreenObject) }
-        )
+            onSaveEditor = { })
 
     }
 
 }
 
 @Serializable
-data object HomeScreenObject
+data object HomeRouteObject
 
 @Serializable
-data class SaveScreenObject(val id: String? = null)
+data object SettingsRouteObject
+
+@Serializable
+data class EditorRouteObject(val id: String? = null, val audioFilePath: String)
+
+
+

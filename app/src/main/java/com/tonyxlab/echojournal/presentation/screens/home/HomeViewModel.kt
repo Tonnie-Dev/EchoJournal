@@ -42,6 +42,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -60,6 +61,8 @@ class HomeViewModel @Inject constructor(
         get() = HomeUiState()
 
     override fun onEvent(event: HomeUiEvent) {
+
+        Timber.i("onEvent Called")
 
         when (event) {
 
@@ -105,7 +108,7 @@ class HomeViewModel @Inject constructor(
     private var fetchedEchoes: Map<Long, List<EchoHolderState>> = emptyMap()
 
 
-    private var playingEchoId = MutableStateFlow("")
+    private var playingEchoId = MutableStateFlow<String?>(null)
 
 
     init {
@@ -114,7 +117,7 @@ class HomeViewModel @Inject constructor(
         observeEntries()
         observeFilters()
         setUpAudioPlayerListeners()
-        observeAudionPLayerCurrentPosition()
+        observeAudioPlayerCurrentPosition()
 
     }
 
@@ -248,17 +251,25 @@ class HomeViewModel @Inject constructor(
 
 
     private fun setUpAudioPlayerListeners() {
+
+
+        // Set a listener to handle actions when audio playback completes
         audioPlayer.setOnCompletionListener {
 
-            with(playingEchoId.value) {
-                updatePlayerStateAction(this, Mode.Stopped)
+            playingEchoId.value?.let { echoId ->
+
+                updatePlayerStateAction(echoId, PlayerState.Mode.Stopped)
                 audioPlayer.stop()
             }
+
+
+
         }
     }
 
     private fun updatePlayerStateAction(echoId: String, mode: Mode) {
-
+        Timber.i("The EchoId is $echoId")
+        Timber.i("L262 Called")
         val echoHolderState = getCurrentEchoHolderState(echoId)
         val updatedPlayerState = echoHolderState.playerState.copy(mode = mode)
         updatePlayerState(echoId = echoId, newPlayerState = updatedPlayerState)
@@ -282,27 +293,36 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getCurrentEchoHolderState(id: String): EchoHolderState {
-
+        Timber.i("My Id is: $id")
         return currentState.echoes.values
             .flatten()
-            .firstOrNull { it.echo.id == id }
-            ?: throw IllegalStateException("Audio file path not found for entry Id $id ")
+            .firstOrNull {
+                Timber.i("The other id is: ${it.echo.id}")
+                it.echo.id == id
+
+            }
+            ?: throw IllegalStateException("Audio file path not found for entry Id: $id")
 
 
     }
 
-    private fun observeAudionPLayerCurrentPosition() {
+    private fun observeAudioPlayerCurrentPosition() {
 
         launch {
 
             audioPlayer.currentPositionFlow.collect { positionMillis ->
 
-                val currentPosition = positionMillis.toLong().formatMillisToTime()
-                updatePlayerSateCurrentPosition(
-                    echoId = playingEchoId.value,
-                    currentPosition = positionMillis,
-                    currentPositionText = currentPosition
-                )
+                val currentPositionText = positionMillis.toLong().formatMillisToTime()
+
+                playingEchoId.value?.let { echoId ->
+
+                    updatePlayerSateCurrentPosition(
+                        echoId = echoId,
+                        currentPosition = positionMillis,
+                        currentPositionText =currentPositionText
+                    )
+                }
+
 
             }
         }
@@ -315,6 +335,7 @@ class HomeViewModel @Inject constructor(
         currentPositionText: String
     ) {
 
+        Timber.i("L324 Called")
         val echoHolderState = getCurrentEchoHolderState(id = echoId)
         val updatedPlayerState = echoHolderState.playerState.copy(
 
@@ -484,7 +505,7 @@ class HomeViewModel @Inject constructor(
 
 
     fun startPlay(echoId: String) {
-
+        Timber.i("506 Called")
 
         if (audioPlayer.isPlaying()) {
             stopPlay()

@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.tonyxlab.echojournal.navigation.HomeScreenObject
+import com.tonyxlab.echojournal.navigation.HomeRouteObject
 import com.tonyxlab.echojournal.navigation.appDestinations
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,23 +16,32 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainDummyViewModel>()
-    private var showSplashScreen = true
+    private var keepSplashScreen = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        super.onCreate(savedInstanceState)
+        savedInstanceState?.let {
+            keepSplashScreen = it.getBoolean(SPLASH_SCREEN_KEY)
+        }
         installSplashScreen().apply {
 
-            setKeepOnScreenCondition { !viewModel.isReady.value }
+            setKeepOnScreenCondition { keepSplashScreen }
         }
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContent {
             EchoJournalTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = HomeScreenObject) {
+                NavHost(
+                    navController = navController,
+                    startDestination = HomeRouteObject
+                ) {
 
-                    appDestinations(navController = navController)
+                    appDestinations(
+                        navController = navController,
+                        isDataLoaded = { keepSplashScreen = false },
+                        isLaunchedFromWidget = false
+                    )
                 }
             }
         }
@@ -41,9 +50,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean(SPLASH_SCREEN_KEY,showSplashScreen)
+        outState.putBoolean(SPLASH_SCREEN_KEY, keepSplashScreen)
     }
-    companion object{
+
+    companion object {
 
         private const val SPLASH_SCREEN_KEY = "splash_screen_key"
     }

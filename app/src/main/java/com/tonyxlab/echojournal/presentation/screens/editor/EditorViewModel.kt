@@ -13,7 +13,7 @@ import com.tonyxlab.echojournal.domain.usecases.CreateEchoUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetEchoByIdUseCase
 import com.tonyxlab.echojournal.domain.usecases.GetTopicsUseCase
 import com.tonyxlab.echojournal.domain.usecases.UpdateEchoUseCase
-import com.tonyxlab.echojournal.navigation.SaveScreenObject
+import com.tonyxlab.echojournal.navigation.EditorRouteObject
 import com.tonyxlab.echojournal.utils.Resource
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.fromLocalDateTimeToDefaultTimestamp
@@ -56,7 +56,7 @@ class EditorViewModel @Inject constructor(
 
     init {
 
-        val id = savedStateHandle.toRoute<SaveScreenObject>().id
+        val id = savedStateHandle.toRoute<EditorRouteObject>().id
         readEchoInfo(id = id)
         getTopicsUseCase().onEach { topics ->
 
