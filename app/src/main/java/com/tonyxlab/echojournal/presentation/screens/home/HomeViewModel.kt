@@ -62,8 +62,6 @@ class HomeViewModel @Inject constructor(
 
     override fun onEvent(event: HomeUiEvent) {
 
-        Timber.i("onEvent Called")
-
         when (event) {
 
             ActivateMoodFilter -> activateMoodFilter()
@@ -112,13 +110,10 @@ class HomeViewModel @Inject constructor(
 
 
     init {
-
-
         observeEntries()
         observeFilters()
         setUpAudioPlayerListeners()
         observeAudioPlayerCurrentPosition()
-
     }
 
     private fun observeEntries() {
@@ -142,15 +137,11 @@ class HomeViewModel @Inject constructor(
                     fetchedEchoes
 
                 } else currentlyFilteredEchoes ?: emptyMap()
-            /* val sortedEchoes = currentlyFilteredEchoes?.ifEmpty {
-                 fetchedEchoes = groupEchoesByDate(
-                     echoes = echoes,
-                     topics = topics
-                 )*/
+
             fetchedEchoes
 
-
-            val updatedTopicFilterItems = addNewTopicFilterItems(topics = topics.toList())
+            val updatedTopicFilterItems =
+                addNewTopicFilterItems(topics = topics.toList())
 
             updateState {
                 it.copy(
@@ -166,14 +157,12 @@ class HomeViewModel @Inject constructor(
 
         }.launchIn(viewModelScope)
 
-
     }
 
 
     private fun observeFilters() {
 
         combine(selectedMoodFilters, selectedTopicFilters) { moodFilters, topicFilters ->
-
 
             val moodTypes = moodFilters.map { it.title.toMood() }
             val topicTitles = topicFilters.map { it.title }
@@ -252,7 +241,6 @@ class HomeViewModel @Inject constructor(
 
     private fun setUpAudioPlayerListeners() {
 
-
         // Set a listener to handle actions when audio playback completes
         audioPlayer.setOnCompletionListener {
 
@@ -263,13 +251,11 @@ class HomeViewModel @Inject constructor(
             }
 
 
-
         }
     }
 
     private fun updatePlayerStateAction(echoId: String, mode: Mode) {
-        Timber.i("The EchoId is $echoId")
-        Timber.i("L262 Called")
+
         val echoHolderState = getCurrentEchoHolderState(echoId)
         val updatedPlayerState = echoHolderState.playerState.copy(mode = mode)
         updatePlayerState(echoId = echoId, newPlayerState = updatedPlayerState)
@@ -293,7 +279,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getCurrentEchoHolderState(id: String): EchoHolderState {
-        Timber.i("My Id is: $id")
+
         return currentState.echoes.values
             .flatten()
             .firstOrNull {
@@ -302,7 +288,6 @@ class HomeViewModel @Inject constructor(
 
             }
             ?: throw IllegalStateException("Audio file path not found for entry Id: $id")
-
 
     }
 
@@ -319,7 +304,7 @@ class HomeViewModel @Inject constructor(
                     updatePlayerSateCurrentPosition(
                         echoId = echoId,
                         currentPosition = positionMillis,
-                        currentPositionText =currentPositionText
+                        currentPositionText = currentPositionText
                     )
                 }
 
@@ -334,8 +319,6 @@ class HomeViewModel @Inject constructor(
         currentPosition: Int,
         currentPositionText: String
     ) {
-
-        Timber.i("L324 Called")
         val echoHolderState = getCurrentEchoHolderState(id = echoId)
         val updatedPlayerState = echoHolderState.playerState.copy(
 
@@ -422,7 +405,6 @@ class HomeViewModel @Inject constructor(
 
     private fun selectTopicItem(title: String) {
 
-
         val updatedTopicItems = currentState.filterState.topicFilterItems.map {
 
             if (it.title == title) it.copy(isChecked = !it.isChecked) else it
@@ -505,7 +487,6 @@ class HomeViewModel @Inject constructor(
 
 
     fun startPlay(echoId: String) {
-        Timber.i("506 Called")
 
         if (audioPlayer.isPlaying()) {
             stopPlay()
@@ -537,40 +518,31 @@ class HomeViewModel @Inject constructor(
 
     private fun stopPlay() {
 
-        val updatedEchoes = currentState.echoes.mapValues { (_, echoHolderStateList) ->
+        val updatedEchoes =
+            currentState.echoes.mapValues { (_, echoHolderStateList) ->
+                echoHolderStateList.map { echoHolderState ->
 
-            echoHolderStateList.map { echoHolderState ->
+                    if (
+                        echoHolderState.playerState.mode == Mode.Playing ||
+                        echoHolderState.playerState.mode == Mode.Paused
+                    ) {
 
-                if (
-                    echoHolderState.playerState.mode == Mode.Playing ||
-                    echoHolderState.playerState.mode == Mode.Paused
-                ) {
+                        val updatedPlayerState = echoHolderState.playerState.copy(
+                            mode = Mode.Stopped,
+                            currentPosition = 0,
+                            currentPositionText = "00:00"
 
-                    val updatedPlayerState = echoHolderState.playerState.copy(
-                        mode = Mode.Stopped,
-                        currentPosition = 0,
-                        currentPositionText = "00:00"
+                        )
+                        echoHolderState.copy(playerState = updatedPlayerState)
+                    } else echoHolderState
 
-                    )
-                    echoHolderState.copy(playerState = updatedPlayerState)
-                } else echoHolderState
-
+                }
             }
-        }
 
         updateState { it.copy(echoes = updatedEchoes) }
 
     }
 
-
-    /* var seekFieldValue = MutableStateFlow(
-         TextFieldValue(
-             value = _homeState.value.seekValue,
-             onValueChange = this::setSeek
-
-         )
-     )
-         private set*/
 
 }
 
