@@ -28,6 +28,7 @@
     <string name="text_confirm">Confirm</string>
     <string name="text_save">Save</string>
     <string name="ok">OK</string>
+    <string name="recording_button">Recording Button</string>
     <string name="permission_dialog_declined_text">It seems you have permanently declined microphone permission. You can go to the app settings to grant it.</string>
     <string name="permission_dialog_text">This app needs access to your microphone so you can capture your thoughts and mood with voice memos.</string>
     <string name="your_echo_journal">Your EchoJournal</string>
