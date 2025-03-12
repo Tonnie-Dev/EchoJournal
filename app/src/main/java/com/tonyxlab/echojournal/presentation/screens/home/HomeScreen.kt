@@ -23,6 +23,7 @@ import com.tonyxlab.echojournal.presentation.screens.home.components.EchoesList
 import com.tonyxlab.echojournal.presentation.screens.home.components.FilterList
 import com.tonyxlab.echojournal.presentation.screens.home.components.HomeFab
 import com.tonyxlab.echojournal.presentation.screens.home.components.HomeTopBar
+import com.tonyxlab.echojournal.presentation.screens.home.components.RecordingBottomSheet
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeActionEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
@@ -94,7 +95,10 @@ fun HomeScreenRoot(
         }
 
 
-
+        RecordingBottomSheet(
+            homeSheetState = uiState.recordingSheetState,
+            onEvent = viewModel::onEvent
+        )
 
     }
 

@@ -45,13 +45,13 @@ fun RecordingBottomSheet(
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val sheetState = rememberModalBottomSheetState()
+
 
     if (homeSheetState.isVisible) {
 
         ModalBottomSheet(
             onDismissRequest = { onEvent(HomeUiEvent.StopRecording(saveFile = false)) },
-            sheetState = sheetState
+
         ) {
 
             Column(
@@ -198,7 +198,6 @@ fun RecordButtons(
 
         // Pause Button
         IconButton(
-
             modifier = Modifier.size(auxiliaryButtonSize),
             onClick = onPauseClick,
             colors = IconButtonDefaults.iconButtonColors(

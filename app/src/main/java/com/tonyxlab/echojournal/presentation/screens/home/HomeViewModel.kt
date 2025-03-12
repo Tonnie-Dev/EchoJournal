@@ -75,7 +75,7 @@ class HomeViewModel @Inject constructor(
             is OpenPermissionDialog -> updateState { it.copy(isPermissionDialogOpen = event.isOpen) }
 
             StartRecording -> {
-                flipRecordingState()
+                flipSheetState()
                 startRecording()
             }
 
@@ -83,7 +83,7 @@ class HomeViewModel @Inject constructor(
             ResumeRecording -> resumeRecording()
 
             is StopRecording -> {
-                flipRecordingState()
+                flipSheetState()
                 stopRecording(isSaveFile = event.saveFile)
             }
 
@@ -423,6 +423,7 @@ class HomeViewModel @Inject constructor(
 
             if (it.isChecked) it.copy(isChecked = false) else it
         }
+        updateTopicFilterItems(updatedItems = updatedTopicItems, topicFilterSelectionOpen = false)
     }
 
 
@@ -435,27 +436,32 @@ class HomeViewModel @Inject constructor(
 
         val updatedRecordingSheetState =
             currentState.recordingSheetState.copy(
-                isVisible = !currentState.recordingSheetState.isVisible,
-                isRecording = true
+                isRecording = !currentState.recordingSheetState.isRecording
             )
         updateRecordingSheetState(updatedRecordingSheetState)
     }
 
-    private fun startRecording() {
+    private fun flipSheetState() {
 
+        val updatedSheetState = currentState.recordingSheetState.copy(
+            isVisible = !currentState.recordingSheetState.isVisible,
+            isRecording = true
+        )
+
+        updateRecordingSheetState(updatedSheetState)
+    }
+
+    private fun startRecording() {
         audioRecorder.start()
         stopWatch.start()
 
-        viewModelScope.launch {
-
+        stopWatchJob = launch {
             stopWatch.formattedTime.collect {
                 val updatedRecordingSheetState =
                     currentState.recordingSheetState.copy(recordingTime = it)
                 updateRecordingSheetState(updatedRecordingSheetState)
-
             }
         }
-
     }
 
     private fun pauseRecording() {
