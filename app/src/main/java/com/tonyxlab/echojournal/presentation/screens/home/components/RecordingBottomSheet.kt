@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.home.components
 
-import android.R.attr.action
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,9 +8,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -46,24 +45,47 @@ fun RecordingBottomSheet(
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val sheetState = rememberModalBottomSheetState()
 
-
     if (homeSheetState.isVisible) {
-
 
         ModalBottomSheet(
             onDismissRequest = { onEvent(HomeUiEvent.StopRecording(saveFile = false)) },
             sheetState = sheetState
         ) {
 
-
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
+                BottomSheetHeader(
+                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.spaceSmall),
+                    isRecording = homeSheetState.isRecording,
+                    recordingTime = homeSheetState.recordingTime
+                )
+
+                RecordButtons(
+                    modifier = Modifier.padding(
+                        vertical = MaterialTheme.spacing.spaceDoubleDp * 21,
+                        horizontal = MaterialTheme.spacing.spaceMedium
+                    ),
+                    isRecording = homeSheetState.isRecording,
+                    onCancelClick = { onEvent(HomeUiEvent.StopRecording(saveFile = false)) },
+                    onRecordClick = {
+                        if (homeSheetState.isRecording)
+                            onEvent(HomeUiEvent.StopRecording(saveFile = true))
+                        else
+                            onEvent(HomeUiEvent.ResumeRecording)
+                    },
+                    onPauseClick = {
+
+                        if (homeSheetState.isRecording)
+                            onEvent(HomeUiEvent.PauseRecording)
+                        else
+                            onEvent(HomeUiEvent.StopRecording(saveFile = true))
+                    }
+                )
 
             }
         }
@@ -193,7 +215,6 @@ fun RecordButtons(
                 contentDescription = stringResource(id = R.string.pause_text)
             )
         }
-
 
     }
 
