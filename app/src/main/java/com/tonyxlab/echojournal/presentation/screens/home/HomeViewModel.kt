@@ -283,7 +283,7 @@ class HomeViewModel @Inject constructor(
         return currentState.echoes.values
             .flatten()
             .firstOrNull {
-                Timber.i("The other id is: ${it.echo.id}")
+
                 it.echo.id == id
 
             }
