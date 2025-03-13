@@ -18,7 +18,7 @@ data class EditorUiState(
     val isShowExitDialog: Boolean = false
 ) {
 
-    val isConfirmEnabled: Boolean
+    val isSaveEnabled: Boolean
         get() = titleValue.isNotBlank() && currentMood != Mood.Undefined
 
     @Stable

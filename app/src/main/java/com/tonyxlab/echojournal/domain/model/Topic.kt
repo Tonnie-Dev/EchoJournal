@@ -1,6 +1,8 @@
 package com.tonyxlab.echojournal.domain.model
 
+import com.tonyxlab.echojournal.utils.Constants
+
 data class Topic(
-    val id: Int = Constants.INITIAL_TOPIC_ID,
+    val id: Long = Constants.INITIAL_TOPIC_ID,
     val name: String
 )
