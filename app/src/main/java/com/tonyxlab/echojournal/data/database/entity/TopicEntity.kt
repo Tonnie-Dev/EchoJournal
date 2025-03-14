@@ -9,6 +9,6 @@ data class TopicEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Long,
-    @ColumnInfo(name = "nam")
+    @ColumnInfo(name = "name")
     val name: String
 )
