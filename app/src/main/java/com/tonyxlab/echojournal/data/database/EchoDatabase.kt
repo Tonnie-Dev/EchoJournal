@@ -3,8 +3,6 @@ package com.tonyxlab.echojournal.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.tonyxlab.echojournal.data.database.converters.Converters
-import com.tonyxlab.echojournal.data.database.dao.EchoDao
 import com.tonyxlab.echojournal.data.database.entity.EchoEntity
 import com.tonyxlab.echojournal.data.database.entity.TopicEntity
 

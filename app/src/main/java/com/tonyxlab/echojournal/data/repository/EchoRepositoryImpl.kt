@@ -2,7 +2,6 @@ package com.tonyxlab.echojournal.data.repository
 
 
 
-import com.tonyxlab.echojournal.data.database.dao.EchoDao
 import com.tonyxlab.echojournal.data.database.entity.TopicEntity
 import com.tonyxlab.echojournal.data.mappers.toDomainModel
 import com.tonyxlab.echojournal.data.mappers.toEchoWithTopics
