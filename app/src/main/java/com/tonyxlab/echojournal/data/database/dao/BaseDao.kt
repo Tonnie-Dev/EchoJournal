@@ -5,20 +5,20 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
+import androidx.room.Upsert
 
 
 @Dao
 interface BaseDao<T> {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(obj: T): Long
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(obj: List<T>)
-
-    @Update
-    suspend fun update(obj: T)
+    @Upsert
+    suspend fun upsert(value:T)
 
     @Delete
-    suspend fun delete(obj: T): Int
+    suspend fun delete(value: T)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(value: T)
+
+
 }
