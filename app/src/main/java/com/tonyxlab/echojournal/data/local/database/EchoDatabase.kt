@@ -11,7 +11,7 @@ import com.tonyxlab.echojournal.data.local.entity.EchoEntity
 import com.tonyxlab.echojournal.data.local.entity.TopicEntity
 
 @Database(entities = [EchoEntity::class], version = 1, exportSchema = false)
-@TypeConverters(InstantConverter::class, MoodConverter::class, TopicsConverter::classj)
+@TypeConverters(InstantConverter::class, MoodConverter::class, TopicsConverter::class)
 abstract class EchoDatabase: RoomDatabase(){
 
     abstract fun getDao(): EchoDao

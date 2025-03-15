@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface TopicDao : BaseDao<TopicEntity> {
+interface TopicsDao : BaseDao<TopicEntity> {
 
     @Query("SELECT * FROM topics_table ORDER BY name ASC")
     fun getTopics(): Flow<List<TopicEntity>>
