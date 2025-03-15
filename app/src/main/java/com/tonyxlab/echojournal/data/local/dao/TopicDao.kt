@@ -1,9 +1,8 @@
-package com.tonyxlab.echojournal.data.database.dao
+package com.tonyxlab.echojournal.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.tonyxlab.echojournal.data.database.entity.TopicEntity
-import com.tonyxlab.echojournal.domain.model.Topic
+import com.tonyxlab.echojournal.data.local.entity.TopicEntity
 import kotlinx.coroutines.flow.Flow
 
 

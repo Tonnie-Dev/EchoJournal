@@ -1,9 +1,9 @@
-package com.tonyxlab.echojournal.data.mappers
+package com.tonyxlab.echojournal.data.local.mappers
 
 import android.net.Uri
-import com.tonyxlab.echojournal.data.database.entity.EchoEntity
-import com.tonyxlab.echojournal.data.database.entity.EchoWithTopics
-import com.tonyxlab.echojournal.data.database.entity.TopicEntity
+import com.tonyxlab.echojournal.data.local.entity.EchoEntity
+import com.tonyxlab.echojournal.data.local.entity.EchoWithTopics
+import com.tonyxlab.echojournal.data.local.entity.TopicEntity
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.utils.fromUtcTimestampToDefaultTimeStamp
 import com.tonyxlab.echojournal.utils.toUtcTimeStamp

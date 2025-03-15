@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.data.database.converters
+package com.tonyxlab.echojournal.data.local.converters
 
 
 import androidx.room.ProvidedTypeConverter

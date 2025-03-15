@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.data.database.converters
+package com.tonyxlab.echojournal.data.json
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb

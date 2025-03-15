@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.data.database.converters
+package com.tonyxlab.echojournal.data.json
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.KSerializer

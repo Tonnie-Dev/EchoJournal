@@ -2,10 +2,10 @@ package com.tonyxlab.echojournal.data.repository
 
 
 
-import com.tonyxlab.echojournal.data.database.entity.TopicEntity
-import com.tonyxlab.echojournal.data.mappers.toDomainModel
-import com.tonyxlab.echojournal.data.mappers.toEchoWithTopics
-import com.tonyxlab.echojournal.data.mappers.toEntityModel
+import com.tonyxlab.echojournal.data.local.entity.TopicEntity
+import com.tonyxlab.echojournal.data.local.mappers.toDomainModel
+import com.tonyxlab.echojournal.data.local.mappers.toEchoWithTopics
+import com.tonyxlab.echojournal.data.local.mappers.toEntityModel
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.domain.repository.EchoRepository
 import com.tonyxlab.echojournal.utils.AppCoroutineDispatchers

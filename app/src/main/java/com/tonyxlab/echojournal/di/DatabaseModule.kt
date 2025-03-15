@@ -2,7 +2,9 @@ package com.tonyxlab.echojournal.di
 
 import android.content.Context
 import androidx.room.Room
-import com.tonyxlab.echojournal.data.database.EchoDatabase
+import com.tonyxlab.echojournal.data.local.converters.Converters
+import com.tonyxlab.echojournal.data.local.dao.EchoDao
+import com.tonyxlab.echojournal.data.local.database.EchoDatabase
 import com.tonyxlab.echojournal.domain.json.JsonSerializer
 import dagger.Module
 import dagger.Provides

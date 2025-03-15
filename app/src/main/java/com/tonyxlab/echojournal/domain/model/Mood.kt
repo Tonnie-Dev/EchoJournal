@@ -2,9 +2,8 @@ package com.tonyxlab.echojournal.domain.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.data.database.converters.ColorSerializer
+import com.tonyxlab.echojournal.data.json.ColorSerializer
 import com.tonyxlab.echojournal.presentation.theme.Excited25
 import com.tonyxlab.echojournal.presentation.theme.Excited35
 import com.tonyxlab.echojournal.presentation.theme.Excited80
@@ -23,13 +22,7 @@ import com.tonyxlab.echojournal.presentation.theme.Secondary80
 import com.tonyxlab.echojournal.presentation.theme.Stressed25
 import com.tonyxlab.echojournal.presentation.theme.Stressed35
 import com.tonyxlab.echojournal.presentation.theme.Stressed80
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 @Serializable
 sealed class Mood(

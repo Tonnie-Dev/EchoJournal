@@ -1,4 +1,4 @@
-package com.tonyxlab.echojournal.data.database.entity
+package com.tonyxlab.echojournal.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
