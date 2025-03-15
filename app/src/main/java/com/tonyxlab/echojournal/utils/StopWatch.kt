@@ -1,6 +1,7 @@
 package com.tonyxlab.echojournal.utils
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,13 +9,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class StopWatch @Inject constructor(private val appCoroutineDispatchers: AppCoroutineDispatchers) {
+class StopWatch {
 
 
     private val _formattedTime = MutableStateFlow(Constants.DEFAULT_FORMATTED_TIME)
     val formattedTime: StateFlow<String> = _formattedTime
 
-    private var coroutineScope = CoroutineScope(appCoroutineDispatchers.main)
+    private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private var isRunning = false
 
     private var timeMillis = 0L
