@@ -21,7 +21,7 @@ data class HomeUiState(
     @Stable
     data class EchoHolderState(
         val echo: Echo,
-        val playerState: PlayerState = PlayerState(duration = echo.duration)
+        val playerState: PlayerState = PlayerState(duration = echo.audioDuration)
     )
 
     @Stable

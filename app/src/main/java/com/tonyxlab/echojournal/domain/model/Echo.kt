@@ -1,14 +1,16 @@
 package com.tonyxlab.echojournal.domain.model
 
-import android.net.Uri
+import com.tonyxlab.echojournal.utils.Constants
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.Instant
 
 data class Echo(
-    val id: String,
+    val id: Long = Constants.INITIAL_DATABASE_ID,
     val title: String,
-    val description: String,
-    val timestamp: Long,
-    val duration: Int,
     val mood: Mood,
-    val topics: List<String>,
-    val uri:Uri
+    val audionFilePath: String,
+    val audioDuration: Int,
+    val description: String = "",
+    val topics: List<String> = emptyList(),
+    val creationTimestamp: Instant = System.now()
 )
