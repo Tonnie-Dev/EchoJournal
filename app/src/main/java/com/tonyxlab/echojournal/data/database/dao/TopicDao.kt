@@ -16,7 +16,7 @@ interface TopicDao : BaseDao<TopicEntity> {
     @Query("SELECT * FROM topics_table WHERE id IN (:topicIds)")
     suspend fun getTopicsById(topicIds: List<Long>): List<TopicEntity>
 
-    @Query("SELECT * FROM topics_table WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
+    @Query("SELECT * FROM topics_table WHERE name LIKE '%' || :query || '%'")
     suspend fun matchTopics(query: String): List<TopicEntity>
 
 
