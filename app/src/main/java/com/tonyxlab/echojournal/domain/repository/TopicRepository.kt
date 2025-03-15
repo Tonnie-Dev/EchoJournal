@@ -15,5 +15,5 @@ interface TopicRepository {
 
     suspend fun deleteTopic(topic: Topic)
 
-    suspend fun getTopicsByIds(id: List<Long>): List<Topic>
+    suspend fun getTopicsByIds(ids: List<Long>): List<Topic>
 }
