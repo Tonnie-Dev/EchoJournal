@@ -1,52 +1,47 @@
 package com.tonyxlab.echojournal.data.local.mappers
 
-import android.net.Uri
 import com.tonyxlab.echojournal.data.local.entity.EchoEntity
-import com.tonyxlab.echojournal.data.local.entity.EchoWithTopics
-import com.tonyxlab.echojournal.data.local.entity.TopicEntity
 import com.tonyxlab.echojournal.domain.model.Echo
-import com.tonyxlab.echojournal.utils.fromUtcTimestampToDefaultTimeStamp
-import com.tonyxlab.echojournal.utils.toUtcTimeStamp
 
 
-fun Echo.toEntityModel(): EchoEntity {
+fun Echo.toEchoEntity(): EchoEntity {
+
     return EchoEntity(
         id = id,
         title = title,
-        description = description,
-        timestamp = timestamp.toUtcTimeStamp(),
-        length = audioDuration,
         mood = mood,
-
-        uri = uri.toString()
+        audioFilePath = audioFilePath,
+        audioDuration = audioDuration,
+        description = description,
+        topics = topics,
+        creationTimestamp = creationTimestamp
     )
 }
 
-fun EchoEntity.toDomainModel(topics:List<TopicEntity>): Echo {
+
+fun EchoEntity.toModel(): Echo {
+
     return Echo(
         id = id,
         title = title,
-        description = description,
-        timestamp = timestamp.fromUtcTimestampToDefaultTimeStamp(),
-        audioDuration = length,
         mood = mood,
-        topics = topics.map { it.topic },
-        uri = Uri.parse(uri)
+        audioFilePath = audioFilePath,
+        audioDuration = audioDuration,
+        description = description,
+        topics = topics,
+        creationTimestamp = creationTimestamp
     )
 }
 
 
-fun Echo.toEchoWithTopics(existingTopics: List<TopicEntity>): EchoWithTopics {
-    val topicEntities = this.topics.map { topic ->
-        val existingTopic = existingTopics.find { it.topic == topic }
-        existingTopic?.copy(echoId = id) ?: TopicEntity(echoId = id, topic = topic)
-    }
-    return EchoWithTopics(echoEntity = this.toEntityModel(), topicEntities = topicEntities)
-}
+fun List<EchoEntity>.toEchoesList(): List<Echo> = this.map { it.toModel() }
 
 
 
-fun EchoWithTopics.toDomainModel(): Echo {
 
- return echoEntity.toDomainModel(topicEntities)
-}
+
+
+
+
+
+

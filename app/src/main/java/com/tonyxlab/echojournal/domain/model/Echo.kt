@@ -8,7 +8,7 @@ data class Echo(
     val id: Long = Constants.INITIAL_DATABASE_ID,
     val title: String,
     val mood: Mood,
-    val audionFilePath: String,
+    val audioFilePath: String,
     val audioDuration: Int,
     val description: String = "",
     val topics: List<String> = emptyList(),
