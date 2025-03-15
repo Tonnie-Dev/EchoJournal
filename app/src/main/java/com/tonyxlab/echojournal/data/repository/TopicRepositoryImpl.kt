@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class TopicsRepositoryImpl @Inject constructor(
+class TopicRepositoryImpl @Inject constructor(
    private val dao: TopicsDao
 ): TopicRepository{
     override fun getTopics(): Flow<List<Topic>> {
