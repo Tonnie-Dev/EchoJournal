@@ -1,7 +1,6 @@
 package com.tonyxlab.echojournal.data.database.converters
 
 
-
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.tonyxlab.echojournal.domain.json.JsonSerializer
@@ -17,6 +16,7 @@ class Converters @Inject constructor(private val serializer: JsonSerializer) {
 
     private val moodSerializer: KSerializer<Mood> = Mood.serializer()
     private val topicSerializer: KSerializer<List<String>> = ListSerializer(String.serializer())
+    private val instantSerializer: KSerializer<Instant> = Instant.serializer()
 
     @TypeConverter
     fun writeMood(mood: Mood): String {
@@ -44,8 +44,14 @@ class Converters @Inject constructor(private val serializer: JsonSerializer) {
     }
 
     @TypeConverter
-    fun writeInstant(instant: Instant): Long{
+    fun writeInstant(instant: Instant): String {
 
-        return serializer.toJson()
+        return serializer.toJson(instantSerializer, instant)
+    }
+
+    @TypeConverter
+    fun readInstant(json: String): Instant {
+
+        return serializer.fromJson(instantSerializer, json)
     }
 }
