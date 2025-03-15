@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.tonyxlab.echojournal.R
+import com.tonyxlab.echojournal.data.database.converters.ColorSerializer
 import com.tonyxlab.echojournal.presentation.theme.Excited25
 import com.tonyxlab.echojournal.presentation.theme.Excited35
 import com.tonyxlab.echojournal.presentation.theme.Excited80
@@ -108,21 +109,6 @@ sealed class Mood(
     companion object {
 
         fun allMoods():List<Mood > = listOf()
-    }
-}
-
-object ColorSerializer : KSerializer<Color> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("Color", PrimitiveKind.INT)
-
-    override fun serialize(encoder: Encoder, value: Color) {
-        val argb = value.toArgb()
-        encoder.encodeInt(argb)
-    }
-
-    override fun deserialize(decoder: Decoder): Color {
-        val argb = decoder.decodeInt()
-        return Color(argb)
     }
 }
 
