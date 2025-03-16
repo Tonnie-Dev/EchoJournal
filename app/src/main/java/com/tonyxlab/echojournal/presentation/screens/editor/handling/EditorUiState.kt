@@ -3,6 +3,7 @@ package com.tonyxlab.echojournal.presentation.screens.editor.handling
 import android.adservices.topics.Topic
 import androidx.compose.runtime.Stable
 import com.tonyxlab.echojournal.domain.model.Mood
+import com.tonyxlab.echojournal.presentation.core.base.handling.UiState
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
 
 @Stable
@@ -16,7 +17,7 @@ data class EditorUiState(
     val foundTopics: List<Topic> = emptyList(),
     val editorSheetState: EditorSheetState = EditorSheetState(),
     val isShowExitDialog: Boolean = false
-) {
+): UiState{
 
     val isSaveEnabled: Boolean
         get() = titleValue.isNotBlank() && currentMood != Mood.Undefined
