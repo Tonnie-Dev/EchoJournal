@@ -72,6 +72,9 @@ dependencies {
     implementation(AndroidX.room.ktx)
     ksp(AndroidX.room.compiler)
 
+    //Data Store
+    implementation(AndroidX.dataStore.preferences)
+
     // Kotlinx Date-Time
     implementation(KotlinX.datetime)
 

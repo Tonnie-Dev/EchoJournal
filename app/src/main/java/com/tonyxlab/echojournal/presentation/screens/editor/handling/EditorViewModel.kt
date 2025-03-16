@@ -43,6 +43,14 @@ class EditorViewModel @AssistedInject constructor(
 
     }
 
+    private fun setUpDefaultSettings(){
+
+        launch {
+
+            val defaultTopics = topicRepository.getTopicsByIds(defaultTopicIds)
+        }
+    }
+
     @AssistedFactory
     interface EditorViewModelFactory {
 
