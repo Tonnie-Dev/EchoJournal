@@ -24,7 +24,7 @@ sealed interface HomeUiEvent:UiEvent {
     data class ActionButtonStopRecording(val saveFile: Boolean = true):HomeUiEvent
 
 
-    data class StartPlay(val echoId: String) : HomeUiEvent
-    data class PausePlay(val echoId: String) : HomeUiEvent
-    data class ResumePlay(val echoId: String) : HomeUiEvent
+    data class StartPlay(val echoId: Long) : HomeUiEvent
+    data class PausePlay(val echoId: Long) : HomeUiEvent
+    data class ResumePlay(val echoId: Long) : HomeUiEvent
 }
