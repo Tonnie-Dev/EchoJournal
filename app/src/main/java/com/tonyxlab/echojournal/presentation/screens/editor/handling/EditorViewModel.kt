@@ -2,12 +2,15 @@ package com.tonyxlab.echojournal.presentation.screens.editor.handling
 
 
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
+import com.tonyxlab.echojournal.domain.model.toMood
+import com.tonyxlab.echojournal.domain.repository.SettingsRepository
 import com.tonyxlab.echojournal.domain.repository.TopicRepository
 import com.tonyxlab.echojournal.presentation.core.base.BaseViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 
 typealias EditorBaseModel = BaseViewModel<EditorUiState, EditorUiEvent, EditorActionEvent>
 
@@ -20,9 +23,9 @@ class EditorViewModel @AssistedInject constructor(
     private val echoRepository: TopicRepository,
     private val topicRepository: TopicRepository,
     private val audioPlayer: AudioPlayer,
+    val settingsRepository: SettingsRepository
 
-
-    ) : EditorBaseModel() {
+) : EditorBaseModel() {
     override val initialState: EditorUiState
         get() = EditorUiState()
 
@@ -43,11 +46,23 @@ class EditorViewModel @AssistedInject constructor(
 
     }
 
-    private fun setUpDefaultSettings(){
+    private fun setUpDefaultSettings() {
 
         launch {
 
-            val defaultTopics = topicRepository.getTopicsByIds(defaultTopicIds)
+            // TODO: Check for NoSuchElement Crash for flow.first() function
+            val defaultTopicsIds = settingsRepository.getTopics().first()
+            val defaultMood = settingsRepository.getMood().first()
+            val defaultTopics = topicRepository.getTopicsByIds(defaultTopicsIds)
+            updateState {
+
+                it.copy(
+                    editorSheetState = currentState.editorSheetState.copy(
+                        activeMood = defaultMood.toMood()
+                    ),
+                    currentTopics = defaultTopics
+                )
+            }
         }
     }
 

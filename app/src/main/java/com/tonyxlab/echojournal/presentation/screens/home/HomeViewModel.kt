@@ -145,6 +145,12 @@ class HomeViewModel @Inject constructor(
                 )
             }
 
+            if (isFirstLoad) {
+
+                sendActionEvent(HomeActionEvent.DataLoaded)
+                isFirstLoad = false
+            }
+
         }.launchIn(viewModelScope)
 
 

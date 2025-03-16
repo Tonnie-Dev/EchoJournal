@@ -32,9 +32,9 @@ class TopicRepositoryImpl @Inject constructor(
         dao.delete(topic.toEntity())
     }
 
-    override suspend fun getTopicsByIds(ids: List<Long>): List<Topic> {
+    override suspend fun getTopicsByIds(topicsIds: List<Long>): List<Topic> {
 
-        return dao.getTopicsByIds(ids).map {  it.toModel()}
+        return dao.getTopicsByIds(topicsIds).map {  it.toModel()}
     }
 
 }
