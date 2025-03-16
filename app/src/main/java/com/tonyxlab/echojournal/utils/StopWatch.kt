@@ -47,7 +47,7 @@ class StopWatch {
     fun stop() {
 
         coroutineScope.cancel()
-        coroutineScope = CoroutineScope(appCoroutineDispatchers.main)
+//        coroutineScope = CoroutineScope(Dispatchers.Main)
         timeMillis = 0L
         lastTimestamp = 0L
         _formattedTime.value = Constants.DEFAULT_FORMATTED_TIME
@@ -57,7 +57,7 @@ class StopWatch {
     fun reset() {
 
         coroutineScope.cancel()
-        coroutineScope = CoroutineScope(appCoroutineDispatchers.main)
+        //       coroutineScope = CoroutineScope(appCoroutineDispatchers.main)
         timeMillis = 0L
         lastTimestamp = 0L
         _formattedTime.value = Constants.DEFAULT_FORMATTED_TIME
