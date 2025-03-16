@@ -6,11 +6,12 @@ import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.presentation.core.base.handling.UiState
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
 import com.tonyxlab.echojournal.utils.Constants
+import java.time.Instant
 
 
 @Stable
 data class HomeUiState(
-    val echoes: Map<Long, List<EchoHolderState>> = mapOf(),
+    val echoes: Map<Instant, List<EchoHolderState>> = mapOf(),
     val filterState: FilterState = FilterState(),
     val isFilterActive: Boolean = false,
     val recordingSheetState: RecordingSheetState = RecordingSheetState(),
