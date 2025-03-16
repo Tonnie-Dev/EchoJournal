@@ -6,7 +6,7 @@ import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.presentation.core.base.handling.UiState
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
 import com.tonyxlab.echojournal.utils.Constants
-import java.time.Instant
+import kotlinx.datetime.Instant
 
 
 @Stable

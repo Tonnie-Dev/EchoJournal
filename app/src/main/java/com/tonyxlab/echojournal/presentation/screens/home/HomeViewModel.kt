@@ -7,7 +7,7 @@ import com.tonyxlab.echojournal.domain.audio.AudioRecorder
 import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.model.toMood
-import com.tonyxlab.echojournal.domain.usecases.GetEchoesUseCase
+import com.tonyxlab.echojournal.domain.repository.EchoRepository
 import com.tonyxlab.echojournal.presentation.core.base.BaseViewModel
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState.Mode
@@ -33,7 +33,6 @@ import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState.EchoHolderState
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState.FilterState
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState.RecordingSheetState
-import com.tonyxlab.echojournal.utils.AppCoroutineDispatchers
 import com.tonyxlab.echojournal.utils.StopWatch
 import com.tonyxlab.echojournal.utils.formatMillisToTime
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,8 +40,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
 
@@ -50,11 +51,11 @@ private typealias HomeBaseViewModel = BaseViewModel<HomeUiState, HomeUiEvent, Ho
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    appCoroutineDispatchers: AppCoroutineDispatchers,
+    private val repository: EchoRepository,
     private val audioRecorder: AudioRecorder,
     private val audioPlayer: AudioPlayer,
-    private val getEchoesUseCase: GetEchoesUseCase,
-) : HomeBaseViewModel() {
+
+    ) : HomeBaseViewModel() {
 
 
     override val initialState: HomeUiState
@@ -97,16 +98,16 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private val stopWatch = StopWatch(appCoroutineDispatchers)
+    private val stopWatch = StopWatch()
     private var stopWatchJob: Job? = null
 
     private val selectedMoodFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
     private val selectedTopicFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
-    private val filteredEchoes = MutableStateFlow<Map<Long, List<EchoHolderState>>?>(emptyMap())
-    private var fetchedEchoes: Map<Long, List<EchoHolderState>> = emptyMap()
+    private val filteredEchoes = MutableStateFlow<Map<Instant, List<EchoHolderState>>?>(emptyMap())
+    private var fetchedEchoes: Map<Instant, List<EchoHolderState>> = emptyMap()
 
 
-    private var playingEchoId = MutableStateFlow<String?>(null)
+    private var playingEchoId = MutableStateFlow<Long?>(null)
 
 
     init {
@@ -120,42 +121,32 @@ class HomeViewModel @Inject constructor(
 
         var isFirstLoad = true
 
-
-        getEchoesUseCase().combine(filteredEchoes) {
-
-                echoes, currentlyFilteredEchoes ->
+        repository.getEchos().combine(filteredEchoes) { echoes, currentlyFilteredEchoes ->
 
             val topics = mutableSetOf<String>()
-
             val sortedEchoes =
                 if (currentlyFilteredEchoes != null && currentlyFilteredEchoes.isEmpty()) {
+
                     fetchedEchoes = groupEchoesByDate(
                         echoes = echoes,
                         topics = topics
                     )
 
                     fetchedEchoes
-
                 } else currentlyFilteredEchoes ?: emptyMap()
 
-            fetchedEchoes
-
-            val updatedTopicFilterItems =
-                addNewTopicFilterItems(topics = topics.toList())
+            val updatedTopicFilterItems = addNewTopicFilterItems(topics.toList())
 
             updateState {
+
                 it.copy(
                     echoes = sortedEchoes,
                     filterState = currentState.filterState.copy(topicFilterItems = updatedTopicFilterItems)
                 )
             }
 
-            if (isFirstLoad) {
-                sendActionEvent(HomeActionEvent.DataLoaded)
-                isFirstLoad = false
-            }
-
         }.launchIn(viewModelScope)
+
 
     }
 
@@ -179,7 +170,7 @@ class HomeViewModel @Inject constructor(
     private fun groupEchoesByDate(
         echoes: List<Echo>,
         topics: MutableSet<String>
-    ): Map<Long, List<EchoHolderState>> {
+    ): Map<Instant, List<EchoHolderState>> {
 
 
         return echoes.groupBy { echo ->
@@ -189,7 +180,15 @@ class HomeViewModel @Inject constructor(
                 if (!topics.contains(topic)) topics.add(topic)
             }
 
-            echo.timestamp
+            Instant.fromEpochMilliseconds(
+                echo.creationTimestamp
+                    .toLocalDateTime(TimeZone.currentSystemDefault())
+                    .date
+                    .atStartOfDayIn(TimeZone.currentSystemDefault())
+                    .toEpochMilliseconds()
+            )
+
+
         }.mapValues { (_, echoesList) ->
 
             echoesList.map { EchoHolderState(echo = it) }
@@ -200,10 +199,10 @@ class HomeViewModel @Inject constructor(
 
 
     private fun getFilteredEchoes(
-        echoes: Map<Long, List<EchoHolderState>>,
+        echoes: Map<Instant, List<EchoHolderState>>,
         moodFilters: List<Mood>,
         topicsFilters: List<String>
-    ): Map<Long, List<EchoHolderState>>? {
+    ): Map<Instant, List<EchoHolderState>>? {
 
         return echoes.mapValues { (_, echoesList) ->
 
@@ -254,7 +253,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updatePlayerStateAction(echoId: String, mode: Mode) {
+    private fun updatePlayerStateAction(echoId: Long, mode: Mode) {
 
         val echoHolderState = getCurrentEchoHolderState(echoId)
         val updatedPlayerState = echoHolderState.playerState.copy(mode = mode)
@@ -262,7 +261,7 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    private fun updatePlayerState(echoId: String, newPlayerState: PlayerState) {
+    private fun updatePlayerState(echoId: Long, newPlayerState: PlayerState) {
 
         val updatedEchoes = currentState.echoes.mapValues { (_, echoesList) ->
 
@@ -278,7 +277,7 @@ class HomeViewModel @Inject constructor(
         updateState { it.copy(echoes = updatedEchoes) }
     }
 
-    private fun getCurrentEchoHolderState(id: String): EchoHolderState {
+    private fun getCurrentEchoHolderState(id: Long): EchoHolderState {
 
         return currentState.echoes.values
             .flatten()
@@ -315,7 +314,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun updatePlayerSateCurrentPosition(
-        echoId: String,
+        echoId: Long,
         currentPosition: Int,
         currentPositionText: String
     ) {
@@ -492,7 +491,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun startPlay(echoId: String) {
+    fun startPlay(echoId: Long) {
 
         if (audioPlayer.isPlaying()) {
             stopPlay()
@@ -506,18 +505,18 @@ class HomeViewModel @Inject constructor(
             mode = Mode.Playing
         )
 
-        val audioFilePath = getCurrentEchoHolderState(echoId).echo.uri.toString()
+        val audioFilePath = getCurrentEchoHolderState(echoId).echo.audioFilePath
         audioPlayer.initializeFile(audioFilePath)
         audioPlayer.play()
 
     }
 
-    private fun resumePlay(echoId: String) {
+    private fun resumePlay(echoId: Long) {
         updatePlayerStateAction(echoId = echoId, mode = Mode.Resumed)
         audioPlayer.resume()
     }
 
-    private fun pausePlay(echoId: String) {
+    private fun pausePlay(echoId: Long) {
         updatePlayerStateAction(echoId = echoId, mode = Mode.Paused)
         audioPlayer.pause()
     }
