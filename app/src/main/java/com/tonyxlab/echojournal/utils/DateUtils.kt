@@ -34,7 +34,6 @@ fun LocalDateTime.fromLocalDateTimeToDefaultTimestamp(): Long {
 // MilliSecs in Current Timezone -> UTC
 fun Long.toUtcTimeStamp(): Long {
 
-
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
         .toInstant(TimeZone.UTC)
