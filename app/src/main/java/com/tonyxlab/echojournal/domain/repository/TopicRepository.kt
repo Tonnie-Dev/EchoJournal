@@ -9,7 +9,7 @@ interface TopicRepository {
 
     fun getTopics(): Flow<List<Topic>>
 
-    suspend fun searchTopics(query: String): List<Topic>
+    suspend fun matchTopics(query: String): List<Topic>
 
     suspend fun insertTopic(topic: Topic)
 

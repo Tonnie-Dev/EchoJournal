@@ -19,7 +19,7 @@ class TopicRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun searchTopics(query: String): List<Topic> {
+    override suspend fun matchTopics(query: String): List<Topic> {
 
         return dao.matchTopics(query = query).toTopicsList()
     }

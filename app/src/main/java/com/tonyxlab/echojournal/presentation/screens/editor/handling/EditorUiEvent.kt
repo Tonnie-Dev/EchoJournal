@@ -13,7 +13,7 @@ sealed interface EditorUiEvent : UiEvent {
 
     data class MoodSelected(val mood: Mood) : EditorUiEvent
     data class TitleValueChanged(val titleValue: String) : EditorUiEvent
-    data class DescriptionValueChanged(val descValue: String) : EditorUiEvent
+    data class DescriptionValueChanged(val descriptionValue: String) : EditorUiEvent
 
 
     data class TopicValueChanged(val topicValue: String) : EditorUiEvent

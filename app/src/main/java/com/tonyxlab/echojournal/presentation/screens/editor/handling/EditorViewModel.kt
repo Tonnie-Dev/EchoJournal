@@ -3,13 +3,16 @@ package com.tonyxlab.echojournal.presentation.screens.editor.handling
 
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
+import com.tonyxlab.echojournal.domain.model.Echo
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.model.Topic
 import com.tonyxlab.echojournal.domain.model.toMood
+import com.tonyxlab.echojournal.domain.repository.EchoRepository
 import com.tonyxlab.echojournal.domain.repository.SettingsRepository
 import com.tonyxlab.echojournal.domain.repository.TopicRepository
 import com.tonyxlab.echojournal.presentation.core.base.BaseViewModel
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
+import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiEvent.*
 import com.tonyxlab.echojournal.utils.formatMillisToTime
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -24,6 +27,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import java.io.File
 
 typealias EditorBaseModel = BaseViewModel<EditorUiState, EditorUiEvent, EditorActionEvent>
 
@@ -33,7 +37,7 @@ class EditorViewModel @AssistedInject constructor(
     private val id: Long,
     @Assisted("audioFilePath")
     private val audioFilePath: String,
-    private val echoRepository: TopicRepository,
+    private val echoRepository: EchoRepository,
     private val topicRepository: TopicRepository,
     private val audioPlayer: AudioPlayer,
     val settingsRepository: SettingsRepository
@@ -42,18 +46,20 @@ class EditorViewModel @AssistedInject constructor(
     override val initialState: EditorUiState
         get() = EditorUiState()
 
+    // Original Flow
     private val searchQuery = MutableStateFlow("")
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val searchResults: StateFlow<List<Topic>> = searchQuery
-        .flatMapLatest { query ->
 
-            if (query.isNotBlank()) {
+        .flatMapLatest { query: String ->
+
+            if (query.isBlank()) {
 
                 flowOf(emptyList())
             } else {
                 flow {
-                    val foundTopics = topicRepository.searchTopics(query)
+                    val foundTopics = topicRepository.matchTopics(query)
                     emit(foundTopics)
                 }
             }
@@ -64,7 +70,47 @@ class EditorViewModel @AssistedInject constructor(
         )
 
     override fun onEvent(event: EditorUiEvent) {
-        TODO("Not yet implemented")
+
+        when (event) {
+
+            BottomSheetClosed -> toggleSheetState()
+            is BottomSheetOpened -> toggleSheetState(event.mood)
+            is SheetConfirmClicked -> setCurrentMood(event.mood)
+
+            is MoodSelected -> updateActiveMood(event.mood)
+
+            is TitleValueChanged -> updateState { it.copy(titleValue = event.titleValue) }
+
+            is DescriptionValueChanged -> updateState {
+                it.copy(descriptionValue = event.descriptionValue)
+            }
+
+            is TopicValueChanged -> updateTopic(event.topicValue)
+
+            is TagClearClicked -> updateState {
+                it.copy(currentTopics = currentState.currentTopics.minus(event.topic))
+            }
+
+            is TopicSelected -> updateCurrentTopics(event.topic)
+
+            CreateTopicClicked -> addNewTopic()
+
+            PlayClicked -> playAudio()
+            PauseClicked -> pauseAudio()
+            ResumeClicked -> resumeAudio()
+
+            is SaveButtonClicked -> saveEntry(event.outDir)
+
+            ExitDialogToggled -> flipExitDialogState()
+
+            ExitDialogConfirmClicked -> {
+                flipExitDialogState()
+                audioPlayer.stop()
+                sendActionEvent(EditorActionEvent.NavigateBack)
+            }
+
+
+        }
     }
 
     private fun initializeAudioPlayer() {
@@ -187,33 +233,65 @@ class EditorViewModel @AssistedInject constructor(
         }
     }
 
-    private fun playAudio(){
+    private fun playAudio() {
         updatePlayerStateAction(PlayerState.Mode.Playing)
         audioPlayer.play()
     }
 
     private fun pauseAudio() {
-
         updatePlayerStateAction(PlayerState.Mode.Paused)
         audioPlayer.pause()
     }
 
     private fun resumeAudio() {
-       updatePlayerStateAction(PlayerState.Mode.Resumed)
+        updatePlayerStateAction(PlayerState.Mode.Resumed)
         audioPlayer.resume()
     }
 
-
-
     private fun updateSheetState(update: (EditorUiState.EditorSheetState) -> EditorUiState.EditorSheetState) {
-
         updateState { it.copy(editorSheetState = update(it.editorSheetState)) }
-
     }
 
     fun updatePlayerStateAction(mode: PlayerState.Mode) {
         val updatedPlayerState = currentState.playerState.copy(mode = mode)
         updateState { it.copy(playerState = updatedPlayerState) }
+    }
+
+    private fun saveEntry(outputDir: File) {
+        val newAudioFilePath = renameFile(outputDir, audioFilePath, "audio")
+        val topics = currentState.currentTopics.map { it.name }
+        val newEcho = Echo(
+            title = currentState.titleValue,
+            mood = currentState.currentMood,
+            audioFilePath = newAudioFilePath,
+            audioDuration = currentState.playerState.duration,
+            description = currentState.descriptionValue,
+            topics = topics
+        )
+
+        launch {
+            echoRepository.upsertEcho(newEcho)
+            sendActionEvent(EditorActionEvent.NavigateBack)
+        }
+    }
+
+    private fun flipExitDialogState() {
+
+        updateState { it.copy(isShowExitDialog = !currentState.isShowExitDialog) }
+    }
+
+    private fun renameFile(outputDir: File, filePath: String, newValue: String): String {
+
+        val file = File(filePath)
+        val newFileName = file.name.replace("temp", newValue)
+        val newFile = File(outputDir, newFileName)
+        val isRenamed = file.renameTo(newFile)
+
+        return if (isRenamed)
+            newFile.absolutePath
+        else
+            throw IllegalStateException("Failed to rename ${file.name}.")
+
     }
 
     @AssistedFactory
