@@ -28,6 +28,7 @@
     <string name="text_confirm">Confirm</string>
     <string name="text_save">Save</string>
     <string name="text_choose_mood">Choose Mood</string>
+    <string name="text_delete_topic">Delete Topic</string>
     <string name="ok">OK</string>
     <string name="recording_button">Recording Button</string>
     <string name="permission_dialog_declined_text">It seems you have permanently declined microphone permission. You can go to the app settings to grant it.</string>
