@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,9 +23,9 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,8 +34,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastForEachIndexed
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.model.Mood.Excited
@@ -48,63 +49,61 @@ import com.tonyxlab.echojournal.presentation.core.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.core.components.BasicEntryTextField
 import com.tonyxlab.echojournal.presentation.core.components.PlayTrackUnit
 import com.tonyxlab.echojournal.presentation.core.components.TopicSelector
+import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.screens.editor.components.EditorTextField
+import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiEvent
+import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiState
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.theme.Secondary90
-import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
-import timber.log.Timber
+import com.tonyxlab.echojournal.utils.toInt
+
+@Composable
+fun EntryScreenRoot(
+    echoId: Long,
+    audioFilePath: String,
+    modifier: Modifier = Modifier
+) {
+
+
+}
 
 @Composable
 fun EditorScreen(
-    onPresBack: () -> Unit,
-    onCancelEditor: () -> Unit,
-    onSaveEditor: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: EditorViewModel = hiltViewModel()
+    uiState: EditorUiState,
+    onEvent: (EditorUiEvent) -> Unit
 ) {
 
-    val seekFieldValue by viewModel.seekFieldValue.collectAsState()
-    val titleFieldValue by viewModel.titleFieldValue.collectAsState()
-    val topicFieldValue by viewModel.topicFieldValue.collectAsState()
-    val descriptionFieldValue by viewModel.descriptionFieldValue.collectAsState()
+    Box {
+        var topicOffset by remember { mutableStateOf(IntOffset.Zero) }
 
-    val editorState by viewModel.editorState.collectAsState()
+        // Will be used to calculate the Y-Axis offset of the topic Offset
+        val verticalSpace = (MaterialTheme.spacing.spaceMedium).toInt()
 
-    Timber.i("Editor Screen called with ${editorState.mood}")
-    EditorScreenContent(
-        modifier = modifier,
-        titleFieldValue = titleFieldValue,
-        topicFieldValue = topicFieldValue,
-        descriptionFieldValue = descriptionFieldValue,
-        savedTopics = editorState.savedTopics,
-        selectedTopics = editorState.selectedTopics,
-        isPlaying = editorState.isPlaying,
-        seekValue = editorState.seekValue,
-        onPressBack = onPresBack,
-        onSeek = {},
-        echoLength = 0,
-        onTogglePlay = {},
-        onSaveEditor = {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = MaterialTheme.spacing.spaceSmall),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall)
+        )
+        {
+            EditorTextField(
+                modifier = Modifier.fillMaxWidth(),
+                textValue = uiState.titleValue,
+                onValueChange = { onEvent(EditorUiEvent.TitleValueChanged(it))},
+                hintText = stringResource(id = R.string.text_add_title),
+                leadingIcon = {
 
-            viewModel.doSave()
-            onSaveEditor()
+                }
+            )
 
-        },
-        isSave = viewModel.canSave(),
-        onCancelEditor = onCancelEditor,
-        mood = editorState.mood,
-        isShowMoodTitleIcon = editorState.isShowMoodTitleIcon,
-        isMoodConfirmButtonHighlighted = editorState.isMoodConfirmButtonHighlighted,
-        onShowMoodSelectionSheet = viewModel::showMoodSelectionSheet,
-        isShowMoodSelectionSheet = editorState.isShowMoodSelectionSheet,
-        onDismissMoodSelectionSheet = viewModel::dismissMoodSelectionModalSheet,
-        onSelectMood = viewModel::setMood,
-        onConfirmMoodSelection = viewModel::confirmMoodSelection,
-        onCurrentSelectedTopicsChange = viewModel::setSelectedTopics,
-        onSavedTopicsChange = viewModel::setSavedTopics
-    )
+        }
+
+
+    }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -158,7 +157,8 @@ fun EditorScreenContent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
 
-            BasicEntryTextField(modifier = Modifier.fillMaxWidth(),
+            BasicEntryTextField(
+                modifier = Modifier.fillMaxWidth(),
                 textFieldValue = titleFieldValue,
                 hint = stringResource(id = R.string.text_add_title),
                 isHeadline = true,
@@ -177,14 +177,15 @@ fun EditorScreenContent(
                             contentDescription = mood.name
                         )
                     } else
-                        AppIcon(modifier = Modifier
-                            .clip(CircleShape)
-                            .background(Secondary90)
-                            .size(MaterialTheme.spacing.spaceLarge)
-                            .clickable {
-                                onShowMoodSelectionSheet()
-                            }
-                            .padding(MaterialTheme.spacing.spaceDoubleDp * 3),
+                        AppIcon(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .background(Secondary90)
+                                .size(MaterialTheme.spacing.spaceLarge)
+                                .clickable {
+                                    onShowMoodSelectionSheet()
+                                }
+                                .padding(MaterialTheme.spacing.spaceDoubleDp * 3),
                             imageVector = Icons.Default.Add,
                             tint = Secondary70)
                 })
@@ -201,11 +202,12 @@ fun EditorScreenContent(
                 topicFieldValue = topicFieldValue,
                 savedTopics = savedTopics,
                 currentSelectedTopics = selectedTopics,
-                onCurrentSelectedTopicsChange =onCurrentSelectedTopicsChange,
+                onCurrentSelectedTopicsChange = onCurrentSelectedTopicsChange,
                 onSavedTopicsChange = onSavedTopicsChange
             )
 
-            BasicEntryTextField(modifier = Modifier.fillMaxWidth(),
+            BasicEntryTextField(
+                modifier = Modifier.fillMaxWidth(),
                 textFieldValue = descriptionFieldValue,
                 hint = stringResource(id = R.string.text_add_description),
                 isHeadline = false,
