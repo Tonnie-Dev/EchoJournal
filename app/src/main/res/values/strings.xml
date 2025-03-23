@@ -29,7 +29,7 @@
     <string name="text_add_description">Add Description … </string>
     <string name="text_how_are_you_doing">How are you doing?</string>
     <string name="text_confirm">Confirm</string>
-    <string name="text_save">Save</string>
+    <string name="button_text_save">Save</string>
     <string name="text_choose_mood">Choose Mood</string>
     <string name="text_delete_topic">Delete Topic</string>
     <string name="ok">OK</string>

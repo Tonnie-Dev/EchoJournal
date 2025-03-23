@@ -277,7 +277,7 @@ class EditorViewModel @AssistedInject constructor(
 
     private fun flipExitDialogState() {
 
-        updateState { it.copy(isShowExitDialog = !currentState.isShowExitDialog) }
+        updateState { it.copy(showExitDialog = !currentState.showExitDialog) }
     }
 
     private fun renameFile(outputDir: File, filePath: String, newValue: String): String {

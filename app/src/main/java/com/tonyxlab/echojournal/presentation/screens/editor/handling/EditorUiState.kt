@@ -17,7 +17,7 @@ data class EditorUiState(
     val currentTopics: List<Topic> = emptyList(),
     val foundTopics: List<Topic> = emptyList(),
     val editorSheetState: EditorSheetState = EditorSheetState(),
-    val isShowExitDialog: Boolean = false
+    val showExitDialog: Boolean = false
 ): UiState{
 
     val isSaveEnabled: Boolean
