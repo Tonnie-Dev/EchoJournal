@@ -1,8 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.editor.components
 
-import android.R.attr.spacing
-import android.R.attr.text
-import android.view.textservice.SpellCheckerInfo
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +20,7 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 
 @Composable
 fun ExitDialog(
-    headline: String
+    headline: String,
     onConfirm: () -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
@@ -31,27 +28,29 @@ fun ExitDialog(
     confirmButtonText: String = "",
     cancelButtonText: String = ""
 ) {
-
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
 
-
         Surface(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.spaceMedium),
             shape = RoundedCornerShape(
                 MaterialTheme.spacing.spaceSmall
             )
         ) {
-
             DialogHeader(headline = headline, supportingText = supportingText)
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceMedium))
 
-
+            DialogButtons(
+                cancelButtonText = cancelButtonText,
+                confirmButtonText = confirmButtonText,
+                onConfirm = onConfirm,
+                onCancel = onDismissRequest
+            )
         }
     }
 }
@@ -87,7 +86,6 @@ fun DialogHeader(
         }
     }
 }
-
 
 @Composable
 fun DialogButtons(
