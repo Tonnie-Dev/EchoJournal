@@ -105,3 +105,38 @@ fun TopicItem(
         )
     }
 }
+
+@Composable
+fun CreateButton(
+    searchQuery: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 3))
+            .clickable { onClick() }
+            .padding(
+                MaterialTheme.spacing.spaceSmall
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall))
+    {
+
+        Image(
+            modifier = Modifier.width(MaterialTheme.spacing.spaceMedium),
+            painter = painterResource(R.drawable.ic_add_primary),
+            contentDescription = stringResource(id = R.string.text_create_topic, searchQuery),
+            contentScale = ContentScale.FillWidth
+        )
+
+        Text(
+            text = "Create '${searchQuery}'",
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.primary
+            )
+        )
+    }
+}

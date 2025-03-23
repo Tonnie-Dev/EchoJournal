@@ -13,6 +13,7 @@
     <string name="all_topics_filter_text">All Topics</string>
     <string name="icon_text_checkmark">Checkmark</string>
     <string name="hash_tag_text">"# "</string>
+    <string name="text_create_topic">Create topic %1$s</string>
     <string name="text_start_recording">"Press to Start Recording"</string>
     <string name="text_recording_memories">Recording Your Memories…</string>
     <string name="text_recording_paused">Recording Paused</string>
