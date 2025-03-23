@@ -23,7 +23,7 @@ fun TopicTagsRow(
     modifier: Modifier = Modifier
 ) {
     FlowRow(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
     ) {

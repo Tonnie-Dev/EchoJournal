@@ -89,7 +89,7 @@ fun TopicSelector(
 
         if (topicFieldValue.value.isEmpty()) return
 
-        TopicDropDown(
+        TopicDropDowns(
             modifier = modifier,
             selectedTopics = selectedTopics,
             onSelectedTopicsChange = {
@@ -198,7 +198,7 @@ fun TopicsFlowRow(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
                 ),
-                hint = stringResource(id = R.string.topics_text),
+                hint = stringResource(id = R.string.text_topics),
                 keyboardActions = KeyboardActions(
                     onDone = {
                         onSelectTopic(selectedTopics + topicFieldValue.value)
@@ -213,7 +213,7 @@ fun TopicsFlowRow(
 }
 
 @Composable
-fun TopicDropDown(
+fun TopicDropDowns(
     selectedTopics: Set<String>,
     onSelectedTopicsChange: (Set<String>) -> Unit,
     onAddTopic: (Boolean) -> Unit,
