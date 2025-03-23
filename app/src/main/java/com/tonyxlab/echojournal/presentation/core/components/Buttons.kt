@@ -22,7 +22,7 @@ fun PrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    leadingIcon: (() -> Unit)? = null
+    leadingIcon: (@Composable () -> Unit)? = null
 ) {
 
     Button(

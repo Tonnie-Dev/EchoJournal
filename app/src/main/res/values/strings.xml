@@ -23,7 +23,7 @@
     <string name="title_edit_entry">Edit Entry</string>
     <string name="text_topic">Topic</string>
     <string name="text_topics">Topics</string>
-    <string name="text_cancel">Cancel</string>
+    <string name="button_text_cancel">Cancel</string>
     <string name="grant_permission">Grant permission</string>
     <string name="text_add_title">Add Title … </string>
     <string name="text_add_description">Add Description … </string>
