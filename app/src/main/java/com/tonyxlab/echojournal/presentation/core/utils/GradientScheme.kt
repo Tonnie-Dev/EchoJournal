@@ -23,10 +23,10 @@ data class GradientScheme(
             colors = listOf(Color(0xFF578CFF), Color(0xFF0057CC))
         )
 
-        val DisabledSolidColo = Brush.linearGradient(
+        val DisabledSolidColor = Brush.linearGradient(
             colors = listOf(SurfaceVariant, SurfaceVariant)
         )
-        
+
         val FabRecordingBackground = Brush.verticalGradient(
             colors = listOf(
                 Color(0xFF3982F6).copy(alpha = 0.2f),
