@@ -1,14 +1,18 @@
 package com.tonyxlab.echojournal.presentation.core.components
 
-import android.R.attr.fontWeight
+import android.R.attr.onClick
+import android.R.attr.startOffset
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,11 +25,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
+import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Topic
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 
@@ -33,6 +42,7 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 fun TopicDropDown(
     searchQuery: String,
     topics: List<Topic>,
+    onTopicClick: (Topic) -> Unit,
     onCreateClick: () -> Unit,
     modifier: Modifier = Modifier,
     startOffset: IntOffset = IntOffset.Zero
@@ -64,7 +74,25 @@ fun TopicDropDown(
                 LazyColumn(modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall)) {
 
                     items(items = topics) { topic ->
-                        TopicItem
+                        TopicItem(
+                            topic.name,
+                            onClick = {
+                                onTopicClick(topic)
+                                focusManager.clearFocus()
+                            }
+                        )
+                    }
+
+                    item {
+                        CreateButton(
+                            searchQuery = searchQuery,
+                            onClick = {
+                                onCreateClick()
+                                isVisible = isVisible.not()
+                                focusManager.clearFocus()
+                            }
+                        )
+
                     }
                 }
             }
