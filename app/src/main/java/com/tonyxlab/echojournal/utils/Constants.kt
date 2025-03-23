@@ -4,7 +4,7 @@ object Constants {
 
     const val INITIAL_DATABASE_ID = 0L
 
-    const val UNDEFINED_ENTRY_ID = -1L
+    const val UNDEFINED_ECHO_ID = -1L
 
     const val ECHO_DB_NAME = "echo_database"
     const val TOPIC_DB_NAME = "echo_database"

@@ -1,3 +1,6 @@
+
+@file:OptIn(FormatStringsInDatetimeFormats::class)
+
 package com.tonyxlab.echojournal.utils
 
 
@@ -76,10 +79,9 @@ fun Long.formatMillisToNumber(): String {
     val seconds = (this / 1000) % 60
     return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds)
 
-
 }
 
-@OptIn(FormatStringsInDatetimeFormats::class)
+
 fun Long.formatMillisToTime(): String {
     val durationInSeconds = this / 1000
 
@@ -95,12 +97,11 @@ fun Long.formatMillisToTime(): String {
     val format = LocalDateTime.Format {
         byUnicodePattern(pattern = pattern)
     }
-
     return localDateTime.format(format)
 }
 
 
-@OptIn(FormatStringsInDatetimeFormats::class)
+
 fun Long.formatToRelativeDay(): String {
 
     val pattern = "EEEE, MMM d"
@@ -122,6 +123,24 @@ fun Long.formatToRelativeDay(): String {
     }
 }
 
+
+fun Instant.formatInstantToRelativeDay(): String{
+
+    val pattern = "EEEE, MMM d"
+    val format = LocalDate.Format { byUnicodePattern(pattern = pattern) }
+
+    val currentDate = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .date
+
+val targetDate = this.toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+    return when (targetDate) {
+        currentDate -> "Today"
+        currentDate.minus(1, DateTimeUnit.DAY) -> "Yesterday"
+        else -> targetDate.format(format)
+    }
+}
 
 fun Long.toAmPmTime(): String {
 
