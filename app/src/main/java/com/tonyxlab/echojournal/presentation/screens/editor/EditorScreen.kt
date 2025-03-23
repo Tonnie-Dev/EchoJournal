@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -31,11 +32,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastForEachIndexed
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.model.Mood.Excited
@@ -43,16 +49,25 @@ import com.tonyxlab.echojournal.domain.model.Mood.Neutral
 import com.tonyxlab.echojournal.domain.model.Mood.Peaceful
 import com.tonyxlab.echojournal.domain.model.Mood.Sad
 import com.tonyxlab.echojournal.domain.model.Mood.Stressed
+import com.tonyxlab.echojournal.presentation.core.base.BaseContentLayout
 import com.tonyxlab.echojournal.presentation.core.components.AppButton
 import com.tonyxlab.echojournal.presentation.core.components.AppIcon
 import com.tonyxlab.echojournal.presentation.core.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.core.components.BasicEntryTextField
 import com.tonyxlab.echojournal.presentation.core.components.PlayTrackUnit
+import com.tonyxlab.echojournal.presentation.core.components.TopicDropDown
 import com.tonyxlab.echojournal.presentation.core.components.TopicSelector
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.screens.editor.components.EditorBottomButtons
 import com.tonyxlab.echojournal.presentation.screens.editor.components.EditorTextField
+import com.tonyxlab.echojournal.presentation.screens.editor.components.ExitDialog
+import com.tonyxlab.echojournal.presentation.screens.editor.components.MoodChooseButton
+import com.tonyxlab.echojournal.presentation.screens.editor.components.TopicTagsRow
+import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorActionEvent
 import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiEvent
 import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiState
+import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorViewModel
+import com.tonyxlab.echojournal.presentation.screens.home.components.MoodPlayer
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.theme.Secondary90
@@ -63,10 +78,69 @@ import com.tonyxlab.echojournal.utils.toInt
 fun EntryScreenRoot(
     echoId: Long,
     audioFilePath: String,
-    modifier: Modifier = Modifier
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
+    val viewModel: EditorViewModel =
+        hiltViewModel<EditorViewModel, EditorViewModel.EditorViewModelFactory> { factory ->
+            factory.create(echoId, audioFilePath)
+        }
 
+    BaseContentLayout(
+        modifier = modifier,
+        viewModel = viewModel,
+        actionsEventHandler = { _, actionEvent ->
+            when (actionEvent) {
+
+                EditorActionEvent.NavigateBack -> navigateBack()
+
+            }
+        },
+        topBar = {
+            AppTopBar(
+                title = if (echoId < 0)
+                    stringResource(id = R.string.title_new_entry)
+                else
+                    stringResource(id = R.string.title_edit_entry), onBackClick = {
+                    viewModel.onEvent(EditorUiEvent.ExitDialogToggled)
+                }
+            )
+        },
+        bottomBar = { uiState ->
+            val context = LocalContext.current
+            EditorBottomButtons(
+                primaryButtonText = stringResource(id = R.string.button_text_save),
+                // TODO: Review This Event
+                onCancelClick = { viewModel.onEvent(EditorUiEvent.ExitDialogToggled) },
+                onConfirmClick = {
+
+                    val outputDir = context.filesDir
+                    viewModel.onEvent(EditorUiEvent.SaveButtonClicked(outputDir!!))
+                }
+            )
+        }, onBackPressed = { viewModel.onEvent((EditorUiEvent.ExitDialogToggled)) },
+        containerColor = MaterialTheme.colorScheme.surface
+
+    ) { uiState ->
+
+        EditorScreen(
+            uiState = uiState,
+            onEvent = viewModel::onEvent
+        )
+
+        if (uiState.showExitDialog) {
+            ExitDialog(
+                headline = stringResource(id = R.string.dialog_text_cancel),
+                onConfirm = { viewModel.onEvent(EditorUiEvent.ExitDialogConfirmClicked) },
+                onDismissRequest = { viewModel.onEvent(EditorUiEvent.ExitDialogToggled) },
+                supportingText = stringResource(id = R.string.dialog_text_leave_confirmation),
+                cancelButtonText = stringResource(id = R.string.dialog_text_cancel),
+                confirmButtonText = stringResource(id = R.string.dialog_text_leave)
+            )
+        }
+
+    }
 }
 
 @Composable
@@ -74,7 +148,6 @@ fun EditorScreen(
     uiState: EditorUiState,
     onEvent: (EditorUiEvent) -> Unit
 ) {
-
     Box {
         var topicOffset by remember { mutableStateOf(IntOffset.Zero) }
 
@@ -216,7 +289,7 @@ fun EditorScreenContent(
         AppTopBar(
             title = stringResource(R.string.title_new_entry),
             style = MaterialTheme.typography.headlineMedium,
-            onPressBack = onPressBack,
+            onBackClick = onPressBack,
             isShowBackButton = true
         )
 
@@ -312,14 +385,14 @@ fun EditorScreenContent(
 //Other Buttons
                 AppButton(
                     onClick = onCancelEditor,
-                    buttonText = stringResource(id = R.string.text_cancel)
+                    buttonText = stringResource(id = R.string.dialog_text_cancel)
                 )
                 AppButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onSaveEditor,
                     isEnabled = isSave,
                     isHighlighted = isSave,
-                    buttonText = stringResource(id = R.string.text_save)
+                    buttonText = stringResource(id = R.string.button_text_save)
                 )
             }
             if (isShowMoodSelectionSheet) {
@@ -406,7 +479,7 @@ fun MoodSelectionSheetContent(
 
             //Sheet Buttons
             AppButton(
-                buttonText = stringResource(id = R.string.text_cancel),
+                buttonText = stringResource(id = R.string.dialog_text_cancel),
                 onClick = onCancelMoodSelection
             )
             AppButton(
