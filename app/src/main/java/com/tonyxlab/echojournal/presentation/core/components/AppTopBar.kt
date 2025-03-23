@@ -30,7 +30,7 @@ fun AppTopBar(
     modifier: Modifier = Modifier,
     style:TextStyle = MaterialTheme.typography.headlineLarge,
     isShowBackButton: Boolean = false,
-    onPressBack:(()-> Unit)? = null
+    onBackClick:(()-> Unit)? = null
 ) {
 
 
@@ -49,7 +49,7 @@ fun AppTopBar(
 
             if (isShowBackButton) {
 
-                IconButton(onClick = {onPressBack?.invoke()} ) {
+                IconButton(onClick = {onBackClick?.invoke()} ) {
 
 
                     Icon(modifier = Modifier.minimumInteractiveComponentSize(),
