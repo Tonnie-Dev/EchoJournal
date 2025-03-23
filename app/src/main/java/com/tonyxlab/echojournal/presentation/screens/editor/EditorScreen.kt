@@ -91,16 +91,93 @@ fun EditorScreen(
             EditorTextField(
                 modifier = Modifier.fillMaxWidth(),
                 textValue = uiState.titleValue,
-                onValueChange = { onEvent(EditorUiEvent.TitleValueChanged(it))},
+                onValueChange = { onEvent(EditorUiEvent.TitleValueChanged(it)) },
                 hintText = stringResource(id = R.string.text_add_title),
                 leadingIcon = {
+                    MoodChooseButton(
+                        mood = uiState.currentMood,
+                        onClick = {
+                            onEvent(
+                                EditorUiEvent.BottomSheetOpened(mood = uiState.currentMood)
+                            )
+                        }
+                    )
 
-                }
+                },
+                textStyle = MaterialTheme.typography.titleMedium,
+                iconSpacing = MaterialTheme.spacing.spaceDoubleDp * 3
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTwelve)
+            ) {
+
+                MoodPlayer(
+                    modifier = Modifier.height(MaterialTheme.spacing.spaceExtraSmall),
+                    mood = uiState.currentMood,
+                    playerState = uiState.playerState,
+                    onPlayClick = { onEvent(EditorUiEvent.PlayClicked) },
+                    onPauseClick = { onEvent(EditorUiEvent.PauseClicked) },
+                    onResumeClick = { onEvent(EditorUiEvent.ResumeClicked) }
+                )
+
+                // TODO: Check what to do with this button
+            }
+
+
+            TopicTagsRow(
+                modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        topicOffset = IntOffset(
+                            x = coordinates.positionInParent().x.toInt(),
+                            y = coordinates
+                                .positionInParent().y.toInt() +
+                                    coordinates.size.height + verticalSpace
+                        )
+                    }
+                    .onFocusChanged {
+                        onEvent(EditorUiEvent.TopicValueChanged(""))
+                    },
+                value = uiState.topicValue,
+                onValueChange = { onEvent(EditorUiEvent.TopicValueChanged(it)) },
+                topics = uiState.currentTopics,
+                onTagClearClick = { onEvent(EditorUiEvent.TagClearClicked(it)) },
+            )
+
+
+            // Description Field
+
+            EditorTextField(
+                modifier = Modifier.fillMaxWidth(),
+                textValue = uiState.descriptionValue,
+                onValueChange = { onEvent(EditorUiEvent.DescriptionValueChanged(it)) },
+                hintText = stringResource(id = R.string.text_add_description),
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(MaterialTheme.spacing.spaceMedium),
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(id = R.string.text_add_description),
+                        tint = MaterialTheme.colorScheme.outlineVariant
+                    )
+                },
+                singleLine = false
             )
 
         }
 
-
+        TopicDropDown(
+            searchQuery = uiState.topicValue,
+            topics = uiState.foundTopics,
+            onTopicClick = {
+                onEvent(
+                    EditorUiEvent.TopicSelected(it)
+                )
+            },
+            onCreateClick = { onEvent(EditorUiEvent.CreateTopicClicked) },
+            startOffset = topicOffset
+        )
     }
 }
 
