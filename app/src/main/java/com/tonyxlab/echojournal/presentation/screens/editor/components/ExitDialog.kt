@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +47,11 @@ fun ExitDialog(
             )
         ) {
 
-            Dialogh
+            DialogHeader(headline = headline, supportingText = supportingText)
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceMedium))
+
+
         }
     }
 }
@@ -79,5 +85,46 @@ fun DialogHeader(
                 )
             )
         }
+    }
+}
+
+
+@Composable
+fun DialogButtons(
+    cancelButtonText: String,
+    confirmButtonText: String,
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    // Cancel Button
+
+    TextButton(onClick = onCancel) {
+
+        Text(
+            text = cancelButtonText,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+        )
+    }
+
+    Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceMedium))
+
+    // Confirm Button
+
+    TextButton(
+        onClick = onConfirm
+    ) {
+
+        Text(
+            text = confirmButtonText,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+        )
     }
 }
