@@ -2,9 +2,7 @@ package com.tonyxlab.echojournal.di
 
 import android.content.Context
 import androidx.room.Room
-import com.tonyxlab.echojournal.data.local.converters.InstantConverter
-import com.tonyxlab.echojournal.data.local.converters.MoodConverter
-import com.tonyxlab.echojournal.data.local.converters.TopicsConverter
+import com.tonyxlab.echojournal.data.local.converters.Converters
 import com.tonyxlab.echojournal.data.local.dao.EchoDao
 import com.tonyxlab.echojournal.data.local.dao.TopicsDao
 import com.tonyxlab.echojournal.data.local.database.EchoDatabase
@@ -33,9 +31,9 @@ object DatabaseModule {
             klass = EchoDatabase::class.java,
             name = Constants.ECHO_DB_NAME
         )
-           .addTypeConverter(InstantConverter(jsonSerializer = jsonSerializer))
-            .addTypeConverter(TopicsConverter(jsonSerializer = jsonSerializer))
-            .addTypeConverter(MoodConverter(jsonSerializer = jsonSerializer))
+
+            .addTypeConverter(Converters(jsonSerializer = jsonSerializer))
+
             .fallbackToDestructiveMigration(false)
             .build()
     }
