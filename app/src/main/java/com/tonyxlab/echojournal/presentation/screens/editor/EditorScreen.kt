@@ -75,7 +75,7 @@ import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.toInt
 
 @Composable
-fun EntryScreenRoot(
+fun EditorScreenRoot(
     echoId: Long,
     audioFilePath: String,
     navigateBack: () -> Unit,
@@ -92,9 +92,7 @@ fun EntryScreenRoot(
         viewModel = viewModel,
         actionsEventHandler = { _, actionEvent ->
             when (actionEvent) {
-
                 EditorActionEvent.NavigateBack -> navigateBack()
-
             }
         },
         topBar = {

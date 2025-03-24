@@ -159,7 +159,7 @@ fun HomeFab(
             ) {
                 Icon(
                     imageVector = Icons.Default.Clear,
-                    contentDescription = stringResource(R.string.cancel_recording),
+                    contentDescription = stringResource(R.string.recording_button),
                     tint = MaterialTheme.colorScheme.onErrorContainer
                 )
             }

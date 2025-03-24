@@ -110,8 +110,8 @@ private fun AppButtonPreview() {
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
 
-            AppButton(onClick = {}, buttonText = stringResource(id = R.string.text_cancel))
-            AppButton(onClick = {}, buttonText = stringResource(id = R.string.text_save), isEnabled = false)
+            AppButton(onClick = {}, buttonText = stringResource(id = R.string.button_text_cancel))
+            AppButton(onClick = {}, buttonText = stringResource(id = R.string.button_text_save), isEnabled = false)
             AppButton(onClick = {}, buttonText = stringResource(id = R.string.text_confirm), isHighlighted = true)
             AppButton(
                 onClick = {},

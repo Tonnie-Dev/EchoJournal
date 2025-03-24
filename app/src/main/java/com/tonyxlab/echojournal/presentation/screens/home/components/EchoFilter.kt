@@ -156,7 +156,7 @@ private fun FilterChip(
 
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = stringResource(id = R.string.text_cancel),
+                        contentDescription = stringResource(id = R.string.button_text_cancel),
                         tint = MaterialTheme.colorScheme.secondaryContainer
                     )
                 }

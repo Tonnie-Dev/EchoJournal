@@ -33,7 +33,7 @@ object DatabaseModule {
             klass = EchoDatabase::class.java,
             name = Constants.ECHO_DB_NAME
         )
-            .addTypeConverter(InstantConverter(jsonSerializer = jsonSerializer))
+           .addTypeConverter(InstantConverter(jsonSerializer = jsonSerializer))
             .addTypeConverter(TopicsConverter(jsonSerializer = jsonSerializer))
             .addTypeConverter(MoodConverter(jsonSerializer = jsonSerializer))
             .fallbackToDestructiveMigration(false)

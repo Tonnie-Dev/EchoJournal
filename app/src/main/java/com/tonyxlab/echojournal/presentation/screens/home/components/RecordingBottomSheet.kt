@@ -164,7 +164,7 @@ fun RecordButtons(
         ) {
             Icon(
                 imageVector = Icons.Default.Clear,
-                contentDescription = stringResource(id = R.string.cancel_recording)
+                contentDescription = stringResource(id = R.string.recording_button)
             )
         }
 

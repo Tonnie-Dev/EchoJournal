@@ -48,7 +48,7 @@ fun EchoCard(
             )
             .background(Color.White)
             .clickable {
-                onClickEcho(echo.id)
+                onClickEcho("TODO")
             }
             .padding(
                 top = spacing.spaceDoubleDp * 6,
@@ -74,7 +74,7 @@ fun EchoCard(
             )
 
             Text(
-                text = echo.timestamp.toAmPmTime(),
+                text = "TODO",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

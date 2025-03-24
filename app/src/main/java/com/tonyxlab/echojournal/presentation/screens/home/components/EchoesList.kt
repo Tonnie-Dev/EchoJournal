@@ -11,12 +11,14 @@ import androidx.compose.ui.Modifier
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
+import com.tonyxlab.echojournal.utils.formatInstantToRelativeDay
 import com.tonyxlab.echojournal.utils.formatToRelativeDay
+import kotlinx.datetime.Instant
 
 
 @Composable
 fun EchoesList(
-    echoes: Map<Long, List<HomeUiState.EchoHolderState>>,
+    echoes: Map<Instant, List<HomeUiState.EchoHolderState>>,
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -34,7 +36,7 @@ fun EchoesList(
                         top = MaterialTheme.spacing.spaceSingleDp,
                         bottom = MaterialTheme.spacing.spaceSmall
                     ),
-                    text = timestamp.formatToRelativeDay(),
+                    text = timestamp.formatInstantToRelativeDay(),
                     style = MaterialTheme.typography.labelLarge
                 )
             }

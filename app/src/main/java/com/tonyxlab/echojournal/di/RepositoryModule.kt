@@ -1,8 +1,10 @@
 package com.tonyxlab.echojournal.di
 
 import com.tonyxlab.echojournal.data.repository.EchoRepositoryImpl
+import com.tonyxlab.echojournal.data.repository.SettingsRepositoryImpl
 import com.tonyxlab.echojournal.data.repository.TopicRepositoryImpl
 import com.tonyxlab.echojournal.domain.repository.EchoRepository
+import com.tonyxlab.echojournal.domain.repository.SettingsRepository
 import com.tonyxlab.echojournal.domain.repository.TopicRepository
 import dagger.Binds
 import dagger.Module
@@ -25,4 +27,6 @@ abstract class RepositoryModule {
     ): EchoRepository
 
 
+    @Binds
+    abstract fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
 }

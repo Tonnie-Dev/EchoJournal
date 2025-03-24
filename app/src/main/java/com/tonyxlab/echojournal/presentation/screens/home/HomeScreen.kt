@@ -32,7 +32,7 @@ import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 fun HomeScreenRoot(
     isDataLoaded: () -> Unit,
     isLaunchedFromWidget: Boolean,
-    navigateToEditorScreen: (id: Long, audioFilePath: String) -> Unit,
+    navigateToEditorScreen: ( audioFilePath: String) -> Unit,
     navigateToSettingScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {

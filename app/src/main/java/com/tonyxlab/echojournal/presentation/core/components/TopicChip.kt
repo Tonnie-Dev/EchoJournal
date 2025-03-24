@@ -52,7 +52,7 @@ fun TopicChip(
                         .size(MaterialTheme.spacing.spaceMedium)
                         .clickable { onDeleteTopic?.invoke() },
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = stringResource(R.string.text_cancel),
+                    contentDescription = stringResource(R.string.button_text_cancel),
                     tint = MaterialTheme.colorScheme.inverseOnSurface
                 )
             }

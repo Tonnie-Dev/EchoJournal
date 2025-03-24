@@ -102,7 +102,7 @@ fun EchoHolder(
 
                 EchoHeader(
                     title = echo.title,
-                    creationTime = echo.timestamp.formatMillisToTime()
+                    creationTime = "TODO"
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 5))
