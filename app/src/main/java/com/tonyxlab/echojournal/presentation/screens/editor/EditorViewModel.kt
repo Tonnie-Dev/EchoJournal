@@ -1,5 +1,4 @@
-package com.tonyxlab.echojournal.presentation.screens.editor.handling
-
+package com.tonyxlab.echojournal.presentation.screens.editor
 
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
@@ -12,7 +11,9 @@ import com.tonyxlab.echojournal.domain.repository.SettingsRepository
 import com.tonyxlab.echojournal.domain.repository.TopicRepository
 import com.tonyxlab.echojournal.presentation.core.base.BaseViewModel
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
-import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiEvent.*
+import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorActionEvent
+import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiEvent
+import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiState
 import com.tonyxlab.echojournal.utils.formatMillisToTime
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.stateIn
 import java.io.File
 
 typealias EditorBaseModel = BaseViewModel<EditorUiState, EditorUiEvent, EditorActionEvent>
+
 
 @HiltViewModel(assistedFactory = EditorViewModel.EditorViewModelFactory::class)
 class EditorViewModel @AssistedInject constructor(
@@ -65,45 +67,54 @@ class EditorViewModel @AssistedInject constructor(
             }
         }.stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
+            SharingStarted.Companion.WhileSubscribed(5000),
             emptyList()
         )
 
+
+    init {
+
+        initializeAudioPlayer()
+        setUpDefaultSettings()
+        subscribeToTopicSearchResults()
+        setUpAudioPlayerListeners()
+        observeAudioPlayerCurrentPosition()
+    }
     override fun onEvent(event: EditorUiEvent) {
 
         when (event) {
 
-            BottomSheetClosed -> toggleSheetState()
-            is BottomSheetOpened -> toggleSheetState(event.mood)
-            is SheetConfirmClicked -> setCurrentMood(event.mood)
+            EditorUiEvent.BottomSheetClosed -> toggleSheetState()
+            is EditorUiEvent.BottomSheetOpened -> toggleSheetState(event.mood)
+            is EditorUiEvent.SheetConfirmClicked -> setCurrentMood(event.mood)
 
-            is MoodSelected -> updateActiveMood(event.mood)
+            is EditorUiEvent.MoodSelected -> updateActiveMood(event.mood)
 
-            is TitleValueChanged -> updateState { it.copy(titleValue = event.titleValue) }
+            is EditorUiEvent.TitleValueChanged -> updateState { it.copy(titleValue = event.titleValue) }
 
-            is DescriptionValueChanged -> updateState {
+            is EditorUiEvent.DescriptionValueChanged -> updateState {
                 it.copy(descriptionValue = event.descriptionValue)
             }
 
-            is TopicValueChanged -> updateTopic(event.topicValue)
+            is EditorUiEvent.TopicValueChanged -> updateTopic(event.topicValue)
 
-            is TagClearClicked -> updateState {
+            is EditorUiEvent.TagClearClicked -> updateState {
                 it.copy(currentTopics = currentState.currentTopics.minus(event.topic))
             }
 
-            is TopicSelected -> updateCurrentTopics(event.topic)
+            is EditorUiEvent.TopicSelected -> updateCurrentTopics(event.topic)
 
-            CreateTopicClicked -> addNewTopic()
+            EditorUiEvent.CreateTopicClicked -> addNewTopic()
 
-            PlayClicked -> playAudio()
-            PauseClicked -> pauseAudio()
-            ResumeClicked -> resumeAudio()
+            EditorUiEvent.PlayClicked -> playAudio()
+            EditorUiEvent.PauseClicked -> pauseAudio()
+            EditorUiEvent.ResumeClicked -> resumeAudio()
 
-            is SaveButtonClicked -> saveEntry(event.outDir)
+            is EditorUiEvent.SaveButtonClicked -> saveEntry(event.outDir)
 
-            ExitDialogToggled -> flipExitDialogState()
+            EditorUiEvent.ExitDialogToggled -> flipExitDialogState()
 
-            ExitDialogConfirmClicked -> {
+            EditorUiEvent.ExitDialogConfirmClicked -> {
                 flipExitDialogState()
                 audioPlayer.stop()
                 sendActionEvent(EditorActionEvent.NavigateBack)

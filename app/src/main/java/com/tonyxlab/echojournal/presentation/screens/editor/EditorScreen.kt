@@ -66,7 +66,6 @@ import com.tonyxlab.echojournal.presentation.screens.editor.components.TopicTags
 import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorActionEvent
 import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiEvent
 import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiState
-import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorViewModel
 import com.tonyxlab.echojournal.presentation.screens.home.components.MoodPlayer
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.Secondary70
