@@ -4,6 +4,8 @@
 package com.tonyxlab.echojournal.utils
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
@@ -17,6 +19,9 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
@@ -124,23 +129,23 @@ fun Long.formatToRelativeDay(): String {
 }
 
 
-fun Instant.formatInstantToRelativeDay(): String{
 
-    val pattern = "EEEE, MMM d"
-    val format = LocalDate.Format { byUnicodePattern(pattern = pattern) }
 
-    val currentDate = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-        .date
-
-val targetDate = this.toLocalDateTime(TimeZone.currentSystemDefault()).date
+@RequiresApi(Build.VERSION_CODES.O)
+fun Instant.formatInstantToRelativeDay(): String {
+    val pattern = DateTimeFormatter.ofPattern("EEEE, MMM d")
+    val currentDate = ZonedDateTime.now(ZoneId.systemDefault()).toLocalDate()
+    val targetDate = this.toEpochMilliseconds().let {
+        ZonedDateTime.ofInstant(java.time.Instant.ofEpochMilli(it), ZoneId.systemDefault()).toLocalDate()
+    }
 
     return when (targetDate) {
         currentDate -> "Today"
-        currentDate.minus(1, DateTimeUnit.DAY) -> "Yesterday"
-        else -> targetDate.format(format)
+        currentDate.minusDays(1) -> "Yesterday"
+        else -> targetDate.format(pattern)
     }
 }
+
 
 fun Long.toAmPmTime(): String {
 
