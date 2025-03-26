@@ -1,5 +1,6 @@
 package com.tonyxlab.echojournal.presentation.screens.home.components
 
+import android.R
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -50,6 +52,7 @@ import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.EchoUltraLightGray
+import com.tonyxlab.echojournal.utils.formatHoursAndMinutes
 import com.tonyxlab.echojournal.utils.formatMillisToTime
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -63,7 +66,8 @@ fun EchoHolder(
     val echo = echoHolderState.echo
     val mood = echo.mood
 
-    Row(modifier = modifier.height(IntrinsicSize.Min)) {
+    Row(modifier = modifier.height(IntrinsicSize.Min))
+    {
 
         var holderHeight by remember { mutableIntStateOf(0) }
         var isHolderCollapsed by remember { mutableStateOf(false) }
@@ -76,7 +80,8 @@ fun EchoHolder(
             holderHeight = holderHeight
         )
 
-        Surface(modifier = Modifier
+        Surface(
+            modifier = Modifier
             .fillMaxWidth()
             .onSizeChanged { size ->
                 with(size.height) {
@@ -102,12 +107,13 @@ fun EchoHolder(
 
                 EchoHeader(
                     title = echo.title,
-                    creationTime = "TODO"
+                    creationTime = echo.creationTimestamp.formatHoursAndMinutes()
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 5))
 
-                MoodPlayer(mood = mood,
+                MoodPlayer(
+                    mood = mood,
                     playerState = echoHolderState.playerState,
                     onPlayClick = { onEvent(HomeUiEvent.StartPlay(echoId = echo.id)) },
                     onPauseClick = { onEvent(HomeUiEvent.PausePlay(echoId = echo.id)) },
@@ -119,7 +125,7 @@ fun EchoHolder(
                 if (echo.description.isNotEmpty()) {
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 5))
-                    ExpandableText(echoText = echo.description)
+                    ExpandableText(echoText = echo.description,)
                 }
 
                 // Topic Tags
@@ -206,7 +212,7 @@ private fun MoodTimeline(
     holderHeight: Int,
     modifier: Modifier = Modifier,
     iconTopPadding: Dp = MaterialTheme.spacing.spaceMedium,
-    iconEndPadding: Dp = MaterialTheme.spacing.spaceDoubleDp * 6
+    iconEndPadding: Dp = MaterialTheme.spacing.spaceTwelve
 ) {
     var elementHeight by remember { mutableIntStateOf(0) }
     var moodSize by remember { mutableStateOf(IntSize.Zero) }
@@ -248,7 +254,7 @@ private fun MoodTimeline(
                 .offset {
                     IntOffset(x = dividerOffsetX, y = dividerOffsetY)
                 }
-                .height(dividerHeight.dp),
+                .height(dividerHeight.toDp()),
             color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .7f)
         )
 
@@ -284,4 +290,9 @@ private fun TopicChipPreview() {
     }
 }
 
+@Composable
+private fun Int.toDp(): Dp {
+    val density = LocalDensity.current
+    return with(density) { toDp() }
+}
 

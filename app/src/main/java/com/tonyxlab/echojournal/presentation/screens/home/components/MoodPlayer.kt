@@ -44,7 +44,9 @@ fun MoodPlayer(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = modifier.fillMaxWidth(), shape = CircleShape, color = mood.moodBackgroundColor
+        modifier = modifier.fillMaxWidth(),
+        shape = CircleShape,
+        color = mood.moodBackgroundColor
     ) {
         Row(
             modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
@@ -82,13 +84,13 @@ fun MoodPlayer(
                     contentDescription = stringResource(id = R.string.play_text),
                     tint = mood.moodButtonColor
                 )
-
-                PlayerTimer(
-                    modifier = Modifier.padding(end = MaterialTheme.spacing.spaceExtraSmall),
-                    duration = playerState.durationText,
-                    currentPosition = playerState.currentPositionText
-                )
             }
+            PlayerTimer(
+                modifier = Modifier.padding(end = MaterialTheme.spacing.spaceExtraSmall),
+                duration = playerState.durationText,
+                currentPosition = playerState.currentPositionText
+            )
+
 
         }
     }
