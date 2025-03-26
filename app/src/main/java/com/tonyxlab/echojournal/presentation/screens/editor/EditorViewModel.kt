@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 import java.io.File
 
 typealias EditorBaseModel = BaseViewModel<EditorUiState, EditorUiEvent, EditorActionEvent>
@@ -73,6 +74,8 @@ class EditorViewModel @AssistedInject constructor(
 
 
     init {
+
+        Timber.i("EVM is: $audioFilePath")
 
         initializeAudioPlayer()
         setUpDefaultSettings()

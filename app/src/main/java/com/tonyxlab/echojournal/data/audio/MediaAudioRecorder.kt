@@ -5,17 +5,20 @@ import android.media.MediaRecorder
 import android.os.Build
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
-class MediaAudioRecorder @Inject constructor(@ApplicationContext private val context: Context) :
+class MediaAudioRecorder @Inject constructor(
+    @ApplicationContext private val context: Context
+) :
     AudioRecorder {
 
     private var recorder: MediaRecorder? = null
     private var audioFile: File? = null
 
-   private val outputDir = context.filesDir
+    private val outputDir = context.filesDir
 
     private var isCurrentlyRecording: Boolean = false
     private var isCurrentlyPaused: Boolean = false
@@ -23,7 +26,6 @@ class MediaAudioRecorder @Inject constructor(@ApplicationContext private val con
     private fun createRecorder(): MediaRecorder {
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-
             MediaRecorder(context)
         } else MediaRecorder()
 
@@ -37,8 +39,8 @@ class MediaAudioRecorder @Inject constructor(@ApplicationContext private val con
         createRecorder().apply {
 
             setAudioSource(MediaRecorder.AudioSource.MIC)
-            setAudioEncodingBitRate(128_000)
-            setAudioSamplingRate(44_100)
+            setAudioEncodingBitRate(128000)
+            setAudioSamplingRate(44100)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             setOutputFile(audioFile?.absolutePath)
@@ -54,7 +56,7 @@ class MediaAudioRecorder @Inject constructor(@ApplicationContext private val con
     }
 
     override fun pause() {
-        recorder?.pause()
+        recorder?.pause() ?:checkRecorderIsInitialized()
         isCurrentlyPaused = true
     }
 
@@ -82,6 +84,8 @@ class MediaAudioRecorder @Inject constructor(@ApplicationContext private val con
                 file.delete()
                 ""
             } else {
+
+                Timber.i("The path is: ${file.absolutePath}")
                 file.absolutePath
             }
         }

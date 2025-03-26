@@ -492,7 +492,7 @@ class HomeViewModel @Inject constructor(
 
         if (isSaveFile) {
             stopPlay()
-            sendActionEvent(HomeActionEvent.NavigateToEditorScreen(Uri.encode(audioFilePath)))
+            sendActionEvent(HomeActionEvent.NavigateToEditorScreen(audioFilePath))
         }
     }
 

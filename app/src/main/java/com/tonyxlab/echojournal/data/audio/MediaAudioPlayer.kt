@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ class MediaAudioPlayer @Inject constructor(
 ) : AudioPlayer {
 
 
-    private var filePath = ""
+    private var filePath: String = ""
     private var player: MediaPlayer? = null
     private var onCompleteListener: (() -> Unit)? = null
 
@@ -37,7 +38,7 @@ class MediaAudioPlayer @Inject constructor(
     private var isCurrentlyPlaying: Boolean = false
 
     override fun initializeFile(filePath: String) {
-
+        Timber.i("Init file $filePath")
         _currentPositionFlow.value = 0
         this@MediaAudioPlayer.filePath = filePath
         createPlayer()
@@ -68,6 +69,7 @@ class MediaAudioPlayer @Inject constructor(
         player?.start()
         startUpdatingCurrentPosition()
     }
+
     override fun stop() {
         checkPlayerIsInitialized()
         stopUpdatingCurrentPosition()
@@ -89,10 +91,15 @@ class MediaAudioPlayer @Inject constructor(
     }
 
     override fun isPlaying(): Boolean {
-        return player?.isPlaying  ?: isCurrentlyPlaying
+        return player?.isPlaying ?: isCurrentlyPlaying
     }
 
     private fun createPlayer() {
+        val testPath = "/data/user/0/com.tonyxlab.echojournal/files/temp_1742919169729.mp3"
+        Timber.i("Test Path plain: $testPath")
+        Timber.i("Test Path Uri: ${testPath.toUri()}")
+        Timber.i("Create Player Called with: $filePath")
+        Timber.i("Uri is: ${filePath.toUri()}")
 
         val medialPlayer = MediaPlayer.create(context, filePath.toUri())
             ?: throw IllegalStateException("Failed to create MediaPlayer, Invalid file path $filePath")
@@ -112,22 +119,22 @@ class MediaAudioPlayer @Inject constructor(
         )
     }
 
-    private fun startUpdatingCurrentPosition(){
+    private fun startUpdatingCurrentPosition() {
 
         checkPlayerIsInitialized()
         stopUpdatingCurrentPosition()
 
         updateJob = CoroutineScope(Dispatchers.IO).launch {
 
-            while (player?.isPlaying == true){
-                _currentPositionFlow.value = player?.currentPosition ?:0
+            while (player?.isPlaying == true) {
+                _currentPositionFlow.value = player?.currentPosition ?: 0
                 delay(10L)
             }
         }
 
     }
 
-    private fun stopUpdatingCurrentPosition(){
+    private fun stopUpdatingCurrentPosition() {
 
         updateJob?.cancel()
         updateJob = null

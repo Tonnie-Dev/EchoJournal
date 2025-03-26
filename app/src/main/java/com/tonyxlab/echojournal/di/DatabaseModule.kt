@@ -20,6 +20,9 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
+    const val ECHO_DB_NAME = "echo_database"
+    const val TOPIC_DB_NAME = "topic_database"
+
     @Provides
     fun provideEchoDatabase(
         @ApplicationContext context: Context,
@@ -29,25 +32,26 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context = context,
             klass = EchoDatabase::class.java,
-            name = Constants.ECHO_DB_NAME
+            name = ECHO_DB_NAME
         )
 
             .addTypeConverter(Converters(jsonSerializer = jsonSerializer))
-
-            .fallbackToDestructiveMigration(false)
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 
     @Provides
-    fun provideDao(database: EchoDatabase): EchoDao  = database.getEchoDao()
+    fun provideDao(database: EchoDatabase): EchoDao = database.getEchoDao()
 
     @Provides
     fun provideTopicsDatabase(@ApplicationContext context: Context): TopicsDatabase {
         return Room.databaseBuilder(
             context = context,
             klass = TopicsDatabase::class.java,
-            name = Constants.TOPIC_DB_NAME
-        ).build()
+            name = TOPIC_DB_NAME
+        )
+            .fallbackToDestructiveMigration(true)
+            .build()
     }
 
     @Provides

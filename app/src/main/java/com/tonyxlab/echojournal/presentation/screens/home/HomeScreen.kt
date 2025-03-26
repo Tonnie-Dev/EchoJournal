@@ -27,6 +27,7 @@ import com.tonyxlab.echojournal.presentation.screens.home.components.RecordingBo
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeActionEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
+import timber.log.Timber
 
 @Composable
 fun HomeScreenRoot(
@@ -69,6 +70,8 @@ fun HomeScreenRoot(
         actionsEventHandler = { _, actionEvent ->
             when (actionEvent) {
                 is HomeActionEvent.NavigateToEditorScreen -> {
+
+                    Timber.i("HS ${actionEvent.audioFilePath}")
                     navigateToEditorScreen(actionEvent.audioFilePath)
                 }
 

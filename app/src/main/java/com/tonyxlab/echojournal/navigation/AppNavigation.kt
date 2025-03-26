@@ -9,6 +9,7 @@ import com.tonyxlab.echojournal.presentation.screens.editor.EditorScreenRoot
 import com.tonyxlab.echojournal.presentation.screens.home.HomeScreenRoot
 import com.tonyxlab.echojournal.utils.Constants
 import kotlinx.serialization.Serializable
+import timber.log.Timber
 
 fun NavGraphBuilder.appDestinations(
     navController: NavController, isDataLoaded: () -> Unit, isLaunchedFromWidget: Boolean
@@ -19,13 +20,17 @@ fun NavGraphBuilder.appDestinations(
         HomeScreenRoot(
             isDataLoaded = isDataLoaded,
             isLaunchedFromWidget = isLaunchedFromWidget,
-            navigateToEditorScreen = { navController.navigate(EditorRouteObject(audioFilePath = it)) },
+            navigateToEditorScreen = {
+                Timber.i("PsNav: $it")
+                navController.navigate(EditorRouteObject(audioFilePath = it)) },
             navigateToSettingScreen = { navController.navigate(SettingsRouteObject) })
     }
 
     composable<EditorRouteObject> { navBackStackEntry ->
 
         val args = navBackStackEntry.toRoute<EditorRouteObject>()
+
+        Timber.i("Nav: ${args.audioFilePath}")
         EditorScreenRoot(
             echoId = args.id,
             audioFilePath = args.audioFilePath,
