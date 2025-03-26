@@ -147,6 +147,18 @@ fun Instant.formatInstantToRelativeDay(): String {
 }
 
 
+fun Instant.formatHoursAndMinutes(): String{
+
+    val pattern = "HH:mm"
+    val format = LocalDateTime.Format { byUnicodePattern(pattern = pattern) }
+
+    val time = this.toLocalDateTime( TimeZone.currentSystemDefault())
+
+    return time.format(format)
+
+
+}
+
 fun Long.toAmPmTime(): String {
 
     val pattern = "hh:mm aa"
