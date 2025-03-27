@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.base.BaseContentLayout
-import com.tonyxlab.echojournal.presentation.core.components.EmptyScreen
+import com.tonyxlab.echojournal.presentation.screens.home.components.EmptyHomeScreen
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoFilter
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoesList
@@ -33,7 +33,7 @@ import timber.log.Timber
 fun HomeScreenRoot(
     isDataLoaded: () -> Unit,
     isLaunchedFromWidget: Boolean,
-    navigateToEditorScreen: ( audioFilePath: String) -> Unit,
+    navigateToEditorScreen: (audioFilePath: String) -> Unit,
     navigateToSettingScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -88,7 +88,7 @@ fun HomeScreenRoot(
         }) { uiState ->
 
         if (uiState.echoes.isEmpty() && !uiState.isFilterActive) {
-            EmptyScreen(modifier = Modifier.padding(MaterialTheme.spacing.spaceMedium))
+            EmptyHomeScreen(modifier = Modifier.padding(MaterialTheme.spacing.spaceMedium))
         } else {
             HomeScreen(
                 uiState = uiState,
@@ -112,10 +112,9 @@ private fun HomeScreen(
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit
 ) {
-
     var filterOffset by remember { mutableStateOf(IntOffset.Zero) }
-    Column {
 
+    Column {
         EchoFilter(
             filterState = uiState.filterState,
             onEvent = onEvent,
@@ -125,11 +124,10 @@ private fun HomeScreen(
                     y = coordinates.positionInParent().y.toInt() + coordinates.size.height
                 )
             }
-
         )
 
         if (uiState.echoes.isEmpty() && uiState.isFilterActive) {
-            EmptyScreen(
+            EmptyHomeScreen(
                 supportingText = stringResource(id = R.string.text_no_entries)
             )
 
@@ -138,7 +136,6 @@ private fun HomeScreen(
             echoes = uiState.echoes,
             onEvent = onEvent
         )
-
     }
 
     if (uiState.filterState.isMoodFilterOpen) {
