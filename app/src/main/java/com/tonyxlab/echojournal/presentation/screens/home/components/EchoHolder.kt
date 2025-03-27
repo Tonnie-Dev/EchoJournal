@@ -42,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -183,11 +184,11 @@ private fun TopicChip(
             .background(
                 color = EchoUltraLightGray,
                 shape = CircleShape
-            ), contentAlignment = Alignment.CenterStart
+            ), contentAlignment = Alignment.Center
     ) {
 
         Text(
-            modifier = Modifier.padding(MaterialTheme.spacing.spaceSmall),
+            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceSmall),
             text = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
@@ -270,6 +271,7 @@ private fun MoodTimeline(
     }
 }
 
+@Preview
 @Composable
 private fun TopicChipPreview() {
 
@@ -279,7 +281,8 @@ private fun TopicChipPreview() {
 
         Column(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
 
             TopicChip(
