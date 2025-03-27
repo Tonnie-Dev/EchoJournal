@@ -50,7 +50,7 @@ fun MoodPlayer(
     ) {
         Row(
             modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -98,17 +98,30 @@ fun MoodPlayer(
 }
 
 @Composable
-fun PlayerTimer(duration: String, currentPosition: String, modifier: Modifier = Modifier) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+fun PlayerTimer(
+    duration: String,
+    currentPosition: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
         val placeholderText = if (duration.length > 5) "00:00:00" else "00:00"
+
         // Current Position
-        Box(modifier = Modifier.width(IntrinsicSize.Max)) {
+        Box(
+            modifier = Modifier.width(IntrinsicSize.Max)
+        ) {
 
             Text(
-                text = currentPosition, style = MaterialTheme.typography.labelMedium
+                text = currentPosition,
+                style = MaterialTheme.typography.labelMedium
             )
 
+
+            // Hidden placeholder text to define a fixed width.
             Text(
                 text = placeholderText,
                 style = MaterialTheme.typography.labelMedium.copy(color = Color.Transparent)
@@ -119,7 +132,8 @@ fun PlayerTimer(duration: String, currentPosition: String, modifier: Modifier = 
         Box(modifier = Modifier.width(IntrinsicSize.Max)) {
 
             Text(
-                text = "/$duration", style = MaterialTheme.typography.labelMedium
+                text = "/$duration",
+                style = MaterialTheme.typography.labelMedium
             )
 
             // Hidden placeholder text to define a fixed width

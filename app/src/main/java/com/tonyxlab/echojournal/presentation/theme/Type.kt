@@ -58,6 +58,7 @@ val Typography = Typography(
                 fontSize = 12.sp,
                 lineHeight = TextUnit.Unspecified,
                 letterSpacing = 0.5.sp,
+                color = EchoGrayBlue
         ),
 
         //Improvised Button Text Style - Button Medium
