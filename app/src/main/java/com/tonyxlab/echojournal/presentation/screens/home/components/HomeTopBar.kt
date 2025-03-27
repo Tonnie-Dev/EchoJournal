@@ -1,5 +1,6 @@
 package com.tonyxlab.echojournal.presentation.screens.home.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,19 +17,26 @@ import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 
 @Composable
-fun HomeTopBar(title:String,  onSettingsClick:()-> Unit,modifier: Modifier = Modifier) {
+fun HomeTopBar(
+    title: String,
+    onSettingsClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(MaterialTheme.spacing.spaceMedium * 3)
+            .padding(horizontal = MaterialTheme.spacing.spaceMedium),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
 
-    Row(modifier = modifier
-        .fillMaxWidth()
-        .height(MaterialTheme.spacing.spaceMedium * 3)
-        .padding(horizontal = MaterialTheme.spacing.spaceMedium),
-        verticalAlignment = Alignment.CenterVertically) {
-
-        Text(text = title,
-            style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium
+        )
 
         IconButton(onClick = onSettingsClick) {
-
             Icon(
                 painter = painterResource(R.drawable.ic_settings),
                 contentDescription = "",
