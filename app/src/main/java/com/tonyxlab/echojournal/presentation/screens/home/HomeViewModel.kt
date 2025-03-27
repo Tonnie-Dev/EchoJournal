@@ -54,9 +54,7 @@ class HomeViewModel @Inject constructor(
     private val repository: EchoRepository,
     private val audioRecorder: AudioRecorder,
     private val audioPlayer: AudioPlayer,
-
-    ) : HomeBaseViewModel() {
-
+) : HomeBaseViewModel() {
 
     override val initialState: HomeUiState
         get() = HomeUiState()
@@ -103,6 +101,7 @@ class HomeViewModel @Inject constructor(
 
     private val selectedMoodFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
     private val selectedTopicFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
+
     private val filteredEchoes = MutableStateFlow<Map<Instant, List<EchoHolderState>>?>(emptyMap())
     private var fetchedEchoes: Map<Instant, List<EchoHolderState>> = emptyMap()
 

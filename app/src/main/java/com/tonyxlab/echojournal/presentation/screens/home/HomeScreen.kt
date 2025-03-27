@@ -128,6 +128,7 @@ private fun HomeScreen(
 
         if (uiState.echoes.isEmpty() && uiState.isFilterActive) {
             EmptyHomeScreen(
+                text = stringResource(R.string.text_no_entries_found),
                 supportingText = stringResource(id = R.string.text_no_entries)
             )
 
@@ -139,14 +140,13 @@ private fun HomeScreen(
     }
 
     if (uiState.filterState.isMoodFilterOpen) {
-
+        Timber.i("Moods is Empty: ${uiState.filterState.moodFilterItems.isEmpty()}")
         FilterList(
             filterItems = uiState.filterState.moodFilterItems,
             onItemClick = { onEvent(HomeUiEvent.ActivateMoodFilter) },
             onDismissClicked = { onEvent(HomeUiEvent.CancelMoodFilter) },
             startOffset = filterOffset
         )
-
 
     }
 

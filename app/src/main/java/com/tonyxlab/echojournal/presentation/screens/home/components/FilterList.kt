@@ -42,11 +42,13 @@ fun FilterList(
     modifier: Modifier = Modifier,
     startOffset: IntOffset = IntOffset.Zero
 ) {
-    Box(modifier = modifier
+    Box(
+        modifier = modifier
         .offset {
             startOffset
         }
-        .fillMaxSize()) {
+        .fillMaxSize()
+    ) {
 
         Box(
             modifier = Modifier

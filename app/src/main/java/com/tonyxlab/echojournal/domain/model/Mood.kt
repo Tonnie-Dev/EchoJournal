@@ -101,7 +101,7 @@ sealed class Mood(
 
     companion object {
 
-        fun allMoods():List<Mood > = listOf()
+        fun allMoods():List<Mood > = listOf(Stressed, Sad, Neutral, Peaceful, Excited)
     }
 }
 

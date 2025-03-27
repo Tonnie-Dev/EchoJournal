@@ -126,7 +126,7 @@ fun MoodFilter(
         if (moods.isEmpty()) {
             Text(
                     modifier = Modifier.padding(horizontal = spacing.spaceSmall),
-                    text = stringResource(R.string.all_moods_filter_text),
+                    text = stringResource(R.string.filter_text_all_moods),
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.labelLarge
             )

@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,21 +39,19 @@ fun EchoFilter(
     modifier: Modifier = Modifier
 ) {
     // TODO: Enclose Lazy Row in a Column if no Error is Detected
-    /*
-       Column(modifier = modifier){
+    /* Column(modifier = modifier) {
 
-
-       }
-    */
+     }*/
 
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
     ) {
-        item {
 
+        // Moods Chip
+        item {
             FilterChip(
-                defaultTitle = stringResource(id = R.string.all_moods_filter_text),
+                defaultTitle = stringResource(id = R.string.filter_text_all_moods),
                 filterItems = filterState.moodFilterItems,
                 isFilterItemSelected = filterState.isMoodFilterOpen,
                 onClickFilter = { onEvent(HomeUiEvent.ActivateMoodFilter) },
@@ -64,9 +63,8 @@ fun EchoFilter(
                 })
         }
 
+        //Topic Chip
         item {
-
-            //Topic Chip
             FilterChip(
                 defaultTitle = stringResource(id = R.string.all_topics_filter_text),
                 filterItems = filterState.topicFilterItems,
@@ -77,26 +75,27 @@ fun EchoFilter(
         }
 
     }
-
 }
+
 
 @Composable
 fun SelectedMoodIcons(
     moodFilterItems: List<HomeUiState.FilterState.FilterItem>,
     modifier: Modifier = Modifier
 ) {
-
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(-MaterialTheme.spacing.spaceExtraSmall)
     ) {
         moodFilterItems.fastForEach { filterItem ->
-            val mood = filterItem.title.toMood()
-            Image(
-                modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 11),
-                painter = painterResource(mood.icon),
-                contentDescription = null
-            )
+            if (filterItem.isChecked) {
+                val mood = filterItem.title.toMood()
+                Image(
+                    modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 11),
+                    painter = painterResource(mood.icon),
+                    contentDescription = null
+                )
+            }
         }
     }
 }

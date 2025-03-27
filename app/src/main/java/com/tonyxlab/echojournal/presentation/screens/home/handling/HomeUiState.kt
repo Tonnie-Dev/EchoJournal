@@ -7,6 +7,7 @@ import com.tonyxlab.echojournal.presentation.core.base.handling.UiState
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
 import com.tonyxlab.echojournal.utils.Constants
 import kotlinx.datetime.Instant
+import timber.log.Timber
 
 
 @Stable
@@ -39,7 +40,7 @@ data class HomeUiState(
         val moodFilterItems: List<FilterItem> = Mood.allMoods().map { FilterItem(title = it.name) },
         val topicFilterItems: List<FilterItem> = listOf()
     ) {
-
+       
         data class FilterItem(
             val title: String = "",
             val isChecked: Boolean = false

@@ -23,7 +23,7 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 @Composable
 fun EmptyHomeScreen(
     modifier: Modifier = Modifier,
-    text: String = stringResource(id = R.string.no_entries_text),
+    text: String = stringResource(id = R.string.text_no_entries_found),
     supportingText: String = stringResource(id = R.string.start_recording_text)
 ) {
     Column(
