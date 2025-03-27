@@ -45,10 +45,7 @@ fun <S : UiState, E : UiEvent, A : ActionEvent> BaseContentLayout(
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     actionsEventHandler: (suspend CoroutineScope.(context: Context, actionEvent: A) -> Unit)? = null,
     content: @Composable (BoxScope.(uiState: S) -> Unit),
-
-
-    ) {
-
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val context = LocalContext.current
@@ -69,7 +66,10 @@ fun <S : UiState, E : UiEvent, A : ActionEvent> BaseContentLayout(
         onBack = { onBackPressed?.invoke() }
     )
 
-    Surface(modifier = Modifier.fillMaxWidth(), color = containerColor) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = containerColor
+    ) {
         Scaffold(
             modifier = Modifier
                 .windowInsetsPadding(WindowInsets.safeDrawing)
@@ -82,17 +82,17 @@ fun <S : UiState, E : UiEvent, A : ActionEvent> BaseContentLayout(
             containerColor = containerColor,
             contentColor = contentColor,
             contentWindowInsets = contentWindowInsets
-
         ) { paddingValues ->
 
-
-            Box(modifier = modifier.padding(paddingValues = paddingValues)) {
+            Box(
+                modifier = modifier.padding(paddingValues = paddingValues)
+            )
+            {
 
                 content(uiState)
             }
         }
 
     }
-
 
 }
