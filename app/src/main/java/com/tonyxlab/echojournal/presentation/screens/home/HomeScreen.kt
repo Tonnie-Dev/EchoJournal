@@ -139,22 +139,21 @@ private fun HomeScreen(
         )
     }
 
-    if (uiState.filterState.isMoodFilterOpen) {
-        Timber.i("Moods is Empty: ${uiState.filterState.moodFilterItems.isEmpty()}")
+    if (uiState.filterState.isMoodFilterActive) {
         FilterList(
             filterItems = uiState.filterState.moodFilterItems,
-            onItemClick = { onEvent(HomeUiEvent.ActivateMoodFilter) },
-            onDismissClicked = { onEvent(HomeUiEvent.CancelMoodFilter) },
+            onItemClick = { onEvent(HomeUiEvent.SelectMoodItem(it)) },
+            onDismissClicked = { onEvent(HomeUiEvent.ToggleMoodFilter) },
             startOffset = filterOffset
         )
 
     }
 
-    if (uiState.filterState.isTopicFilterOpen) {
+    if (uiState.filterState.isTopicFilterActive) {
         FilterList(
             filterItems = uiState.filterState.topicFilterItems,
-            onItemClick = { onEvent(HomeUiEvent.ActivateMoodFilter) },
-            onDismissClicked = { onEvent(HomeUiEvent.CancelMoodFilter) },
+            onItemClick = { onEvent(HomeUiEvent.SelectTopicItem(it)) },
+            onDismissClicked = { onEvent(HomeUiEvent.ToggleTopicFilter) },
             startOffset = filterOffset
         )
     }

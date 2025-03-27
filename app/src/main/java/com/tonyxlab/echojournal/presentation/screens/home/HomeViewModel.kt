@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.home
 
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
@@ -15,8 +14,8 @@ import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeActionEve
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActionButtonStartRecording
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActionButtonStopRecording
-import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActivateMoodFilter
-import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ActivateTopicFilter
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ToggleMoodFilter
+import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.ToggleTopicFilter
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.CancelMoodFilter
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.CancelTopicFilter
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent.OpenPermissionDialog
@@ -63,18 +62,18 @@ class HomeViewModel @Inject constructor(
 
         when (event) {
 
-            ActivateMoodFilter -> activateMoodFilter()
-            is SelectMoodItem -> selectMoodItem(event.mood.name)
+            ToggleMoodFilter -> toggleMoodFilter()
+            is SelectMoodItem -> selectMoodItem(event.mood)
             CancelMoodFilter -> clearMoodFilterItem()
 
-            ActivateTopicFilter -> activateTopicFilter()
+            ToggleTopicFilter -> toggleTopicFilter()
             is SelectTopicItem -> selectTopicItem(event.topic)
             CancelTopicFilter -> clearTopicFilterItem()
 
             is OpenPermissionDialog -> updateState { it.copy(isPermissionDialogOpen = event.isOpen) }
 
             StartRecording -> {
-                flipSheetState()
+                flipRecordingSheetState()
                 startRecording()
             }
 
@@ -82,7 +81,7 @@ class HomeViewModel @Inject constructor(
             ResumeRecording -> resumeRecording()
 
             is StopRecording -> {
-                flipSheetState()
+                flipRecordingSheetState()
                 stopRecording(isSaveFile = event.saveFile)
             }
 
@@ -342,17 +341,17 @@ class HomeViewModel @Inject constructor(
                 filterState = currentState.filterState.copy(
 
                     moodFilterItems = updatedMoodItems,
-                    isMoodFilterOpen = moodFilterSelectionOpen
+                    isMoodFilterActive = moodFilterSelectionOpen
                 )
             )
         }
     }
 
-    private fun activateMoodFilter() {
+    private fun toggleMoodFilter() {
 
         val updatedFilterState = currentState.filterState.copy(
-            isMoodFilterOpen = !currentState.filterState.isMoodFilterOpen,
-            isTopicFilterOpen = false
+            isMoodFilterActive = !currentState.filterState.isMoodFilterActive,
+            isTopicFilterActive = false
         )
 
         updateState { it.copy(filterState = updatedFilterState) }
@@ -360,7 +359,8 @@ class HomeViewModel @Inject constructor(
 
     private fun selectMoodItem(title: String) {
 
-        val updatedMoodItems = currentState.filterState.moodFilterItems.map {
+        val updatedMoodItems = currentState.filterState.moodFilterItems
+            .map {
 
             if (it.title == title) it.copy(isChecked = !it.isChecked) else it
         }
@@ -371,7 +371,8 @@ class HomeViewModel @Inject constructor(
 
     private fun clearMoodFilterItem() {
         selectedMoodFilters.value = emptyList()
-        val updatedMoodItems = currentState.filterState.moodFilterItems.map {
+        val updatedMoodItems = currentState.filterState.moodFilterItems
+            .map {
             if (it.isChecked) it.copy(isChecked = false) else it
         }
 
@@ -388,7 +389,7 @@ class HomeViewModel @Inject constructor(
             it.copy(
                 filterState = currentState.filterState.copy(
                     topicFilterItems = updatedItems,
-                    isTopicFilterOpen = topicFilterSelectionOpen
+                    isTopicFilterActive = topicFilterSelectionOpen
                 )
             )
         }
@@ -396,11 +397,11 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    private fun activateTopicFilter() {
+    private fun toggleTopicFilter() {
 
         val updatedFilterState = currentState.filterState.copy(
-            isTopicFilterOpen = !currentState.filterState.isTopicFilterOpen,
-            isMoodFilterOpen = false
+            isTopicFilterActive = !currentState.filterState.isTopicFilterActive,
+            isMoodFilterActive = false
         )
 
         updateState { it.copy(filterState = updatedFilterState) }
@@ -445,7 +446,7 @@ class HomeViewModel @Inject constructor(
         updateRecordingSheetState(updatedRecordingSheetState)
     }
 
-    private fun flipSheetState() {
+    private fun flipRecordingSheetState() {
 
         val updatedSheetState = currentState.recordingSheetState.copy(
             isVisible = !currentState.recordingSheetState.isVisible,

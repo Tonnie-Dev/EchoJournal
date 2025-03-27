@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,8 +52,8 @@ fun EchoFilter(
             FilterChip(
                 defaultTitle = stringResource(id = R.string.filter_text_all_moods),
                 filterItems = filterState.moodFilterItems,
-                isFilterItemSelected = filterState.isMoodFilterOpen,
-                onClickFilter = { onEvent(HomeUiEvent.ActivateMoodFilter) },
+                isFilterItemSelected = filterState.isMoodFilterActive,
+                onClickFilter = { onEvent(HomeUiEvent.ToggleMoodFilter) },
                 onClearFilter = { onEvent(HomeUiEvent.CancelMoodFilter) },
                 leadingIcon = {
                     if (filterState.moodFilterItems.isNotEmpty()) {
@@ -68,8 +67,8 @@ fun EchoFilter(
             FilterChip(
                 defaultTitle = stringResource(id = R.string.all_topics_filter_text),
                 filterItems = filterState.topicFilterItems,
-                isFilterItemSelected = filterState.isTopicFilterOpen,
-                onClickFilter = { onEvent(HomeUiEvent.ActivateTopicFilter) },
+                isFilterItemSelected = filterState.isTopicFilterActive,
+                onClickFilter = { onEvent(HomeUiEvent.ToggleTopicFilter) },
                 onClearFilter = { onEvent(HomeUiEvent.CancelTopicFilter) }
             )
         }

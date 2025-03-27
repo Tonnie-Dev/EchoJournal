@@ -7,7 +7,6 @@ import com.tonyxlab.echojournal.presentation.core.base.handling.UiState
 import com.tonyxlab.echojournal.presentation.core.state.PlayerState
 import com.tonyxlab.echojournal.utils.Constants
 import kotlinx.datetime.Instant
-import timber.log.Timber
 
 
 @Stable
@@ -18,7 +17,6 @@ data class HomeUiState(
     val recordingSheetState: RecordingSheetState = RecordingSheetState(),
     val isPermissionDialogOpen: Boolean = false
 ) : UiState {
-
 
     @Stable
     data class EchoHolderState(
@@ -35,12 +33,11 @@ data class HomeUiState(
 
     @Stable
     data class FilterState(
-        val isMoodFilterOpen: Boolean = false,
-        val isTopicFilterOpen: Boolean = false,
+        val isMoodFilterActive: Boolean = false,
+        val isTopicFilterActive: Boolean = false,
         val moodFilterItems: List<FilterItem> = Mood.allMoods().map { FilterItem(title = it.name) },
         val topicFilterItems: List<FilterItem> = listOf()
     ) {
-       
         data class FilterItem(
             val title: String = "",
             val isChecked: Boolean = false
