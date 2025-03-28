@@ -3,7 +3,6 @@ package com.tonyxlab.echojournal.presentation.core.components
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,20 +24,27 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 
 @Composable
 fun MoodRow(
-    activeMood: Mood, moods: List<Mood>, onMoodClick: (Mood) -> Unit, modifier: Modifier = Modifier
+    activeMood: Mood,
+    moods: List<Mood>,
+    onMoodClick: (Mood) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
-        moods.fastForEach {
-
+        moods.fastForEach { mood ->
+            MoodItem(
+                icon = if (activeMood == mood) mood.icon
+                else mood.outlinedIcon,
+                title = mood.name,
+                onClick = { onMoodClick(mood) }
+            )
 
         }
     }
 }
-
 
 @Composable
 fun MoodItem(
@@ -52,8 +58,7 @@ fun MoodItem(
         modifier = modifier
             .width(MaterialTheme.spacing.spaceExtraLarge)
             .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null
+                interactionSource = remember { MutableInteractionSource() }, indication = null
             ) { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall)
@@ -66,7 +71,8 @@ fun MoodItem(
             contentScale = ContentScale.FillHeight
         )
 
-        Text(text = title,
-            style = MaterialTheme.typography.labelMedium)
+        Text(
+            text = title, style = MaterialTheme.typography.labelMedium
+        )
     }
 }
