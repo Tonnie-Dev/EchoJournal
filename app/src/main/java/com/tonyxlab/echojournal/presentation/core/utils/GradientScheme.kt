@@ -15,6 +15,18 @@ data class GradientScheme(
 
     companion object {
 
+        val PrimaryGradient = Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFF578CFF),
+                Color(0xFF1F70F5)
+            )
+        )
+
+        val DisabledSolidColor = Brush.linearGradient(
+            colors = listOf(SurfaceVariant, SurfaceVariant)
+        )
+
+
         val DefaultGradient = Brush.linearGradient(
             colors = listOf(Color(0xFF578CFF), Color(0xFF1F70F5))
         )
@@ -23,9 +35,6 @@ data class GradientScheme(
             colors = listOf(Color(0xFF578CFF), Color(0xFF0057CC))
         )
 
-        val DisabledSolidColor = Brush.linearGradient(
-            colors = listOf(SurfaceVariant, SurfaceVariant)
-        )
 
         val FabRecordingBackground = Brush.verticalGradient(
             colors = listOf(
@@ -44,7 +53,6 @@ data class GradientScheme(
 }
 
 val LocalGradient = staticCompositionLocalOf { GradientScheme() }
-
 
 val MaterialTheme.gradient: GradientScheme
     @Composable @ReadOnlyComposable
