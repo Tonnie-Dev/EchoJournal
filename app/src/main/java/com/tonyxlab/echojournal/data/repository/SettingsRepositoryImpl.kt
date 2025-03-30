@@ -16,15 +16,14 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import javax.inject.Inject
 
-
+ val Context.dataStore by preferencesDataStore(Constants.DATA_PREFS)
 class SettingsRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val jsonSerializer: JsonSerializer
-) :
-    SettingsRepository {
+) : SettingsRepository {
 
 
-    private val Context.dataStore by preferencesDataStore(Constants.DATA_PREFS)
+
     private val dataStore = context.dataStore
 
     private val topicsIdSerializer: KSerializer<List<Long>> = ListSerializer(Long.serializer())
