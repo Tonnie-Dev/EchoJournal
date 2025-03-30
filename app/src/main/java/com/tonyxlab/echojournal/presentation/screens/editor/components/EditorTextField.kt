@@ -1,7 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.editor.components
 
-import android.R
-import android.R.attr.text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -38,9 +36,8 @@ fun EditorTextField(
 
     var isFocused by remember { mutableStateOf(false) }
 
-
     BasicTextField(
-        modifier = modifier.onFocusChanged { isFocused = !isFocused },
+        modifier = modifier.onFocusChanged { isFocused = it.isFocused},
         value = textValue,
         onValueChange = onValueChange,
         textStyle = textStyle,

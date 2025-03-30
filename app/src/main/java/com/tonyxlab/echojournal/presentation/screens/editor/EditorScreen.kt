@@ -102,7 +102,8 @@ fun EditorScreenRoot(
                 else
                     stringResource(id = R.string.title_edit_entry), onBackClick = {
                     viewModel.onEvent(EditorUiEvent.ExitDialogToggled)
-                }
+                },
+                isShowBackButton = true
             )
         },
         bottomBar = { uiState ->
@@ -129,7 +130,6 @@ fun EditorScreenRoot(
         )
 
        // EditorBottomSheet
-
         EditorBottomSheet(
             editorSheetState = uiState.editorSheetState,
             onEvent = viewModel::onEvent

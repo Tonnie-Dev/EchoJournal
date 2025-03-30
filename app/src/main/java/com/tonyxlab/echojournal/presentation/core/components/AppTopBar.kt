@@ -28,16 +28,18 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 fun AppTopBar(
     title: String,
     modifier: Modifier = Modifier,
-    style:TextStyle = MaterialTheme.typography.headlineLarge,
+    style: TextStyle = MaterialTheme.typography.titleSmall,
     isShowBackButton: Boolean = false,
-    onBackClick:(()-> Unit)? = null
+    onBackClick: (() -> Unit)? = null
 ) {
-
 
     TopAppBar(
         modifier = modifier,
         title = {
-            Text(modifier = Modifier.fillMaxWidth().padding(end = MaterialTheme.spacing.spaceLarge),
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = MaterialTheme.spacing.spaceLarge),
                 text = title,
                 textAlign = if (isShowBackButton) TextAlign.Center else TextAlign.Start,
                 style = style,
@@ -46,13 +48,11 @@ fun AppTopBar(
             )
         },
         navigationIcon = {
-
             if (isShowBackButton) {
 
-                IconButton(onClick = {onBackClick?.invoke()} ) {
-
-
-                    Icon(modifier = Modifier.minimumInteractiveComponentSize(),
+                IconButton(onClick = { onBackClick?.invoke() }) {
+                    Icon(
+                        modifier = Modifier.minimumInteractiveComponentSize(),
                         imageVector = Icons.AutoMirrored.Filled.NavigateBefore,
                         contentDescription = stringResource(
                             R.string.text_back
@@ -70,11 +70,11 @@ fun AppTopBar(
 @Composable
 private fun AppTopBarPreview() {
 
-EchoJournalTheme {
+    EchoJournalTheme {
 
-    Column {
-        AppTopBar(title = "Journal", isShowBackButton = true)
-        AppTopBar(title = "Journal", isShowBackButton = false)
+        Column {
+            AppTopBar(title = "Journal", isShowBackButton = true)
+            AppTopBar(title = "Journal", isShowBackButton = false)
+        }
     }
-}
 }
