@@ -194,7 +194,7 @@ fun EditorScreen(
             ) {
 
                 MoodPlayer(
-                    modifier = Modifier.height(MaterialTheme.spacing.spaceExtraSmall),
+                    modifier = Modifier.height(MaterialTheme.spacing.spaceMedium *3),
                     mood = uiState.currentMood,
                     playerState = uiState.playerState,
                     onPlayClick = { onEvent(EditorUiEvent.PlayClicked) },
