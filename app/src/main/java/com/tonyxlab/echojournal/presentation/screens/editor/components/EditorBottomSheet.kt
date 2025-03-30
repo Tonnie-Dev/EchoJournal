@@ -34,7 +34,7 @@ fun EditorBottomSheet(
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
-    val isPrimaryButtonEnabled by remember {
+    val isPrimaryButtonEnabled by remember(editorSheetState.activeMood) {
         derivedStateOf {
             editorSheetState.activeMood != Mood.Undefined
         }

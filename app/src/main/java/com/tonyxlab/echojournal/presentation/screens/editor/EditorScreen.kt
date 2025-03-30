@@ -108,16 +108,17 @@ fun EditorScreenRoot(
         bottomBar = { uiState ->
             val context = LocalContext.current
             EditorBottomButtons(
+                modifier = Modifier.padding(MaterialTheme.spacing.spaceMedium),
                 primaryButtonText = stringResource(id = R.string.button_text_save),
-                // TODO: Review This Event
                 onCancelClick = { viewModel.onEvent(EditorUiEvent.ExitDialogToggled) },
                 onConfirmClick = {
-
                     val outputDir = context.filesDir
                     viewModel.onEvent(EditorUiEvent.SaveButtonClicked(outputDir!!))
-                }
+                },
+                primaryButtonEnabled = uiState.isSaveEnabled
             )
-        }, onBackPressed = { viewModel.onEvent((EditorUiEvent.ExitDialogToggled)) },
+        },
+        onBackPressed = { viewModel.onEvent((EditorUiEvent.ExitDialogToggled)) },
         containerColor = MaterialTheme.colorScheme.surface
 
     ) { uiState ->

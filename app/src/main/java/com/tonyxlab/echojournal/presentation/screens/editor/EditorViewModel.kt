@@ -113,7 +113,7 @@ class EditorViewModel @AssistedInject constructor(
             EditorUiEvent.PauseClicked -> pauseAudio()
             EditorUiEvent.ResumeClicked -> resumeAudio()
 
-            is EditorUiEvent.SaveButtonClicked -> saveEntry(event.outDir)
+            is EditorUiEvent.SaveButtonClicked -> saveEcho(event.outDir)
 
             EditorUiEvent.ExitDialogToggled -> flipExitDialogState()
 
@@ -271,7 +271,7 @@ class EditorViewModel @AssistedInject constructor(
         updateState { it.copy(playerState = updatedPlayerState) }
     }
 
-    private fun saveEntry(outputDir: File) {
+    private fun saveEcho(outputDir: File) {
         val newAudioFilePath = renameFile(outputDir, audioFilePath, "audio")
         val topics = currentState.currentTopics.map { it.name }
         val newEcho = Echo(

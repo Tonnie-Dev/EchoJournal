@@ -25,7 +25,7 @@ data class EditorUiState(
 
     @Stable
     data class EditorSheetState(
-        val isSheetOpen: Boolean = false,
+        val isSheetOpen: Boolean = true,
         val activeMood: Mood = Mood.Undefined,
         val moods: List<Mood> = Mood.allMoods()
     )

@@ -29,8 +29,10 @@ fun PrimaryButton(
         modifier = modifier
             .clip(CircleShape)
             .background(
-
-                brush = if (enabled) GradientScheme.PressedGradient else GradientScheme.DisabledSolidColor,
+                brush = if (enabled)
+                    GradientScheme.PrimaryGradient
+                else
+                    GradientScheme.DisabledSolidColor,
                 shape = CircleShape
             ),
         onClick = onClick,
