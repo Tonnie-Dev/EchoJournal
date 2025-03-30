@@ -140,8 +140,8 @@ fun EditorScreenRoot(
                 onConfirm = { viewModel.onEvent(EditorUiEvent.ExitDialogConfirmClicked) },
                 onDismissRequest = { viewModel.onEvent(EditorUiEvent.ExitDialogToggled) },
                 supportingText = stringResource(id = R.string.dialog_text_leave_confirmation),
-                cancelButtonText = stringResource(id = R.string.dialog_text_cancel),
-                confirmButtonText = stringResource(id = R.string.dialog_text_leave)
+                cancelButtonText = stringResource(id = R.string.button_text_cancel),
+                confirmButtonText = stringResource(id = R.string.dialog_text_exit)
             )
         }
 

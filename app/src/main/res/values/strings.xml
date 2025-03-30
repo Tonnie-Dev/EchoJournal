@@ -37,8 +37,8 @@
     <string name="permission_dialog_declined_text">It seems you have permanently declined microphone permission. You can go to the app settings to grant it.</string>
     <string name="permission_dialog_text">This app needs access to your microphone so you can capture your thoughts and mood with voice memos.</string>
     <string name="your_echo_journal">Your EchoJournal</string>
-    <string name="dialog_text_cancel">Cancel recording?</string>
+    <string name="dialog_text_cancel">Cancel Recording?</string>
     <string name="text_no_entries">Try adjusting your filters to find what you\'re looking for</string>
     <string name="dialog_text_leave_confirmation">Are you sure you want to cancel this voice memo? This action cannot be undone.</string>
-    <string name="dialog_text_leave">Leave</string>
+    <string name="dialog_text_exit">Exit</string>
 </resources>

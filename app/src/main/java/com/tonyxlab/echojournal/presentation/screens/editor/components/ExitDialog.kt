@@ -1,6 +1,8 @@
 package com.tonyxlab.echojournal.presentation.screens.editor.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +26,7 @@ fun ExitDialog(
     onConfirm: () -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    supportingText: String,
+    supportingText: String = "",
     confirmButtonText: String = "",
     cancelButtonText: String = ""
 ) {
@@ -37,26 +39,34 @@ fun ExitDialog(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.spaceMedium),
-            shape = RoundedCornerShape(
-                MaterialTheme.spacing.spaceSmall
-            )
+            shape = RoundedCornerShape(MaterialTheme.spacing.spaceSmall)
         ) {
-            DialogHeader(headline = headline, supportingText = supportingText)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.spaceMedium)
+            ) {
+                DialogHeader(
+                    headline = headline,
+                    supportingText = supportingText
+                )
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceMedium))
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceMedium))
 
-            DialogButtons(
-                cancelButtonText = cancelButtonText,
-                confirmButtonText = confirmButtonText,
-                onConfirm = onConfirm,
-                onCancel = onDismissRequest
-            )
+                DialogButtons(
+                    cancelButtonText = cancelButtonText,
+                    confirmButtonText = confirmButtonText,
+                    onConfirm = onConfirm,
+                    onCancel = onDismissRequest
+                )
+            }
+
         }
     }
 }
 
 @Composable
-fun DialogHeader(
+private fun DialogHeader(
     headline: String,
     modifier: Modifier = Modifier,
     supportingText: String? = null,
@@ -88,41 +98,44 @@ fun DialogHeader(
 }
 
 @Composable
-fun DialogButtons(
+private fun DialogButtons(
     cancelButtonText: String,
     confirmButtonText: String,
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    // Cancel Button
-
-    TextButton(onClick = onCancel) {
-
-        Text(
-            text = cancelButtonText,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-        )
-    }
-
-    Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceMedium))
-
-    // Confirm Button
-
-    TextButton(
-        onClick = onConfirm
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Absolute.Right
     ) {
 
-        Text(
-            text = confirmButtonText,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.secondary
+        // Cancel Button
+        TextButton(onClick = onCancel) {
+
+            Text(
+                text = cancelButtonText,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.secondary
+                )
             )
-        )
+        }
+
+        Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceMedium))
+
+        // Confirm Button
+        TextButton(
+            onClick = onConfirm
+        ) {
+
+            Text(
+                text = confirmButtonText,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            )
+        }
     }
 }
