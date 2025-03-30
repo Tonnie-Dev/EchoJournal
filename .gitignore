@@ -17,3 +17,4 @@ local.properties
 /.idea/codeStyles/codeStyleConfig.xml
 /.idea/codeStyles/Project.xml
 /.idea/inspectionProfiles/Project_Default.xml
+.kotlin/errors/
