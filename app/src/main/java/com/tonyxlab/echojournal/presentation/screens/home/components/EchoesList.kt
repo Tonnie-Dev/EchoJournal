@@ -1,5 +1,10 @@
+
+@file:RequiresApi(Build.VERSION_CODES.O)
+
 package com.tonyxlab.echojournal.presentation.screens.home.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +17,6 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.utils.formatInstantToRelativeDay
-import com.tonyxlab.echojournal.utils.formatToRelativeDay
 import kotlinx.datetime.Instant
 
 
@@ -52,7 +56,6 @@ fun EchoesList(
                     },
                     onEvent = onEvent
                 )
-
             }
         }
     }

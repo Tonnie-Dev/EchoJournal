@@ -68,7 +68,7 @@ fun FilterList(
                 modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall)
             ) {
-                items(filterItems) { filterItem ->
+                items(filterItems.take(5)) { filterItem ->
                     FilterItem(
                         filterItem = filterItem,
                         onClick = { onItemClick(it) })
