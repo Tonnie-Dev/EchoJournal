@@ -47,7 +47,7 @@ fun EditorBottomSheet(
         ) {
 
             Column(
-                modifier = Modifier.padding(MaterialTheme.spacing.spaceMedium),
+                modifier = modifier.padding(MaterialTheme.spacing.spaceMedium),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 14)
             ) {

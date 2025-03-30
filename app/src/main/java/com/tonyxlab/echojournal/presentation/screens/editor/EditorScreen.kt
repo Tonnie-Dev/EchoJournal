@@ -59,6 +59,7 @@ import com.tonyxlab.echojournal.presentation.core.components.TopicDropDown
 import com.tonyxlab.echojournal.presentation.core.components.TopicSelector
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.editor.components.EditorBottomButtons
+import com.tonyxlab.echojournal.presentation.screens.editor.components.EditorBottomSheet
 import com.tonyxlab.echojournal.presentation.screens.editor.components.EditorTextField
 import com.tonyxlab.echojournal.presentation.screens.editor.components.ExitDialog
 import com.tonyxlab.echojournal.presentation.screens.editor.components.MoodChooseButton
@@ -123,6 +124,13 @@ fun EditorScreenRoot(
 
         EditorScreen(
             uiState = uiState,
+            onEvent = viewModel::onEvent
+        )
+
+       // EditorBottomSheet
+
+        EditorBottomSheet(
+            editorSheetState = uiState.editorSheetState,
             onEvent = viewModel::onEvent
         )
 
