@@ -415,7 +415,7 @@ updateState { it.copy(isFilterActive =isFilterActive) }
             if (it.title == title) it.copy(isChecked = !it.isChecked) else it
         }
 
-        selectedTopicFilters.value = updatedTopicItems
+        selectedTopicFilters.value = updatedTopicItems.filter { it.isChecked }
 
         updateTopicFilterItems(updatedTopicItems)
     }

@@ -72,7 +72,6 @@ fun HomeScreenRoot(
             when (actionEvent) {
                 is HomeActionEvent.NavigateToEditorScreen -> {
 
-                    Timber.i("HS ${actionEvent.audioFilePath}")
                     navigateToEditorScreen(actionEvent.audioFilePath)
                 }
 
