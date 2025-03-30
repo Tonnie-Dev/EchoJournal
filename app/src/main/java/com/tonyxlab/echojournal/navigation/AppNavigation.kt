@@ -38,7 +38,6 @@ fun NavGraphBuilder.appDestinations(
             isLaunchedFromWidget = isLaunchedFromWidget,
             viewModel = viewModel,
             navigateToEditorScreen = {
-
                 navController.navigate(EditorRouteObject(audioFilePath = it))
             },
             navigateToSettingScreen = { navController.navigate(SettingsRouteObject) })
@@ -48,7 +47,6 @@ fun NavGraphBuilder.appDestinations(
 
         val args = navBackStackEntry.toRoute<EditorRouteObject>()
 
-
         EditorScreenRoot(
             echoId = args.id,
             audioFilePath = args.audioFilePath,
@@ -56,9 +54,7 @@ fun NavGraphBuilder.appDestinations(
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceMedium),
         )
 
-
     }
-
 }
 
 @Serializable

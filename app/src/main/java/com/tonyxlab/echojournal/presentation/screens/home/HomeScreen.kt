@@ -94,7 +94,6 @@ fun HomeScreenRoot(
             HomeScreen(
                 uiState = uiState,
                 onEvent = viewModel::onEvent
-
             )
         }
 

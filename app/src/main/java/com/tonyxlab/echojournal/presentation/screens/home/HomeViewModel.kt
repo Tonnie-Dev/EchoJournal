@@ -167,7 +167,7 @@ class HomeViewModel @Inject constructor(
                 getFilteredEchoes(fetchedEchoes, moodTypes, topicTitles)
 
             } else emptyMap()
-
+updateState { it.copy(isFilterActive =isFilterActive) }
         }.launchIn(viewModelScope)
     }
 
