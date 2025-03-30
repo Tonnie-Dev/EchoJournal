@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,6 +15,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.base.BaseContentLayout
 import com.tonyxlab.echojournal.presentation.screens.home.components.EmptyHomeScreen
@@ -35,10 +37,9 @@ fun HomeScreenRoot(
     isLaunchedFromWidget: Boolean,
     navigateToEditorScreen: (audioFilePath: String) -> Unit,
     navigateToSettingScreen: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-
-    val viewModel: HomeViewModel = hiltViewModel()
 
     BaseContentLayout(
         modifier = modifier,
@@ -96,7 +97,6 @@ fun HomeScreenRoot(
 
             )
         }
-
 
         RecordingBottomSheet(
             homeSheetState = uiState.recordingSheetState,

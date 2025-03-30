@@ -2,7 +2,10 @@ package com.tonyxlab.echojournal.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -11,22 +14,31 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.editor.EditorScreen
 import com.tonyxlab.echojournal.presentation.screens.editor.EditorScreenRoot
 import com.tonyxlab.echojournal.presentation.screens.home.HomeScreenRoot
+import com.tonyxlab.echojournal.presentation.screens.home.HomeViewModel
 import com.tonyxlab.echojournal.utils.Constants
 import kotlinx.serialization.Serializable
 import timber.log.Timber
 
 fun NavGraphBuilder.appDestinations(
-    navController: NavController, isDataLoaded: () -> Unit, isLaunchedFromWidget: Boolean
+    navController: NavController,
+    isDataLoaded: () -> Unit,
+    isLaunchedFromWidget: Boolean
 ) {
 
-    composable<HomeRouteObject> {
+    composable<HomeRouteObject> {backStackEntry ->
 
+        val parentEntry = remember(backStackEntry){
+            navController.getBackStackEntry<HomeRouteObject>()
+        }
+
+        val viewModel: HomeViewModel = hiltViewModel(parentEntry)
         HomeScreenRoot(
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceMedium),
             isDataLoaded = isDataLoaded,
             isLaunchedFromWidget = isLaunchedFromWidget,
+            viewModel = viewModel,
             navigateToEditorScreen = {
-                Timber.i("PsNav: $it")
+
                 navController.navigate(EditorRouteObject(audioFilePath = it))
             },
             navigateToSettingScreen = { navController.navigate(SettingsRouteObject) })
@@ -36,11 +48,11 @@ fun NavGraphBuilder.appDestinations(
 
         val args = navBackStackEntry.toRoute<EditorRouteObject>()
 
-        Timber.i("Nav: ${args.audioFilePath}")
+
         EditorScreenRoot(
             echoId = args.id,
             audioFilePath = args.audioFilePath,
-            navigateBack = { navController.popBackStack() },
+            navigateBack = { navController.navigate(HomeRouteObject) },
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceMedium),
         )
 
