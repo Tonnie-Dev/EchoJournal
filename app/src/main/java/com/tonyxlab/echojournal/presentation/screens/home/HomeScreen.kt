@@ -1,10 +1,14 @@
+
+@file:RequiresApi(Build.VERSION_CODES.O)
+
 package com.tonyxlab.echojournal.presentation.screens.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,13 +19,12 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.base.BaseContentLayout
-import com.tonyxlab.echojournal.presentation.screens.home.components.EmptyHomeScreen
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoFilter
 import com.tonyxlab.echojournal.presentation.screens.home.components.EchoesList
+import com.tonyxlab.echojournal.presentation.screens.home.components.EmptyHomeScreen
 import com.tonyxlab.echojournal.presentation.screens.home.components.FilterList
 import com.tonyxlab.echojournal.presentation.screens.home.components.HomeFab
 import com.tonyxlab.echojournal.presentation.screens.home.components.HomeTopBar
@@ -29,13 +32,12 @@ import com.tonyxlab.echojournal.presentation.screens.home.components.RecordingBo
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeActionEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
-import timber.log.Timber
 
 @Composable
 fun HomeScreenRoot(
     isDataLoaded: () -> Unit,
     isLaunchedFromWidget: Boolean,
-    navigateToEditorScreen: (audioFilePath: String) -> Unit,
+    navigateToEditorScreen: (audioFilePath: String, Long) -> Unit,
     navigateToSettingScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
@@ -72,7 +74,7 @@ fun HomeScreenRoot(
             when (actionEvent) {
                 is HomeActionEvent.NavigateToEditorScreen -> {
 
-                    navigateToEditorScreen(actionEvent.audioFilePath)
+                    navigateToEditorScreen(actionEvent.audioFilePath,actionEvent.echoId)
                 }
 
                 is HomeActionEvent.DataLoaded -> {
@@ -104,6 +106,7 @@ fun HomeScreenRoot(
     }
 
 }
+
 
 @Composable
 private fun HomeScreen(

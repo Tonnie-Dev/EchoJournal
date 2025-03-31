@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.home.handling
 
-import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.presentation.core.base.handling.UiEvent
 
 sealed interface HomeUiEvent:UiEvent {
@@ -27,4 +26,6 @@ sealed interface HomeUiEvent:UiEvent {
     data class StartPlay(val echoId: Long) : HomeUiEvent
     data class PausePlay(val echoId: Long) : HomeUiEvent
     data class ResumePlay(val echoId: Long) : HomeUiEvent
+
+   // data class ClickEchoItem(val id: Long): HomeUiEvent
 }

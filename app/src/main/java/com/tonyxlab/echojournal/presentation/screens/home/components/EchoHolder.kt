@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.home.components
 
-import android.R
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -46,7 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
 import com.tonyxlab.echojournal.presentation.core.components.ExpandableText
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
@@ -54,7 +52,6 @@ import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.EchoUltraLightGray
 import com.tonyxlab.echojournal.utils.formatHoursAndMinutes
-import com.tonyxlab.echojournal.utils.formatMillisToTime
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

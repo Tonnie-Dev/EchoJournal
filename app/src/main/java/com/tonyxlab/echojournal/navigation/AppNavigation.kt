@@ -37,8 +37,8 @@ fun NavGraphBuilder.appDestinations(
             isDataLoaded = isDataLoaded,
             isLaunchedFromWidget = isLaunchedFromWidget,
             viewModel = viewModel,
-            navigateToEditorScreen = {
-                navController.navigate(EditorRouteObject(audioFilePath = it))
+            navigateToEditorScreen = {arg1, arg2 ->
+                navController.navigate(EditorRouteObject(audioFilePath = arg1))
             },
             navigateToSettingScreen = { navController.navigate(SettingsRouteObject) })
     }

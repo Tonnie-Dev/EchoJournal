@@ -492,7 +492,7 @@ updateState { it.copy(isFilterActive =isFilterActive) }
 
         if (isSaveFile) {
             stopPlay()
-            sendActionEvent(HomeActionEvent.NavigateToEditorScreen(audioFilePath))
+            sendActionEvent(HomeActionEvent.NavigateToEditorScreen(audioFilePath,-1L))
         }
     }
 
@@ -554,6 +554,8 @@ updateState { it.copy(isFilterActive =isFilterActive) }
 
     }
 
-
+private fun onClickEchoItem() {
+  // sendActionEvent(HomeActionEvent.NavigateToEditorScreen(au))
+}
 }
 
