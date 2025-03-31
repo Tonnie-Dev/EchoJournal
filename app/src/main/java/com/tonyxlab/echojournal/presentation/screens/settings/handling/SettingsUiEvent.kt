@@ -2,8 +2,9 @@ package com.tonyxlab.echojournal.presentation.screens.settings.handling
 
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.model.Topic
+import com.tonyxlab.echojournal.presentation.core.base.handling.UiEvent
 
-sealed interface SettingsUiEvent {
+sealed interface SettingsUiEvent: UiEvent {
     data class SelectMood(val mood: Mood) : SettingsUiEvent
     data class TopicValueChange(val topic: String) : SettingsUiEvent
     data class SelectTopic(val topic: Topic) : SettingsUiEvent
