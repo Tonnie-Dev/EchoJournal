@@ -5,7 +5,7 @@ import com.tonyxlab.echojournal.domain.model.Topic
 
 sealed interface SettingsUiEvent {
     data class SelectMood(val mood: Mood) : SettingsUiEvent
-    data class TopicValueChange(val topic: Topic) : SettingsUiEvent
+    data class TopicValueChange(val topic: String) : SettingsUiEvent
     data class SelectTopic(val topic: Topic) : SettingsUiEvent
     data class ClearTagClick(val topic: Topic) : SettingsUiEvent
     data object CreateTopicClick : SettingsUiEvent

@@ -16,11 +16,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.util.fastForEach
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.components.TopicTag
+import com.tonyxlab.echojournal.presentation.core.components.TopicTextField
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.settings.handling.SettingsUiEvent
 import com.tonyxlab.echojournal.presentation.screens.settings.handling.SettingsUiState.TopicState
@@ -32,9 +37,8 @@ fun TopicTagsWithAddButton(
     onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     FlowRow(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(
             MaterialTheme.spacing.spaceSmall
         ),
@@ -42,7 +46,6 @@ fun TopicTagsWithAddButton(
     ) {
 
         topicState.currentTopics.fastForEach { topic ->
-
             TopicTag(
                 topic = topic,
                 onClearClick = { onEvent(SettingsUiEvent.ClearTagClick(topic)) }
@@ -50,10 +53,24 @@ fun TopicTagsWithAddButton(
         }
 
         if (topicState.isAddButtonVisible) {
-            TopicAddButton
+            TopicAddButton(onClick = { onEvent(SettingsUiEvent.ToggleAddButton) })
+        } else {
+            val focusRequester = remember { FocusRequester() }
+            LaunchedEffect(true) {
+                focusRequester.requestFocus()
+            }
+
+            TopicTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .focusRequester(focusRequester),
+                value = topicState.topicValue,
+                onValueChange = { onEvent(SettingsUiEvent.TopicValueChange(it)) },
+                hintText = "",
+                showLeadingIcon = false
+            )
         }
     }
-
 
 }
 
