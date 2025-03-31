@@ -7,9 +7,9 @@ interface SettingsRepository {
 
     suspend fun saveMood(moodTitle: String)
 
-    fun getMood(): Flow<String>
+    suspend fun getMood(): String
 
     suspend fun saveTopics(topicListIds: List<Long>)
 
-    fun getTopics(): Flow<List<Long>>
+    suspend fun getTopics(): List<Long>
 }
