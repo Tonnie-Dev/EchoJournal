@@ -4,16 +4,12 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.tonyxlab.echojournal.data.repository.`<no name provided>`.moodKey
-import com.tonyxlab.echojournal.data.repository.`<no name provided>`.topicsKey
 import com.tonyxlab.echojournal.domain.json.JsonSerializer
 import com.tonyxlab.echojournal.domain.model.Mood
 import com.tonyxlab.echojournal.domain.repository.SettingsRepository
 import com.tonyxlab.echojournal.utils.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer

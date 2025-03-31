@@ -68,7 +68,7 @@ class EditorViewModel @AssistedInject constructor(
             }
         }.stateIn(
             viewModelScope,
-            SharingStarted.Companion.WhileSubscribed(5000),
+            SharingStarted.WhileSubscribed(5000),
             emptyList()
         )
 
@@ -144,9 +144,9 @@ class EditorViewModel @AssistedInject constructor(
 
         launch {
 
-            // TODO: Check for NoSuchElement Crash for flow.first() function
-            val defaultTopicsIds = settingsRepository.getTopics().first()
-            val defaultMood = settingsRepository.getMood().first()
+          
+            val defaultTopicsIds = settingsRepository.getTopics()
+            val defaultMood = settingsRepository.getMood()
             val defaultTopics = topicRepository.getTopicsByIds(defaultTopicsIds)
             updateState {
 
