@@ -144,7 +144,7 @@ class EditorViewModel @AssistedInject constructor(
 
         launch {
 
-          
+
             val defaultTopicsIds = settingsRepository.getTopics()
             val defaultMood = settingsRepository.getMood()
             val defaultTopics = topicRepository.getTopicsByIds(defaultTopicsIds)
