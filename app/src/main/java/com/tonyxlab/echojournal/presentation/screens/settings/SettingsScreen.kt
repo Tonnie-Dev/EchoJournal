@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.settings
 
-import android.R.attr.y
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,16 +16,48 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tonyxlab.echojournal.R
+import com.tonyxlab.echojournal.presentation.core.base.BaseContentLayout
+import com.tonyxlab.echojournal.presentation.core.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.core.components.MoodRow
 import com.tonyxlab.echojournal.presentation.core.components.TopicDropDown
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
-import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiEvent
 import com.tonyxlab.echojournal.presentation.screens.settings.components.SettingsItem
 import com.tonyxlab.echojournal.presentation.screens.settings.components.TopicTagsWithAddButton
 import com.tonyxlab.echojournal.presentation.screens.settings.handling.SettingsUiEvent
 import com.tonyxlab.echojournal.presentation.screens.settings.handling.SettingsUiState
 import com.tonyxlab.echojournal.utils.toInt
+
+@Composable
+fun SettingsScreenRoot(
+
+    modifier: Modifier = Modifier,
+    navigateToHome: () -> Unit
+) {
+    val viewModel: SettingsViewModel = hiltViewModel()
+
+    BaseContentLayout(
+        modifier = modifier.padding(top = MaterialTheme.spacing.spaceSmall),
+        viewModel = viewModel,
+        topBar = {
+
+            AppTopBar(
+                title = stringResource(R.string.header_text_settings),
+                isShowBackButton = true,
+                onBackClick = { navigateToHome() }
+            )
+        }
+
+    ) { uiState ->
+
+        SettingsScreen(
+            uiState = uiState,
+            onEvent = viewModel::onEvent
+        )
+    }
+}
+
 
 @Composable
 fun SettingsScreen(
@@ -85,8 +116,7 @@ fun SettingsScreen(
                 onTopicClick = { onEvent(SettingsUiEvent.SelectTopic(it)) },
                 onCreateClick = { onEvent(SettingsUiEvent.CreateTopicClick) },
                 startOffset = topicOffset,
-
-                )
+            )
         }
     }
 }
