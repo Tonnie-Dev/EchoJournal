@@ -1,43 +1,43 @@
+@file:RequiresApi(Build.VERSION_CODES.O)
+
 package com.tonyxlab.echojournal.navigation
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.tonyxlab.echojournal.presentation.core.utils.spacing
-import com.tonyxlab.echojournal.presentation.screens.editor.EditorScreen
 import com.tonyxlab.echojournal.presentation.screens.editor.EditorScreenRoot
 import com.tonyxlab.echojournal.presentation.screens.home.HomeScreenRoot
 import com.tonyxlab.echojournal.presentation.screens.home.HomeViewModel
+import com.tonyxlab.echojournal.presentation.screens.settings.SettingsScreenRoot
 import com.tonyxlab.echojournal.utils.Constants
 import kotlinx.serialization.Serializable
-import timber.log.Timber
 
 fun NavGraphBuilder.appDestinations(
     navController: NavController,
     isDataLoaded: () -> Unit,
-    isLaunchedFromWidget: Boolean
+    isLaunchedFromWidget: Boolean,
+    modifier: Modifier = Modifier
 ) {
+    composable<HomeRouteObject> { backStackEntry ->
 
-    composable<HomeRouteObject> {backStackEntry ->
-
-        val parentEntry = remember(backStackEntry){
+        val parentEntry = remember(backStackEntry) {
             navController.getBackStackEntry<HomeRouteObject>()
         }
 
         val viewModel: HomeViewModel = hiltViewModel(parentEntry)
+
         HomeScreenRoot(
-            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceMedium),
+            modifier = modifier,
             isDataLoaded = isDataLoaded,
             isLaunchedFromWidget = isLaunchedFromWidget,
             viewModel = viewModel,
-            navigateToEditorScreen = {arg1, arg2 ->
+            navigateToEditorScreen = { arg1, arg2 ->
                 navController.navigate(EditorRouteObject(audioFilePath = arg1))
             },
             navigateToSettingScreen = { navController.navigate(SettingsRouteObject) })
@@ -48,14 +48,22 @@ fun NavGraphBuilder.appDestinations(
         val args = navBackStackEntry.toRoute<EditorRouteObject>()
 
         EditorScreenRoot(
+            modifier = modifier,
             echoId = args.id,
             audioFilePath = args.audioFilePath,
             navigateBack = { navController.navigate(HomeRouteObject) },
-            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceMedium),
         )
+    }
 
+    composable<SettingsRouteObject> {
+
+        SettingsScreenRoot(
+            modifier = modifier,
+            navigateToHome = { navController.navigate(HomeRouteObject)}
+        )
     }
 }
+
 
 @Serializable
 data object HomeRouteObject

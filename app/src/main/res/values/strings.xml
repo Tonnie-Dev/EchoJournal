@@ -10,6 +10,7 @@
     <string name="show_less_text"> … Show Less</string>
     <string name="icon_close_text">Close</string>
     <string name="filter_text_all_moods">All Moods</string>
+    <string name="header_text_settings">Settings</string>
     <string name="all_topics_filter_text">All Topics</string>
     <string name="icon_text_checkmark">Checkmark</string>
     <string name="hash_tag_text">"# "</string>
