@@ -48,7 +48,7 @@ class SettingsRepositoryImpl @Inject constructor(
 
         val prefs = dataStore.data.first()
 
-        val topicsJson = prefs[moodKey] ?: "[]"
+        val topicsJson = prefs[topicsKey] ?: "[]"
         return jsonSerializer.fromJson(topicsIdSerializer, topicsJson)
 
     }
