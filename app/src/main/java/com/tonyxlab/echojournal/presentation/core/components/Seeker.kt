@@ -19,32 +19,33 @@ import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Seeker(
-    value: Float,
-    onValueChange: ((Float) -> Unit)?,
+    playbackPosition: Int,
+    playbackDuration: Int,
     mood: Mood,
+    onValueChange: ((Float) -> Unit)?,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
 
     Slider(
-            value = value,
-            onValueChange = { onValueChange?.invoke(it) },
-            modifier = modifier,
-            thumb = {},
-            track = {
-                Track(
-                        modifier = Modifier.height(spacing.spaceExtraSmall),
-                        sliderState = it,
-                        colors = SliderDefaults.colors(
-                                activeTrackColor = mood.moodButtonColor,
-                                inactiveTrackColor = mood.moodTrackColor
-                        ),
-                        thumbTrackGapSize = 0.dp,
-                        trackInsideCornerSize = 0.dp,
-                        drawStopIndicator = null
+        value = playbackPosition / playbackDuration.toFloat(),
+        onValueChange = { onValueChange?.invoke(it) },
+        modifier = modifier,
+        thumb = {},
+        track = {
+            Track(
+                modifier = Modifier.height(spacing.spaceExtraSmall),
+                sliderState = it,
+                colors = SliderDefaults.colors(
+                    activeTrackColor = mood.moodButtonColor,
+                    inactiveTrackColor = mood.moodTrackColor
+                ),
+                thumbTrackGapSize = 0.dp,
+                trackInsideCornerSize = 0.dp,
+                drawStopIndicator = null
 
-                )
-            }
+            )
+        }
     )
 }
 
@@ -52,6 +53,7 @@ fun Seeker(
 @PreviewLightDark
 @Composable
 private fun SliderPreview() {
+
     val spacing = LocalSpacing.current
     EchoJournalTheme {
         Surface {
@@ -59,21 +61,22 @@ private fun SliderPreview() {
             Column(verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)) {
 
                 Seeker(
-                        value = .5f,
-                        onValueChange = {},
-                        mood = Mood.Excited,
+                    playbackPosition = 10,
+                    playbackDuration = 100,
+                    onValueChange = {},
+                    mood = Mood.Excited,
                 )
-
                 Seeker(
-                        value = .4f,
-                        onValueChange = {},
-                        mood = Mood.Sad,
+                    playbackPosition = 50,
+                    playbackDuration = 100,
+                    onValueChange = {},
+                    mood = Mood.Sad,
                 )
-
                 Seeker(
-                        value = .7f,
-                        onValueChange = {},
-                        mood = Mood.Neutral,
+                    playbackPosition = 70,
+                    playbackDuration = 100,
+                    onValueChange = {},
+                    mood = Mood.Neutral,
                 )
             }
         }

@@ -64,7 +64,8 @@ fun PlayTrackUnit(
         )
         Seeker(
             modifier = Modifier.weight(1f),
-            value = seekValue,
+            playbackPosition = 5,
+           playbackDuration = 10,
             onValueChange = onSeek,
             mood = mood
         )
