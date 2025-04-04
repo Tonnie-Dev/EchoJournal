@@ -1,5 +1,6 @@
 package com.tonyxlab.echojournal.presentation.screens.home
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
@@ -58,10 +59,30 @@ class HomeViewModel @Inject constructor(
     override val initialState: HomeUiState
         get() = HomeUiState()
 
+    private val stopWatch = StopWatch()
+
+    private var stopWatchJob: Job? = null
+
+    private val selectedMoodFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
+    private val selectedTopicFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
+
+    private val filteredEchoes = MutableStateFlow<Map<Instant, List<EchoHolderState>>?>(emptyMap())
+    private var fetchedEchoes: Map<Instant, List<EchoHolderState>> = emptyMap()
+
+
+    private var playingEchoId = MutableStateFlow<Long?>(null)
+
+
+    init {
+        observeEntries()
+        observeFilters()
+        setUpAudioPlayerListeners()
+        observeAudioPlayerCurrentPosition()
+    }
+
     override fun onEvent(event: HomeUiEvent) {
 
         when (event) {
-
             ToggleMoodFilter -> toggleMoodFilter()
             is SelectMoodItem -> selectMoodItem(event.mood)
             CancelMoodFilter -> clearMoodFilterItem()
@@ -93,26 +114,6 @@ class HomeViewModel @Inject constructor(
             is PausePlay -> pausePlay(echoId = event.echoId)
             is ResumePlay -> resumePlay(echoId = event.echoId)
         }
-    }
-
-    private val stopWatch = StopWatch()
-    private var stopWatchJob: Job? = null
-
-    private val selectedMoodFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
-    private val selectedTopicFilters = MutableStateFlow<List<FilterState.FilterItem>>(emptyList())
-
-    private val filteredEchoes = MutableStateFlow<Map<Instant, List<EchoHolderState>>?>(emptyMap())
-    private var fetchedEchoes: Map<Instant, List<EchoHolderState>> = emptyMap()
-
-
-    private var playingEchoId = MutableStateFlow<Long?>(null)
-
-
-    init {
-        observeEntries()
-        observeFilters()
-        setUpAudioPlayerListeners()
-        observeAudioPlayerCurrentPosition()
     }
 
     private fun observeEntries() {
@@ -167,7 +168,7 @@ class HomeViewModel @Inject constructor(
                 getFilteredEchoes(fetchedEchoes, moodTypes, topicTitles)
 
             } else emptyMap()
-updateState { it.copy(isFilterActive =isFilterActive) }
+            updateState { it.copy(isFilterActive = isFilterActive) }
         }.launchIn(viewModelScope)
     }
 
@@ -362,8 +363,8 @@ updateState { it.copy(isFilterActive =isFilterActive) }
         val updatedMoodItems = currentState.filterState.moodFilterItems
             .map {
 
-            if (it.title == title) it.copy(isChecked = !it.isChecked) else it
-        }
+                if (it.title == title) it.copy(isChecked = !it.isChecked) else it
+            }
         selectedMoodFilters.value = updatedMoodItems.filter { it.isChecked }
         updateMoodFilterItems(updatedMoodItems = updatedMoodItems)
     }
@@ -373,8 +374,8 @@ updateState { it.copy(isFilterActive =isFilterActive) }
         selectedMoodFilters.value = emptyList()
         val updatedMoodItems = currentState.filterState.moodFilterItems
             .map {
-            if (it.isChecked) it.copy(isChecked = false) else it
-        }
+                if (it.isChecked) it.copy(isChecked = false) else it
+            }
 
         updateMoodFilterItems(updatedMoodItems = updatedMoodItems, moodFilterSelectionOpen = false)
     }
@@ -492,7 +493,7 @@ updateState { it.copy(isFilterActive =isFilterActive) }
 
         if (isSaveFile) {
             stopPlay()
-            sendActionEvent(HomeActionEvent.NavigateToEditorScreen(audioFilePath,-1L))
+            sendActionEvent(HomeActionEvent.NavigateToEditorScreen(Uri.encode(audioFilePath) , -1L))
         }
     }
 
@@ -554,8 +555,8 @@ updateState { it.copy(isFilterActive =isFilterActive) }
 
     }
 
-private fun onClickEchoItem() {
-  // sendActionEvent(HomeActionEvent.NavigateToEditorScreen(au))
-}
+    private fun onClickEchoItem() {
+        // sendActionEvent(HomeActionEvent.NavigateToEditorScreen(au))
+    }
 }
 

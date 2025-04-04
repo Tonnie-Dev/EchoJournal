@@ -124,7 +124,8 @@ private fun BottomSheetHeader(
                 text = if (recordingTime.length > 5)
                     recordingTime
                 else
-                    "00:$recordingTime"
+                    "00:$recordingTime",
+                style = MaterialTheme.typography.labelMedium
             )
 
             // Hidden PlaceHolder Text [ Color is Transparent ] to define Intrinsic max width
