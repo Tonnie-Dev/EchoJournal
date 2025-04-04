@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,6 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,12 +31,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.Dp
 import com.tonyxlab.echojournal.R
+import com.tonyxlab.echojournal.presentation.core.utils.GradientScheme
 import com.tonyxlab.echojournal.presentation.core.utils.gradient
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,7 +55,7 @@ fun RecordingBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { onEvent(HomeUiEvent.StopRecording(saveFile = false)) },
 
-        ) {
+            ) {
 
             Column(
                 modifier = modifier.fillMaxWidth(),
@@ -145,6 +148,8 @@ fun RecordButtons(
     recordButtonSize: Dp = MaterialTheme.spacing.spaceTwelve * 6,
     auxiliaryButtonSize: Dp = MaterialTheme.spacing.spaceTwelve * 4
 ) {
+
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -170,29 +175,36 @@ fun RecordButtons(
 
         // Record Button
         Box(
-            modifier = Modifier
-                .size(recordButtonSize)
-                .clip(CircleShape)
-                .background(
-                    brush = MaterialTheme.gradient.buttonPressedGradient,
-                    shape = CircleShape
-                )
-                .clickable { onRecordClick() },
+            modifier = Modifier.size(recordButtonSize),
             contentAlignment = Alignment.Center
-
         ) {
 
-            Image(
-                painter = if (isRecording)
-                    painterResource(R.drawable.ic_checkmark)
-                else
-                    painterResource(R.drawable.ic_recording),
-                contentDescription = stringResource(id = R.string.recording_button)
-            )
+            Box(
+                modifier = Modifier
+                    .size(recordButtonSize)
+                    .clip(CircleShape)
+                    .background(
+                        brush = GradientScheme.PrimaryGradient,
+                        shape = CircleShape
+                    )
+                    .clickable { onRecordClick() },
+                contentAlignment = Alignment.Center
 
+            ) {
+
+                Image(
+                    painter = if (isRecording)
+                        painterResource(R.drawable.ic_checkmark)
+                    else
+                        painterResource(R.drawable.ic_recording),
+                    contentDescription = stringResource(id = R.string.recording_button)
+                )
+
+
+            }
             if (isRecording) {
 
-                ButtonPulsatingCircle()
+                PulsatingButton()
             }
         }
 

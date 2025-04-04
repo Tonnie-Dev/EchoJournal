@@ -188,7 +188,7 @@ fun HomeFab(
 
             if (isLongPressed) {
 
-                ButtonPulsatingCircle(
+                PulsatingButton(
                     baseSize = (pulsatingCircleSize.value - 20.dp.value).dp,
                     pulseSize = pulsatingCircleSize
                 )
