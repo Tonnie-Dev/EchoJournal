@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 class StopWatch {
 
-
     private val _formattedTime = MutableStateFlow(Constants.DEFAULT_FORMATTED_TIME)
     val formattedTime: StateFlow<String> = _formattedTime
 
@@ -22,7 +21,6 @@ class StopWatch {
     private var lastTimestamp = 0L
 
     fun start() {
-
         if (isRunning) return
 
         coroutineScope.launch {
@@ -37,27 +35,15 @@ class StopWatch {
         }
     }
 
-
     fun pause() {
 
-        isRunning = false
-    }
-
-
-    fun stop() {
-
-        coroutineScope.cancel()
-//        coroutineScope = CoroutineScope(Dispatchers.Main)
-        timeMillis = 0L
-        lastTimestamp = 0L
-        _formattedTime.value = Constants.DEFAULT_FORMATTED_TIME
         isRunning = false
     }
 
     fun reset() {
 
         coroutineScope.cancel()
-        //       coroutineScope = CoroutineScope(appCoroutineDispatchers.main)
+        coroutineScope = CoroutineScope(Dispatchers.Main)
         timeMillis = 0L
         lastTimestamp = 0L
         _formattedTime.value = Constants.DEFAULT_FORMATTED_TIME
