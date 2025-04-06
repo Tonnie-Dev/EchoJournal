@@ -73,6 +73,7 @@ import com.tonyxlab.echojournal.presentation.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.theme.Secondary90
 import com.tonyxlab.echojournal.utils.TextFieldValue
 import com.tonyxlab.echojournal.utils.toInt
+import timber.log.Timber
 
 @Composable
 fun EditorScreenRoot(
@@ -86,6 +87,8 @@ fun EditorScreenRoot(
         hiltViewModel<EditorViewModel, EditorViewModel.EditorViewModelFactory> { factory ->
             factory.create(echoId, audioFilePath)
         }
+
+    Timber.i("ES: $audioFilePath")
 
     BaseContentLayout(
         modifier = modifier,

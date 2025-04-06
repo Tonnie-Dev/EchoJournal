@@ -2,6 +2,7 @@ package com.tonyxlab.echojournal.data.audio
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
@@ -40,7 +41,7 @@ class MediaAudioPlayer @Inject constructor(
     override fun initializeFile(filePath: String) {
         Timber.i("Init file $filePath")
         _currentPositionFlow.value = 0
-        this@MediaAudioPlayer.filePath = filePath
+        this.filePath = filePath
         createPlayer()
     }
 
@@ -95,13 +96,8 @@ class MediaAudioPlayer @Inject constructor(
     }
 
     private fun createPlayer() {
-        val testPath = "/data/user/0/com.tonyxlab.echojournal/files/temp_1742919169729.mp3"
-        Timber.i("Test Path plain: $testPath")
-        Timber.i("Test Path Uri: ${testPath.toUri()}")
-        Timber.i("Create Player Called with: $filePath")
-        Timber.i("Uri is: ${filePath.toUri()}")
 
-        val medialPlayer = MediaPlayer.create(context, filePath.toUri())
+        val medialPlayer = MediaPlayer.create(context, Uri.decode(filePath).toUri())
             ?: throw IllegalStateException("Failed to create MediaPlayer, Invalid file path $filePath")
 
         medialPlayer.apply {
@@ -140,3 +136,4 @@ class MediaAudioPlayer @Inject constructor(
         updateJob = null
     }
 }
+

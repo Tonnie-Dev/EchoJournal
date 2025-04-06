@@ -44,6 +44,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -475,11 +476,9 @@ class HomeViewModel @Inject constructor(
         audioRecorder.pause()
         stopWatch.pause()
         flipRecordingState()
-
     }
 
     private fun resumeRecording() {
-
         audioRecorder.resume()
         stopWatch.start()
         flipRecordingState()
@@ -496,7 +495,6 @@ class HomeViewModel @Inject constructor(
             sendActionEvent(HomeActionEvent.NavigateToEditorScreen(Uri.encode(audioFilePath) , -1L))
         }
     }
-
 
     fun startPlay(echoId: Long) {
 
@@ -515,7 +513,6 @@ class HomeViewModel @Inject constructor(
         val audioFilePath = getCurrentEchoHolderState(echoId).echo.audioFilePath
         audioPlayer.initializeFile(audioFilePath)
         audioPlayer.play()
-
     }
 
     private fun resumePlay(echoId: Long) {
@@ -529,11 +526,9 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun stopPlay() {
-
         val updatedEchoes =
             currentState.echoes.mapValues { (_, echoHolderStateList) ->
                 echoHolderStateList.map { echoHolderState ->
-
                     if (
                         echoHolderState.playerState.mode == Mode.Playing ||
                         echoHolderState.playerState.mode == Mode.Paused

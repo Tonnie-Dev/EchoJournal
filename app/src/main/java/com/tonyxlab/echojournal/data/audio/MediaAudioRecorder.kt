@@ -33,9 +33,9 @@ class MediaAudioRecorder @Inject constructor(
 
 
     override fun start() {
+        val audioFileName = "temp_${System.currentTimeMillis()}.mp3"
 
-        val audioFileNme = "temp_${System.currentTimeMillis()}.mp3"
-        audioFile = File(outputDir, audioFileNme)
+        audioFile = File(outputDir, audioFileName)
         createRecorder().apply {
 
             setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -79,14 +79,12 @@ class MediaAudioRecorder @Inject constructor(
         isCurrentlyRecording = false
 
         audioFile?.let { file ->
-
-            return if (saveFile.not()) {
+            if (!saveFile) {
                 file.delete()
-                ""
+                //amplitudeLogFile?.delete()
+                return ""
             } else {
-
-                Timber.i("The path is: ${file.absolutePath}")
-                file.absolutePath
+                return file.absolutePath
             }
         }
             ?: throw IllegalStateException("Audio file was not created, Ensure 'start()' was called before 'stop()'")

@@ -1,5 +1,6 @@
 package com.tonyxlab.echojournal.presentation.screens.editor
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.echojournal.domain.audio.AudioPlayer
 import com.tonyxlab.echojournal.domain.model.Echo
@@ -74,15 +75,13 @@ class EditorViewModel @AssistedInject constructor(
 
 
     init {
-
-        Timber.i("EVM is: $audioFilePath")
-
         initializeAudioPlayer()
         setUpDefaultSettings()
         subscribeToTopicSearchResults()
         setUpAudioPlayerListeners()
         observeAudioPlayerCurrentPosition()
     }
+
     override fun onEvent(event: EditorUiEvent) {
 
         when (event) {
@@ -123,7 +122,6 @@ class EditorViewModel @AssistedInject constructor(
                 sendActionEvent(EditorActionEvent.NavigateBack)
             }
 
-
         }
     }
 
@@ -143,7 +141,6 @@ class EditorViewModel @AssistedInject constructor(
     private fun setUpDefaultSettings() {
 
         launch {
-
 
             val defaultTopicsIds = settingsRepository.getTopics()
             val defaultMood = settingsRepository.getMood()
@@ -239,7 +236,6 @@ class EditorViewModel @AssistedInject constructor(
     }
 
     private fun addNewTopic() {
-        // TODO: Revisit this function
         val newTopic = Topic(name = currentState.topicValue)
         updateCurrentTopics(newTopic)
         launch {
@@ -272,7 +268,7 @@ class EditorViewModel @AssistedInject constructor(
     }
 
     private fun saveEcho(outputDir: File) {
-        val newAudioFilePath = renameFile(outputDir, audioFilePath, "audio")
+        val newAudioFilePath = renameFile(outputDir, Uri.decode(audioFilePath), "audio")
         val topics = currentState.currentTopics.map { it.name }
         val newEcho = Echo(
             title = currentState.titleValue,
@@ -305,18 +301,15 @@ class EditorViewModel @AssistedInject constructor(
             newFile.absolutePath
         else
             throw IllegalStateException("Failed to rename ${file.name}.")
-
     }
 
     @AssistedFactory
     interface EditorViewModelFactory {
-
         fun create(
             @Assisted("id")
             id: Long,
             @Assisted("audioFilePath")
             audioFilePath: String
         ): EditorViewModel
-
     }
 }
