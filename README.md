@@ -26,13 +26,18 @@
 
 EchoJournal is an Android application for recording, playing, and managing audio entries with mood and topic tagging.
 
-<div style="display: flex; align-items: center; gap: 20px;">
-  <img src="./readme-assets/gif/demo.gif" width="280"/>
+<div style="display: flex; align-items: center; justify-content: center; gap: 40px; margin: 20px 0;">
   
+  <!-- GIF preview -->
+  <img src="./readme-assets/gif/demo.gif" width="280" alt="App demo" />
+
+  <!-- Google Play badge -->
   <a href="https://play.google.com/store/apps/details?id=com.uxstate.launchpad" target="_blank">
-    <img alt="Get it on Google Play" src="./readme-assets/screenshots/google_badge.png" width="280"/>
+    <img alt="Get it on Google Play" src="./readme-assets/screenshots/google_badge.png" width="280" />
   </a>
+
 </div>
+
 
 ## 📸 Screenshots
 
