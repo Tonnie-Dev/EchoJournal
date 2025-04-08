@@ -15,30 +15,23 @@
 
   
 [Screenshots](#-screenshots) ~
-[Deployment](#-features) ~
-[Architecture](#-tech-stack) ~
-[API Reference](#electric_plug-api-reference-electric_plug) ~
-[Tech Stack](#gear-tech-stack-gear) ~
-[Authors](#black_nib-authors-black_nib) ~
-[Contributing](#passport_control-contributing-passport_control)  
+[Features](#-features) ~
+[Tech Stack](#-tech-stack) ~
+[Getting Started](#getting-started) ~
+[Tech Stack](#-tech-stack) ~
+[Authors](#️-authors) ~
+[Contributing](#-contributing)  
  
 </div>
 
 EchoJournal is an Android application for recording, playing, and managing audio entries with mood and topic tagging.
 
 <div style="display: flex; align-items: center; gap: 20px;">
+  <img src="./readme-assets/gif/demo.gif" width="280"/>
   
-  <!-- Video or animated GIF (left) -->
-  <video width="280" controls>
-    <source src="./readme-assets/video/demo.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-
-  <!-- Google Play badge (right) -->
   <a href="https://play.google.com/store/apps/details?id=com.uxstate.launchpad" target="_blank">
     <img alt="Get it on Google Play" src="./readme-assets/screenshots/google_badge.png" width="280"/>
   </a>
-
 </div>
 
 ## 📸 Screenshots
@@ -67,7 +60,7 @@ This Project uses [**Material 3**](https://m3.material.io/), which is a part of 
 - Kotlin
 - Jetpack Compose
 - Hilt for dependency injection
-- Rooma and DataStore for data persistence
+- Room and DataStore for data persistence
 - Coroutines 
 
 ## Getting Started
@@ -88,9 +81,11 @@ This Project uses [**Material 3**](https://m3.material.io/), which is a part of 
 
 
 
-# :black_nib: **Author(s)** :black_nib:
+## 🖋️ Authors
 
-- [@Tonnie-Dev](https://github.com/Tonnie-Dev)
+**Tonnie** – [@Tonnie-Dev](https://github.com/Tonnie-De)
+
+
 
 
 <a href="https://www.buymeacoffee.com/AgVrgB4N3r" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
@@ -102,7 +97,7 @@ Do Reach Out :
   * [LinkedIn](https://www.linkedin.com/in/antony-muchiri/)
 
 
-# :passport_control: **Contributing** :passport_control:
+## 🛂 Contributing
 
 Contributions to make EchoJournal better are always welcome!
 
