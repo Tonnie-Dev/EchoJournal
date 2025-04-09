@@ -12,13 +12,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.File
 import javax.inject.Inject
 
 class MediaAudioPlayer @Inject constructor(
@@ -34,12 +32,10 @@ class MediaAudioPlayer @Inject constructor(
     override val currentPositionFlow: StateFlow<Int>
         get() = _currentPositionFlow.asStateFlow()
 
-
     private var updateJob: Job? = null
     private var isCurrentlyPlaying: Boolean = false
 
     override fun initializeFile(filePath: String) {
-        Timber.i("Init file $filePath")
         _currentPositionFlow.value = 0
         this.filePath = filePath
         createPlayer()
@@ -57,12 +53,10 @@ class MediaAudioPlayer @Inject constructor(
 
     }
 
-
     override fun pause() {
         checkPlayerIsInitialized()
         player?.pause()
         stopUpdatingCurrentPosition()
-
     }
 
     override fun resume() {
@@ -116,7 +110,6 @@ class MediaAudioPlayer @Inject constructor(
     }
 
     private fun startUpdatingCurrentPosition() {
-
         checkPlayerIsInitialized()
         stopUpdatingCurrentPosition()
 
@@ -127,11 +120,9 @@ class MediaAudioPlayer @Inject constructor(
                 delay(10L)
             }
         }
-
     }
 
     private fun stopUpdatingCurrentPosition() {
-
         updateJob?.cancel()
         updateJob = null
     }

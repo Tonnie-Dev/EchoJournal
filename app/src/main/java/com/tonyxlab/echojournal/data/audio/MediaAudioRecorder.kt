@@ -5,9 +5,7 @@ import android.media.MediaRecorder
 import android.os.Build
 import com.tonyxlab.echojournal.domain.audio.AudioRecorder
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
 import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 class MediaAudioRecorder @Inject constructor(
