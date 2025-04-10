@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel by viewModels<MainDummyViewModel>()
+
     private var keepSplashScreen = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
