@@ -30,65 +30,70 @@ fun PrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    leadingIcon: (@Composable () -> Unit)? = null
+    leadingIcon: (@Composable () -> Unit)? = null,
 ) {
     Button(
-        modifier = modifier
-            .clip(CircleShape)
-            .background(
-                brush = if (enabled)
-                    GradientScheme.PrimaryGradient
-                else
-                    GradientScheme.DisabledSolidColor,
-                shape = CircleShape
-            ),
+        modifier =
+            modifier
+                .clip(CircleShape)
+                .background(
+                    brush =
+                        if (enabled) {
+                            GradientScheme.PrimaryGradient
+                        } else {
+                            GradientScheme.DisabledSolidColor
+                        },
+                    shape = CircleShape,
+                ),
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        enabled = enabled
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+        enabled = enabled,
     ) {
-
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
         ) {
             leadingIcon?.let { leadingIcon() }
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyLarge.copy(
-
-                    color = if (enabled)
-                        MaterialTheme.colorScheme.onPrimary
-                    else
-                        MaterialTheme.colorScheme.outline
-                )
+                style =
+                    MaterialTheme.typography.bodyLarge.copy(
+                        color =
+                            if (enabled) {
+                                MaterialTheme.colorScheme.onPrimary
+                            } else {
+                                MaterialTheme.colorScheme.outline
+                            },
+                    ),
             )
         }
     }
-
 }
 
 @Composable
 fun SecondaryButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Button(
         modifier = modifier,
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            ),
     ) {
-
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.primary
-            )
+            style =
+                MaterialTheme.typography.bodyLarge.copy(
+                    color = MaterialTheme.colorScheme.primary,
+                ),
         )
     }
 }
@@ -96,27 +101,27 @@ fun SecondaryButton(
 @PreviewLightDark
 @Composable
 private fun ButtonsPreview() {
-
     EchoJournalTheme {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(MaterialTheme.spacing.spaceMedium),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(MaterialTheme.spacing.spaceMedium),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
         ) {
             PrimaryButton(
                 modifier = Modifier.fillMaxWidth(.6f),
                 text = stringResource(id = R.string.button_text_save),
                 onClick = {},
-                enabled = false
+                enabled = false,
             )
             PrimaryButton(
                 modifier = Modifier.fillMaxWidth(.6f),
                 text = stringResource(id = R.string.button_text_save),
                 onClick = {},
-                enabled = true
+                enabled = true,
             )
             SecondaryButton(
                 modifier = Modifier.fillMaxWidth(.6f),

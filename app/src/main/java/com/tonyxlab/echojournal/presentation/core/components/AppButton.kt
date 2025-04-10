@@ -24,59 +24,51 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
-import com.tonyxlab.echojournal.presentation.theme.buttonMediumTextStyle
 import com.tonyxlab.echojournal.presentation.core.utils.gradient
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.buttonMediumTextStyle
 import com.tonyxlab.echojournal.utils.conditionalModifier
 
 @Composable
 fun AppButton(
     buttonText: String,
-     onClick:()-> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isHighlighted: Boolean = false,
     leadingIcon: Boolean = false,
 ) {
-
-
     Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(MaterialTheme.spacing.spaceMedium))
-
-            .conditionalModifier(isEnabled) {
-                background(MaterialTheme.colorScheme.onPrimaryContainer)
-            }
-            .conditionalModifier(isEnabled.not()) {
-                background(MaterialTheme.colorScheme.surfaceVariant)
-            }
-            .conditionalModifier(isHighlighted) {
-
-                background(brush = MaterialTheme.gradient.buttonPressedGradient)
-            }.clickable { onClick() },
-
-        contentAlignment = Alignment.Center
-
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(MaterialTheme.spacing.spaceMedium))
+                .conditionalModifier(isEnabled) {
+                    background(MaterialTheme.colorScheme.onPrimaryContainer)
+                }
+                .conditionalModifier(isEnabled.not()) {
+                    background(MaterialTheme.colorScheme.surfaceVariant)
+                }
+                .conditionalModifier(isHighlighted) {
+                    background(brush = MaterialTheme.gradient.buttonPressedGradient)
+                }.clickable { onClick() },
+        contentAlignment = Alignment.Center,
     ) {
-
         Row(
-            modifier = Modifier
-
-                .padding(
-                    horizontal = MaterialTheme.spacing.spaceMedium,
-                    vertical = MaterialTheme.spacing.spaceSmall
-                ),
+            modifier =
+                Modifier
+                    .padding(
+                        horizontal = MaterialTheme.spacing.spaceMedium,
+                        vertical = MaterialTheme.spacing.spaceSmall,
+                    ),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-
             if (leadingIcon) {
-
                 AppIcon(
                     modifier = Modifier.size(MaterialTheme.spacing.spaceMedium),
                     imageVector = Icons.Default.Done,
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onPrimary,
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceExtraSmall))
             }
@@ -84,14 +76,12 @@ fun AppButton(
             Text(
                 text = buttonText,
                 style = buttonMediumTextStyle,
-
-                color = when {
-                    isHighlighted -> MaterialTheme.colorScheme.onPrimary
-                    isEnabled -> MaterialTheme.colorScheme.primary
-                    else -> MaterialTheme.colorScheme.outline
-                }
-
-
+                color =
+                    when {
+                        isHighlighted -> MaterialTheme.colorScheme.onPrimary
+                        isEnabled -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.outline
+                    },
             )
         }
     }
@@ -101,15 +91,13 @@ fun AppButton(
 @Composable
 private fun AppButtonPreview() {
     EchoJournalTheme {
-
-
         Column(
-            modifier = Modifier
-                .background(Color.White)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .background(Color.White)
+                    .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
         ) {
-
             AppButton(onClick = {}, buttonText = stringResource(id = R.string.button_text_cancel))
             AppButton(onClick = {}, buttonText = stringResource(id = R.string.button_text_save), isEnabled = false)
             AppButton(onClick = {}, buttonText = stringResource(id = R.string.text_confirm), isHighlighted = true)
@@ -118,11 +106,8 @@ private fun AppButtonPreview() {
                 buttonText = stringResource(id = R.string.text_confirm),
                 isEnabled = true,
                 isHighlighted = true,
-                leadingIcon = true
+                leadingIcon = true,
             )
-
         }
     }
 }
-
-

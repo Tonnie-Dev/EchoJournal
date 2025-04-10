@@ -11,21 +11,14 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+    @Binds
+    abstract fun bindTopicRepository(topicRepositoryImpl: TopicRepositoryImpl): TopicRepository
 
     @Binds
-    abstract fun bindTopicRepository(
-        topicRepositoryImpl: TopicRepositoryImpl
-    ): TopicRepository
-
-    @Binds
-    abstract fun bindEchoRepository(
-        echoRepositoryImpl: EchoRepositoryImpl
-    ): EchoRepository
-
+    abstract fun bindEchoRepository(echoRepositoryImpl: EchoRepositoryImpl): EchoRepository
 
     @Binds
     abstract fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository

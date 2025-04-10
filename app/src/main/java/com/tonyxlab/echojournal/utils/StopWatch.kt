@@ -7,10 +7,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class StopWatch {
-
     private val _formattedTime = MutableStateFlow(Constants.DEFAULT_FORMATTED_TIME)
     val formattedTime: StateFlow<String> = _formattedTime
 
@@ -36,12 +34,10 @@ class StopWatch {
     }
 
     fun pause() {
-
         isRunning = false
     }
 
     fun reset() {
-
         coroutineScope.cancel()
         coroutineScope = CoroutineScope(Dispatchers.Main)
         timeMillis = 0L
@@ -49,5 +45,4 @@ class StopWatch {
         _formattedTime.value = Constants.DEFAULT_FORMATTED_TIME
         isRunning = false
     }
-
 }

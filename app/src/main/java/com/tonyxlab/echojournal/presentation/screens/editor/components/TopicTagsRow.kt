@@ -20,26 +20,25 @@ fun TopicTagsRow(
     onValueChange: (String) -> Unit,
     topics: List<Topic>,
     onTagClearClick: (Topic) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     FlowRow(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
     ) {
         topics.forEach { topic ->
 
             TopicTag(
                 topic = topic,
-                onClearClick = onTagClearClick
+                onClearClick = onTagClearClick,
             )
         }
 
         TopicTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
     }
 }
-

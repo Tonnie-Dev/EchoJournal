@@ -31,7 +31,7 @@ import com.tonyxlab.echojournal.presentation.screens.editor.handling.EditorUiSta
 fun EditorBottomSheet(
     editorSheetState: EditorUiState.EditorSheetState,
     onEvent: (EditorUiEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val sheetState = rememberModalBottomSheetState()
     val isPrimaryButtonEnabled by remember(editorSheetState.activeMood) {
@@ -43,25 +43,24 @@ fun EditorBottomSheet(
     if (editorSheetState.isSheetOpen) {
         ModalBottomSheet(
             onDismissRequest = { onEvent(EditorUiEvent.BottomSheetClosed) },
-            sheetState = sheetState
+            sheetState = sheetState,
         ) {
-
             Column(
                 modifier = modifier.padding(MaterialTheme.spacing.spaceMedium),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 14)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 14),
             ) {
                 // Sheet Title
                 Text(
                     text = stringResource(id = R.string.text_how_are_you_doing),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
 
                 // Mood Row
                 MoodRow(
                     moods = editorSheetState.moods,
                     activeMood = editorSheetState.activeMood,
-                    onMoodClick = { onEvent(EditorUiEvent.MoodSelected(it)) }
+                    onMoodClick = { onEvent(EditorUiEvent.MoodSelected(it)) },
                 )
 
                 // Buttons
@@ -74,12 +73,14 @@ fun EditorBottomSheet(
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = null,
-                            tint = if (isPrimaryButtonEnabled)
-                                MaterialTheme.colorScheme.onPrimary
-                            else
-                                MaterialTheme.colorScheme.outline
+                            tint =
+                                if (isPrimaryButtonEnabled) {
+                                    MaterialTheme.colorScheme.onPrimary
+                                } else {
+                                    MaterialTheme.colorScheme.outline
+                                },
                         )
-                    }
+                    },
                 )
             }
         }

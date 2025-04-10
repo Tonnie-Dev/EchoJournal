@@ -17,31 +17,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 
 @Composable
 fun EmptyHomeScreen(
     modifier: Modifier = Modifier,
     text: String = stringResource(id = R.string.text_no_entries_found),
-    supportingText: String = stringResource(id = R.string.start_recording_text)
+    supportingText: String = stringResource(id = R.string.start_recording_text),
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Image(
             painter = painterResource(R.drawable.ic_empty_screen),
-            contentDescription = null
+            contentDescription = null,
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceLarge))
 
         Text(
             text = text,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleSmall,
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 3))
@@ -49,7 +48,7 @@ fun EmptyHomeScreen(
         Text(
             modifier = Modifier.widthIn(max = MaterialTheme.spacing.spaceTwoHundredFifty),
             text = supportingText,
-            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center)
+            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
         )
     }
 }

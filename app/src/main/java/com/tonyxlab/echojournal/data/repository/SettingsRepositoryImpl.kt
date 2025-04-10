@@ -17,46 +17,42 @@ import javax.inject.Inject
 
 val Context.dataStore by preferencesDataStore(Constants.DATA_PREFS)
 
-class SettingsRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val jsonSerializer: JsonSerializer
-) : SettingsRepository {
+class SettingsRepositoryImpl
+    @Inject
+    constructor(
+        @ApplicationContext private val context: Context,
+        private val jsonSerializer: JsonSerializer,
+    ) : SettingsRepository {
+        private val dataStore = context.dataStore
 
-    private val dataStore = context.dataStore
+        private val topicsIdSerializer: KSerializer<List<Long>> = ListSerializer(Long.serializer())
 
-    private val topicsIdSerializer: KSerializer<List<Long>> = ListSerializer(Long.serializer())
+        override suspend fun saveMood(moodTitle: String) {
+            dataStore.edit { prefs -> prefs[moodKey] = moodTitle }
+        }
 
+        override suspend fun getMood(): String {
+            val prefs = dataStore.data.first()
+            return prefs[moodKey] ?: Mood.Undefined.name
+        }
 
-    override suspend fun saveMood(moodTitle: String) {
-        dataStore.edit { prefs -> prefs[moodKey] = moodTitle }
-    }
+        override suspend fun saveTopics(topicListIds: List<Long>) {
+            val topicsListAsJson = jsonSerializer.toJson(topicsIdSerializer, topicListIds)
+            dataStore.edit { prefs ->
 
-    override suspend fun getMood(): String {
-        val prefs = dataStore.data.first()
-        return prefs[moodKey] ?: Mood.Undefined.name
-    }
+                prefs[topicsKey] = topicsListAsJson
+            }
+        }
 
-    override suspend fun saveTopics(topicListIds: List<Long>) {
-        val topicsListAsJson = jsonSerializer.toJson(topicsIdSerializer, topicListIds)
-        dataStore.edit { prefs ->
+        override suspend fun getTopics(): List<Long> {
+            val prefs = dataStore.data.first()
 
-            prefs[topicsKey] = topicsListAsJson
+            val topicsJson = prefs[topicsKey] ?: "[]"
+            return jsonSerializer.fromJson(topicsIdSerializer, topicsJson)
+        }
+
+        private companion object {
+            val moodKey = stringPreferencesKey(Constants.MOODS_PREF_KEY)
+            val topicsKey = stringPreferencesKey(Constants.TOPICS_PREF_KEY)
         }
     }
-
-    override suspend fun getTopics(): List<Long> {
-
-        val prefs = dataStore.data.first()
-
-        val topicsJson = prefs[topicsKey] ?: "[]"
-        return jsonSerializer.fromJson(topicsIdSerializer, topicsJson)
-
-    }
-
-    private companion object {
-
-        val moodKey = stringPreferencesKey(Constants.MOODS_PREF_KEY)
-        val topicsKey = stringPreferencesKey(Constants.TOPICS_PREF_KEY)
-
-    }
-}

@@ -12,20 +12,19 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 fun SettingsHeader(
     title: String,
     description: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp),
     ) {
-
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Text(
             text = description,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }

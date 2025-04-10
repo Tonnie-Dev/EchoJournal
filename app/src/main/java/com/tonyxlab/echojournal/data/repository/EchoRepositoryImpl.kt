@@ -9,16 +9,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class EchoRepositoryImpl @Inject constructor(private val dao: EchoDao) : EchoRepository {
-    override fun getEchos(): Flow<List<Echo>> {
-        return dao.getEchoes().map { it.toEchoesList() }
-    }
+class EchoRepositoryImpl
+    @Inject
+    constructor(private val dao: EchoDao) : EchoRepository {
+        override fun getEchos(): Flow<List<Echo>> {
+            return dao.getEchoes().map { it.toEchoesList() }
+        }
 
-    override suspend fun upsertEcho(echo: Echo) {
-        dao.upsert(echo.toEchoEntity())
-    }
+        override suspend fun upsertEcho(echo: Echo) {
+            dao.upsert(echo.toEchoEntity())
+        }
 
-    override suspend fun deleteEcho(echo: Echo) {
-        dao.delete(echo.toEchoEntity())
+        override suspend fun deleteEcho(echo: Echo) {
+            dao.delete(echo.toEchoEntity())
+        }
     }
-}

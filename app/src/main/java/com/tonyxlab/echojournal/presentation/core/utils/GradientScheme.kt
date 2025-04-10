@@ -10,46 +10,50 @@ import com.tonyxlab.echojournal.presentation.theme.SurfaceVariant
 
 data class GradientScheme(
     val buttonDefaultGradient: Brush = DefaultGradient,
-    val buttonPressedGradient: Brush = PressedGradient
+    val buttonPressedGradient: Brush = PressedGradient,
 ) {
-
     companion object {
-
-        val PrimaryGradient = Brush.verticalGradient(
-            colors = listOf(
-                Color(0xFF578CFF),
-                Color(0xFF1F70F5)
+        val PrimaryGradient =
+            Brush.verticalGradient(
+                colors =
+                    listOf(
+                        Color(0xFF578CFF),
+                        Color(0xFF1F70F5),
+                    ),
             )
-        )
 
-        val DisabledSolidColor = Brush.linearGradient(
-            colors = listOf(SurfaceVariant, SurfaceVariant)
-        )
-
-
-        val DefaultGradient = Brush.linearGradient(
-            colors = listOf(Color(0xFF578CFF), Color(0xFF1F70F5))
-        )
-
-        val PressedGradient = Brush.linearGradient(
-            colors = listOf(Color(0xFF578CFF), Color(0xFF0057CC))
-        )
-
-
-        val FabRecordingBackground = Brush.verticalGradient(
-            colors = listOf(
-                Color(0xFF3982F6).copy(alpha = .2f),
-                Color(0xFF0E5FE0).copy(alpha = .2f)
+        val DisabledSolidColor =
+            Brush.linearGradient(
+                colors = listOf(SurfaceVariant, SurfaceVariant),
             )
-        )
-        val FabPulsatingBackground = Brush.verticalGradient(
-            colors = listOf(
-                Color(0xFF3982F6).copy(alpha = .1f),
-                Color(0xFF0E5FE0).copy(alpha = .1f)
+
+        val DefaultGradient =
+            Brush.linearGradient(
+                colors = listOf(Color(0xFF578CFF), Color(0xFF1F70F5)),
             )
-        )
+
+        val PressedGradient =
+            Brush.linearGradient(
+                colors = listOf(Color(0xFF578CFF), Color(0xFF0057CC)),
+            )
+
+        val FabRecordingBackground =
+            Brush.verticalGradient(
+                colors =
+                    listOf(
+                        Color(0xFF3982F6).copy(alpha = .2f),
+                        Color(0xFF0E5FE0).copy(alpha = .2f),
+                    ),
+            )
+        val FabPulsatingBackground =
+            Brush.verticalGradient(
+                colors =
+                    listOf(
+                        Color(0xFF3982F6).copy(alpha = .1f),
+                        Color(0xFF0E5FE0).copy(alpha = .1f),
+                    ),
+            )
     }
-
 }
 
 val LocalGradient = staticCompositionLocalOf { GradientScheme() }

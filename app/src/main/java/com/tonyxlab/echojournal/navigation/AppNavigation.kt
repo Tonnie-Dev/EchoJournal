@@ -22,13 +22,14 @@ fun NavGraphBuilder.appDestinations(
     navController: NavController,
     isDataLoaded: () -> Unit,
     isLaunchedFromWidget: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     composable<HomeRouteObject> { backStackEntry ->
 
-        val parentEntry = remember(backStackEntry) {
-            navController.getBackStackEntry<HomeRouteObject>()
-        }
+        val parentEntry =
+            remember(backStackEntry) {
+                navController.getBackStackEntry<HomeRouteObject>()
+            }
 
         val viewModel: HomeViewModel = hiltViewModel(parentEntry)
 
@@ -40,7 +41,8 @@ fun NavGraphBuilder.appDestinations(
             navigateToEditorScreen = { arg1, arg2 ->
                 navController.navigate(EditorRouteObject(audioFilePath = arg1))
             },
-            navigateToSettingScreen = { navController.navigate(SettingsRouteObject) })
+            navigateToSettingScreen = { navController.navigate(SettingsRouteObject) },
+        )
     }
 
     composable<EditorRouteObject> { navBackStackEntry ->
@@ -56,14 +58,12 @@ fun NavGraphBuilder.appDestinations(
     }
 
     composable<SettingsRouteObject> {
-
         SettingsScreenRoot(
             modifier = modifier,
-            navigateToHome = { navController.navigate(HomeRouteObject)}
+            navigateToHome = { navController.navigate(HomeRouteObject) },
         )
     }
 }
-
 
 @Serializable
 data object HomeRouteObject
@@ -73,6 +73,3 @@ data object SettingsRouteObject
 
 @Serializable
 data class EditorRouteObject(val id: Long = Constants.UNDEFINED_ECHO_ID, val audioFilePath: String)
-
-
-

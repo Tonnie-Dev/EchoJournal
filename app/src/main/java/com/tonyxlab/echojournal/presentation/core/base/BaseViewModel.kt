@@ -16,7 +16,6 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel<S : UiState, E : UiEvent, A : ActionEvent> : ViewModel() {
-
     protected abstract val initialState: S
 
     private val _uiState: MutableStateFlow<S> by lazy { MutableStateFlow(initialState) }
@@ -29,20 +28,17 @@ abstract class BaseViewModel<S : UiState, E : UiEvent, A : ActionEvent> : ViewMo
     val actionEvent = _actionEvent.receiveAsFlow()
 
     protected fun updateState(block: (currentState: S) -> S) {
-
         _uiState.update(block)
     }
 
     protected fun sendActionEvent(actionEvent: A) {
-
         viewModelScope.launch { _actionEvent.send(actionEvent) }
     }
 
     protected fun launch(
         context: CoroutineContext = EmptyCoroutineContext,
-        block: suspend CoroutineScope.() -> Unit
+        block: suspend CoroutineScope.() -> Unit,
     ) = viewModelScope.launch(context = context, block = block)
 
     abstract fun onEvent(event: E)
-
 }

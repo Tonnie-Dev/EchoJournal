@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.echojournal.domain.model.Mood
-import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +23,7 @@ fun Seeker(
     playbackDuration: Int,
     mood: Mood,
     onValueChange: ((Float) -> Unit)?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val spacing = LocalSpacing.current
 
@@ -36,30 +36,26 @@ fun Seeker(
             Track(
                 modifier = Modifier.height(spacing.spaceExtraSmall),
                 sliderState = it,
-                colors = SliderDefaults.colors(
-                    activeTrackColor = mood.moodButtonColor,
-                    inactiveTrackColor = mood.moodTrackColor
-                ),
+                colors =
+                    SliderDefaults.colors(
+                        activeTrackColor = mood.moodButtonColor,
+                        inactiveTrackColor = mood.moodTrackColor,
+                    ),
                 thumbTrackGapSize = 0.dp,
                 trackInsideCornerSize = 0.dp,
-                drawStopIndicator = null
-
+                drawStopIndicator = null,
             )
-        }
+        },
     )
 }
-
 
 @PreviewLightDark
 @Composable
 private fun SliderPreview() {
-
     val spacing = LocalSpacing.current
     EchoJournalTheme {
         Surface {
-
             Column(verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)) {
-
                 Seeker(
                     playbackPosition = 10,
                     playbackDuration = 100,
@@ -81,5 +77,4 @@ private fun SliderPreview() {
             }
         }
     }
-
 }

@@ -13,19 +13,20 @@ import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 @Composable
 fun EchoJournalTheme(content: @Composable () -> Unit) {
     CompositionLocalProvider(
-            LocalGradient provides GradientScheme(),
-            LocalSpacing provides Dimens()
+        LocalGradient provides GradientScheme(),
+        LocalSpacing provides Dimens(),
     ) {
         MaterialTheme(
-                colorScheme = DefaultScheme,
-                shapes = shapes,
-                typography = Typography,
-                content = content
+            colorScheme = DefaultScheme,
+            shapes = shapes,
+            typography = Typography,
+            content = content,
         )
     }
 }
 
-private val DefaultScheme = lightColorScheme(
+private val DefaultScheme =
+    lightColorScheme(
         primary = Primary30,
         primaryContainer = Primary50,
         onPrimary = Primary100,
@@ -44,6 +45,5 @@ private val DefaultScheme = lightColorScheme(
         inverseSurface = Secondary95,
         onErrorContainer = Error20,
         errorContainer = Error95,
-        onError = Error100
-
-)
+        onError = Error100,
+    )

@@ -30,23 +30,16 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 
-
 @Composable
 fun EchoFilter(
     filterState: HomeUiState.FilterState,
     onEvent: (HomeUiEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    // TODO: Enclose Lazy Row in a Column if no Error is Detected
-    /* Column(modifier = modifier) {
-
-     }*/
-
-    LazyRow(
+      LazyRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
     ) {
-
         // Moods Chip
         item {
             FilterChip(
@@ -59,32 +52,31 @@ fun EchoFilter(
                     if (filterState.moodFilterItems.isNotEmpty()) {
                         SelectedMoodIcons(moodFilterItems = filterState.moodFilterItems)
                     }
-                })
+                },
+            )
         }
 
-        //Topic Chip
+        // Topic Chip
         item {
             FilterChip(
                 defaultTitle = stringResource(id = R.string.all_topics_filter_text),
                 filterItems = filterState.topicFilterItems,
                 isFilterItemSelected = filterState.isTopicFilterActive,
                 onClickFilter = { onEvent(HomeUiEvent.ToggleTopicFilter) },
-                onClearFilter = { onEvent(HomeUiEvent.CancelTopicFilter) }
+                onClearFilter = { onEvent(HomeUiEvent.CancelTopicFilter) },
             )
         }
-
     }
 }
-
 
 @Composable
 fun SelectedMoodIcons(
     moodFilterItems: List<HomeUiState.FilterState.FilterItem>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(-MaterialTheme.spacing.spaceExtraSmall)
+        horizontalArrangement = Arrangement.spacedBy(-MaterialTheme.spacing.spaceExtraSmall),
     ) {
         moodFilterItems.fastForEach { filterItem ->
             if (filterItem.isChecked) {
@@ -92,7 +84,7 @@ fun SelectedMoodIcons(
                 Image(
                     modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 11),
                     painter = painterResource(mood.icon),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         }
@@ -108,77 +100,72 @@ private fun FilterChip(
     onClearFilter: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    leadingIcon: @Composable (() -> Unit)? = null
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
-
     AssistChip(
         modifier = modifier,
         enabled = enabled,
         onClick = onClickFilter,
         shape = RoundedCornerShape(MaterialTheme.spacing.spaceTen * 5),
-        colors = AssistChipDefaults.assistChipColors(
-            containerColor = when {
-                isFilterItemSelected -> MaterialTheme.colorScheme.surface
-                filterItems.isAnyMoodSelected() -> MaterialTheme.colorScheme.surface
-                else -> MaterialTheme.colorScheme.background
-            }
-        ),
-        border = BorderStroke(
-            width = MaterialTheme.spacing.spaceSingleDp,
-            color = if (isFilterItemSelected)
-                MaterialTheme.colorScheme.primary
-            else
-                MaterialTheme.colorScheme.outlineVariant
-        ),
+        colors =
+            AssistChipDefaults.assistChipColors(
+                containerColor =
+                    when {
+                        isFilterItemSelected -> MaterialTheme.colorScheme.surface
+                        filterItems.isAnyMoodSelected() -> MaterialTheme.colorScheme.surface
+                        else -> MaterialTheme.colorScheme.background
+                    },
+            ),
+        border =
+            BorderStroke(
+                width = MaterialTheme.spacing.spaceSingleDp,
+                color =
+                    if (isFilterItemSelected) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.outlineVariant
+                    },
+            ),
         label = {
-
             Text(
                 text = formatFilterText(defaultTitle, filterItems),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Medium
-                )
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.Medium,
+                    ),
             )
         },
-
         trailingIcon = {
-
             if (filterItems.isAnyMoodSelected()) {
-
-                //Clear Icon
+                // Clear Icon
                 IconButton(
                     modifier = Modifier.size(MaterialTheme.spacing.spaceMedium),
-                    onClick = { onClearFilter() }
-
+                    onClick = { onClearFilter() },
                 ) {
-
                     Icon(
                         imageVector = Icons.Default.Clear,
                         contentDescription = stringResource(id = R.string.button_text_cancel),
-                        tint = MaterialTheme.colorScheme.secondaryContainer
+                        tint = MaterialTheme.colorScheme.secondaryContainer,
                     )
                 }
             }
         },
-        leadingIcon = leadingIcon
+        leadingIcon = leadingIcon,
     )
-
 }
 
 private fun formatFilterText(
     defaultTitle: String,
-    filterItems: List<HomeUiState.FilterState.FilterItem>
+    filterItems: List<HomeUiState.FilterState.FilterItem>,
 ): String {
-
     val selectedItems = filterItems.fastFilter { it.isChecked }.map { it.title }
 
     return when {
-
         selectedItems.isEmpty() -> defaultTitle
         selectedItems.size == 1 -> selectedItems.first()
         selectedItems.size == 2 -> selectedItems.fastJoinToString(separator = ", ")
         else -> {
-
             val firstTwo = selectedItems.take(2).fastJoinToString(", ")
 
             "$firstTwo +${selectedItems.size.minus(2)}"
@@ -186,5 +173,4 @@ private fun formatFilterText(
     }
 }
 
-private fun List<HomeUiState.FilterState.FilterItem>.isAnyMoodSelected(): Boolean =
-    this.any { it.isChecked }
+private fun List<HomeUiState.FilterState.FilterItem>.isAnyMoodSelected(): Boolean = this.any { it.isChecked }

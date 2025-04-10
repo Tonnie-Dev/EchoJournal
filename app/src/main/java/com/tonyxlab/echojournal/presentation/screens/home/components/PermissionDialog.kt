@@ -21,7 +21,7 @@ fun PermissionDialog(
     onDismiss: () -> Unit,
     onOkClick: () -> Unit,
     navigateToAppSettings: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AlertDialog(
         modifier = modifier,
@@ -30,32 +30,36 @@ fun PermissionDialog(
             Column(modifier = Modifier.fillMaxWidth()) {
                 HorizontalDivider()
                 Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            if (isPermanentlyDeclined) {
-                                navigateToAppSettings()
-                            } else {
-                                onOkClick()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                if (isPermanentlyDeclined) {
+                                    navigateToAppSettings()
+                                } else {
+                                    onOkClick()
+                                }
                             }
-                        }
-                        .padding(MaterialTheme.spacing.spaceMedium),
-                    text = if (isPermanentlyDeclined)
-                        stringResource(id = R.string.grant_permission)
-                    else
-                        stringResource(id = R.string.ok),
+                            .padding(MaterialTheme.spacing.spaceMedium),
+                    text =
+                        if (isPermanentlyDeclined) {
+                            stringResource(id = R.string.grant_permission)
+                        } else {
+                            stringResource(id = R.string.ok)
+                        },
                     style = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.Center),
                 )
             }
         },
         title = {
             Text(
-                text = if (isPermanentlyDeclined)
-                    stringResource(id = R.string.permission_dialog_declined_text)
-                else
-                    stringResource(id = R.string.permission_dialog_text)
+                text =
+                    if (isPermanentlyDeclined) {
+                        stringResource(id = R.string.permission_dialog_declined_text)
+                    } else {
+                        stringResource(id = R.string.permission_dialog_text)
+                    },
             )
-        }
+        },
     )
-
 }

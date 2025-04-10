@@ -14,13 +14,12 @@ fun AppIcon(
     modifier: Modifier = Modifier,
     imageVector: ImageVector = Icons.Default.Add,
     tint: Color = MaterialTheme.colorScheme.onPrimary,
-    contentDescription: String = ""
+    contentDescription: String = "",
 ) {
     Icon(
         modifier = modifier,
         imageVector = imageVector,
         contentDescription = contentDescription,
-        tint = tint
+        tint = tint,
     )
-
 }

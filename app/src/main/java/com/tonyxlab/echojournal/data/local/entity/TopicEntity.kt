@@ -10,5 +10,5 @@ data class TopicEntity(
     @ColumnInfo(name = "id")
     val id: Long,
     @ColumnInfo(name = "name")
-    val name: String
+    val name: String,
 )

@@ -20,27 +20,27 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 fun HomeTopBar(
     title: String,
     onSettingsClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(MaterialTheme.spacing.spaceMedium * 3)
-            .padding(horizontal = MaterialTheme.spacing.spaceMedium),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(MaterialTheme.spacing.spaceMedium * 3)
+                .padding(horizontal = MaterialTheme.spacing.spaceMedium),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-
         Text(
             text = title,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
 
         IconButton(onClick = onSettingsClick) {
             Icon(
                 painter = painterResource(R.drawable.ic_settings),
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.secondary
+                tint = MaterialTheme.colorScheme.secondary,
             )
         }
     }

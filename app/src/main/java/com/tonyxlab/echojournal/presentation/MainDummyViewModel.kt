@@ -11,15 +11,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainDummyViewModel @Inject constructor() : ViewModel() {
-   private val _isReady = MutableStateFlow(false)
-    val isReady = _isReady.asStateFlow()
-    init {
+class MainDummyViewModel
+    @Inject
+    constructor() : ViewModel() {
+        private val _isReady = MutableStateFlow(false)
+        val isReady = _isReady.asStateFlow()
 
-        viewModelScope.launch {
+        init {
 
-            delay(300)
-            _isReady.update { true }
+            viewModelScope.launch {
+
+                delay(300)
+                _isReady.update { true }
+            }
         }
     }
-}

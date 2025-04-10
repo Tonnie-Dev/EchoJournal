@@ -45,41 +45,38 @@ fun TopicDropDown(
     onTopicClick: (Topic) -> Unit,
     onCreateClick: () -> Unit,
     modifier: Modifier = Modifier,
-    startOffset: IntOffset = IntOffset.Zero
+    startOffset: IntOffset = IntOffset.Zero,
 ) {
-
     var isVisible by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(searchQuery) {
-
         isVisible = searchQuery.isNotEmpty()
     }
 
     if (isVisible) {
         Box(
-            modifier = modifier
-                .offset { startOffset }
-                .fillMaxSize()
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) { isVisible = isVisible.not() })
-        {
+            modifier =
+                modifier
+                    .offset { startOffset }
+                    .fillMaxSize()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ) { isVisible = isVisible.not() },
+        ) {
             Surface(
                 shape = RoundedCornerShape(MaterialTheme.spacing.spaceTen),
-                shadowElevation = MaterialTheme.spacing.spaceTen
+                shadowElevation = MaterialTheme.spacing.spaceTen,
             ) {
-
                 LazyColumn(modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall)) {
-
                     items(items = topics) { topic ->
                         TopicItem(
                             topic.name,
                             onClick = {
                                 onTopicClick(topic)
                                 focusManager.clearFocus()
-                            }
+                            },
                         )
                     }
 
@@ -90,16 +87,13 @@ fun TopicDropDown(
                                 onCreateClick()
                                 isVisible = isVisible.not()
                                 focusManager.clearFocus()
-                            }
+                            },
                         )
-
                     }
                 }
             }
-
         }
     }
-
 }
 
 // TODO: Try to build this with annotated string builder
@@ -107,21 +101,23 @@ fun TopicDropDown(
 fun TopicItem(
     topic: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 3))
-            .clickable() { onClick() }
-            .padding(MaterialTheme.spacing.spaceTwelve)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 3))
+                .clickable { onClick() }
+                .padding(MaterialTheme.spacing.spaceTwelve),
     ) {
         Text(
             text = "#",
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = .5f)
-            )
+            style =
+                MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = .5f),
+                ),
         )
 
         // Topic
@@ -129,7 +125,7 @@ fun TopicItem(
         Text(
             text = topic,
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.secondary,
         )
     }
 }
@@ -138,33 +134,34 @@ fun TopicItem(
 fun CreateButton(
     searchQuery: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 3))
-            .clickable { onClick() }
-            .padding(
-                MaterialTheme.spacing.spaceSmall
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 3))
+                .clickable { onClick() }
+                .padding(
+                    MaterialTheme.spacing.spaceSmall,
+                ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall))
-    {
-
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall),
+    ) {
         Image(
             modifier = Modifier.width(MaterialTheme.spacing.spaceMedium),
             painter = painterResource(R.drawable.ic_add_primary),
             contentDescription = stringResource(id = R.string.text_create_topic, searchQuery),
-            contentScale = ContentScale.FillWidth
+            contentScale = ContentScale.FillWidth,
         )
 
         Text(
-            text = "Create '${searchQuery}'",
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.primary
-            )
+            text = "Create '$searchQuery'",
+            style =
+                MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.primary,
+                ),
         )
     }
 }

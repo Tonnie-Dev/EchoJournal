@@ -19,42 +19,41 @@ import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
 import com.tonyxlab.echojournal.utils.formatInstantToRelativeDay
 import kotlinx.datetime.Instant
 
-
 @Composable
 fun EchoesList(
     echoes: Map<Instant, List<HomeUiState.EchoHolderState>>,
     onEvent: (HomeUiEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(bottom = MaterialTheme.spacing.spaceDoubleDp * 10)
+        contentPadding = PaddingValues(bottom = MaterialTheme.spacing.spaceDoubleDp * 10),
     ) {
-
         echoes.forEach { (timestamp, items) ->
 
             item {
-
                 Text(
-                    modifier = Modifier.padding(
-                        top = MaterialTheme.spacing.spaceSingleDp,
-                        bottom = MaterialTheme.spacing.spaceSmall
-                    ),
+                    modifier =
+                        Modifier.padding(
+                            top = MaterialTheme.spacing.spaceSingleDp,
+                            bottom = MaterialTheme.spacing.spaceSmall,
+                        ),
                     text = timestamp.formatInstantToRelativeDay(),
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.labelLarge,
                 )
             }
 
             items(items = items, key = { holderState -> holderState.echo.id }) { echoHolderState ->
                 EchoHolder(
                     echoHolderState = echoHolderState,
-                    echoPosition = when {
-                        items.size == 1 -> EchoListPosition.Single
-                        echoHolderState == items.first() -> EchoListPosition.First
-                        echoHolderState == items.last() -> EchoListPosition.Last
-                        else -> EchoListPosition.Middle
-                    },
-                    onEvent = onEvent
+                    echoPosition =
+                        when {
+                            items.size == 1 -> EchoListPosition.Single
+                            echoHolderState == items.first() -> EchoListPosition.First
+                            echoHolderState == items.last() -> EchoListPosition.Last
+                            else -> EchoListPosition.Middle
+                        },
+                    onEvent = onEvent,
                 )
             }
         }

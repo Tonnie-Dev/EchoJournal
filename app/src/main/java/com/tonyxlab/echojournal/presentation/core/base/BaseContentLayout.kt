@@ -51,7 +51,6 @@ fun <S : UiState, E : UiEvent, A : ActionEvent> BaseContentLayout(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = lifecycle) {
-
         if (actionsEventHandler != null) {
             lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
                 viewModel.actionEvent.collect { actionEvent ->
@@ -63,17 +62,18 @@ fun <S : UiState, E : UiEvent, A : ActionEvent> BaseContentLayout(
 
     BackHandler(
         enabled = onBackPressed != null,
-        onBack = { onBackPressed?.invoke() }
+        onBack = { onBackPressed?.invoke() },
     )
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = containerColor
+        color = containerColor,
     ) {
         Scaffold(
-            modifier = Modifier
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .windowInsetsPadding(WindowInsets.safeDrawing)
+                    .fillMaxWidth(),
             topBar = { topBar(uiState) },
             bottomBar = { bottomBar(uiState) },
             snackbarHost = snackBarHost,
@@ -81,18 +81,14 @@ fun <S : UiState, E : UiEvent, A : ActionEvent> BaseContentLayout(
             floatingActionButtonPosition = floatingActionButtonPosition,
             containerColor = containerColor,
             contentColor = contentColor,
-            contentWindowInsets = contentWindowInsets
+            contentWindowInsets = contentWindowInsets,
         ) { paddingValues ->
 
             Box(
-                modifier = modifier.padding(paddingValues = paddingValues)
-            )
-            {
-
+                modifier = modifier.padding(paddingValues = paddingValues),
+            ) {
                 content(uiState)
             }
         }
-
     }
-
 }

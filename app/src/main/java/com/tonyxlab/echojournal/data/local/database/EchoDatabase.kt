@@ -9,7 +9,7 @@ import com.tonyxlab.echojournal.data.local.entity.EchoEntity
 
 @Database(entities = [EchoEntity::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
-abstract class EchoDatabase: RoomDatabase(){
+abstract class EchoDatabase : RoomDatabase() {
 
     abstract fun getEchoDao(): EchoDao
 }

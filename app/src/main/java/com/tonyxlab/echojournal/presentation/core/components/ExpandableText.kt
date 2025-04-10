@@ -24,8 +24,8 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.utils.generateLoremIpsum
 
 @Composable
@@ -36,15 +36,17 @@ fun ExpandableText(
     collapsedMaxLines: Int = 3,
     regularTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     showMoreText: String = stringResource(R.string.show_more_text),
-    showMoreStyle: SpanStyle = SpanStyle(
+    showMoreStyle: SpanStyle =
+        SpanStyle(
             color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Black
-    ),
+            fontWeight = FontWeight.Black,
+        ),
     showLessText: String = stringResource(R.string.show_less_text),
-    showLessStyle: SpanStyle = SpanStyle(
+    showLessStyle: SpanStyle =
+        SpanStyle(
             color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.W300
-    )
+            fontWeight = FontWeight.W300,
+        ),
 ) {
     val spacing = LocalSpacing.current
 
@@ -52,86 +54,81 @@ fun ExpandableText(
     var isOverflowing by remember { mutableStateOf(false) }
     var lastCharIndex by remember { mutableIntStateOf(0) }
 
-    val annotatedString = buildAnnotatedString {
-
-        if (isOverflowing) {
-            // Overflowing
-            if (isExpanded) {
-                //Expanded
-                append(echoText)
-                withLink(
-                        link = LinkAnnotation.Clickable(
+    val annotatedString =
+        buildAnnotatedString {
+            if (isOverflowing) {
+                // Overflowing
+                if (isExpanded) {
+                    // Expanded
+                    append(echoText)
+                    withLink(
+                        link =
+                            LinkAnnotation.Clickable(
                                 tag = showLessText,
-                                linkInteractionListener = { isExpanded =isExpanded.not() })
-                ) {
+                                linkInteractionListener = { isExpanded = isExpanded.not() },
+                            ),
+                    ) {
+                        withStyle(showLessStyle) {
+                            append(showLessText)
+                        }
+                    }
+                } else {
+                    // Not Expanded
+                    val adjustedText =
+                        echoText.substring(startIndex = 0, endIndex = lastCharIndex)
+                            // creates space for show more text ...
+                            .dropLast(showMoreText.length)
+                            .dropLastWhile { it.isWhitespace() or (it == '.') }
 
-                    withStyle(showLessStyle) {
-                        append(showLessText)
+                    append(adjustedText)
+
+                    withLink(
+                        link =
+                            LinkAnnotation.Clickable(
+                                tag = showMoreText,
+                                linkInteractionListener = { isExpanded = isExpanded.not() },
+                            ),
+                    ) {
+                        withStyle(showMoreStyle) {
+                            append(showMoreText)
+                        }
                     }
                 }
             } else {
-
-                // Not Expanded
-                val adjustedText = echoText.substring(startIndex = 0, endIndex = lastCharIndex)
-                        //creates space for show more text ...
-                        .dropLast(showMoreText.length)
-                        .dropLastWhile { it.isWhitespace() or (it == '.') }
-
-                append(adjustedText)
-
-                withLink(
-                        link = LinkAnnotation.Clickable(
-                                tag = showMoreText,
-                                linkInteractionListener = { isExpanded = isExpanded.not() })
-                ) {
-
-                    withStyle(showMoreStyle) {
-                        append(showMoreText)
-                    }
-                }
-
+                // if not overflowing return the echo text as-is
+                append(echoText)
             }
-        } else {
-
-            //if not overflowing return the echo text as-is
-            append(echoText)
         }
 
-    }
-
     Text(
-            modifier = modifier.padding(spacing.spaceDoubleDp),
-            text = annotatedString,
-            color = textColor,
-            style = regularTextStyle,
-            maxLines = if (isExpanded) Int.MAX_VALUE else collapsedMaxLines,
+        modifier = modifier.padding(spacing.spaceDoubleDp),
+        text = annotatedString,
+        color = textColor,
+        style = regularTextStyle,
+        maxLines = if (isExpanded) Int.MAX_VALUE else collapsedMaxLines,
+        // callback that is executed when a new text layout is calculated
+        onTextLayout = { textLayoutResult ->
 
-            // callback that is executed when a new text layout is calculated
-            onTextLayout = { textLayoutResult ->
-
-                if (isExpanded.not() and textLayoutResult.hasVisualOverflow) {
-                    isOverflowing = true
-                    lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLines - 1)
-                }
-
+            if (isExpanded.not() and textLayoutResult.hasVisualOverflow) {
+                isOverflowing = true
+                lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLines - 1)
             }
+        },
     )
 }
-
 
 @PreviewLightDark
 @Composable
 private fun ExpandablePreview() {
     val spacing = LocalSpacing.current
     EchoJournalTheme {
-
         Column(
-                modifier = Modifier
-                        .padding(spacing.spaceMedium)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .padding(spacing.spaceMedium)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+            verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
         ) {
-
             ExpandableText(echoText = generateLoremIpsum(15))
 
             ExpandableText(echoText = generateLoremIpsum(135))
@@ -142,7 +139,5 @@ private fun ExpandablePreview() {
 
             ExpandableText(echoText = generateLoremIpsum(0))
         }
-
     }
-
 }

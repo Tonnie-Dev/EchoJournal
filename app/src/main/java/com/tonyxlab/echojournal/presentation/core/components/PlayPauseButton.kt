@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 
-
 @Composable
 fun PlayPauseButton(
     playArrowColor: Color,
@@ -28,30 +27,26 @@ fun PlayPauseButton(
 ) {
     val spacing = LocalSpacing.current
     Box(
-        modifier = modifier
-            .clip(CircleShape)
-            .background(color = playButtonColor)
-            .clickable { onTogglePlay() }
-            .padding(spacing.spaceExtraSmall),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .clip(CircleShape)
+                .background(color = playButtonColor)
+                .clickable { onTogglePlay() }
+                .padding(spacing.spaceExtraSmall),
+        contentAlignment = Alignment.Center,
     ) {
-
-
         if (isPlaying) {
             Icon(
                 painter = painterResource(R.drawable.pause_arrow),
                 contentDescription = stringResource(R.string.pause_text),
-                tint = playArrowColor
+                tint = playArrowColor,
             )
         } else {
-
             Icon(
                 painter = painterResource(R.drawable.play_arrow),
                 contentDescription = stringResource(R.string.play_text),
-                tint = playArrowColor
+                tint = playArrowColor,
             )
         }
-
     }
-
 }

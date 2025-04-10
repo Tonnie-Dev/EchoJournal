@@ -43,13 +43,12 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.echojournal.R
-import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
-import com.tonyxlab.echojournal.presentation.theme.Primary90
-import com.tonyxlab.echojournal.presentation.theme.Primary95
 import com.tonyxlab.echojournal.presentation.core.utils.gradient
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
-
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
+import com.tonyxlab.echojournal.presentation.theme.Primary90
+import com.tonyxlab.echojournal.presentation.theme.Primary95
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -60,11 +59,9 @@ fun RecordingModalSheet(
     onCancelRecording: () -> Unit,
     onDismissRecordingModalSheet: () -> Unit,
     recordingTime: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     val recordPermission = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
-
 
     LaunchedEffect(recordPermission) {
         val permissionResult = recordPermission.status
@@ -75,7 +72,6 @@ fun RecordingModalSheet(
                 recordPermission.launchPermissionRequest()
             }
         }
-
     }
 
     ModalBottomSheet(
@@ -87,13 +83,12 @@ fun RecordingModalSheet(
                 onPauseRecording = onPauseRecording,
                 onCancelRecording = onCancelRecording,
                 modifier = Modifier,
-                recordingTime = recordingTime
+                recordingTime = recordingTime,
             )
         },
-        onDismissRequest = onDismissRecordingModalSheet
+        onDismissRequest = onDismissRecordingModalSheet,
     )
 }
-
 
 @Composable
 private fun RecordingModalSheetContent(
@@ -102,60 +97,61 @@ private fun RecordingModalSheetContent(
     onPauseRecording: () -> Unit,
     onCancelRecording: () -> Unit,
     modifier: Modifier = Modifier,
-    recordingTime: String = "01:13:40"
+    recordingTime: String = "01:13:40",
 ) {
-
     val spacing = LocalSpacing.current
 
     var isRecordingActivated by remember { mutableStateOf(false) }
     var isRecordingInProgress by remember { mutableStateOf(false) }
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = MaterialTheme.spacing.spaceFifty)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = MaterialTheme.spacing.spaceFifty),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.TopCenter)
-                .padding(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter)
+                    .padding(),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
-            val displayMessage = when {
-                isRecordingInProgress -> stringResource(id = R.string.text_recording_memories)
-                !isRecordingActivated -> stringResource(id = R.string.text_start_recording)
-                else -> stringResource(id = R.string.text_recording_paused)
-            }
+            val displayMessage =
+                when {
+                    isRecordingInProgress -> stringResource(id = R.string.text_recording_memories)
+                    !isRecordingActivated -> stringResource(id = R.string.text_start_recording)
+                    else -> stringResource(id = R.string.text_recording_paused)
+                }
 
             Text(
                 text = displayMessage,
                 style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
 
             Text(
                 text = recordingTime,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-
         }
 
         if (isRecordingActivated or isRecordingInProgress) {
-
             Column(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(top = MaterialTheme.spacing.spaceExtraLarge)
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(top = MaterialTheme.spacing.spaceExtraLarge),
             ) {
                 Icon(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.errorContainer)
-                        .size(MaterialTheme.spacing.spaceSmall * 6)
-                        .clickable { onCancelRecording() }
-                        .padding(MaterialTheme.spacing.spaceSmall),
+                    modifier =
+                        Modifier
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.errorContainer)
+                            .size(MaterialTheme.spacing.spaceSmall * 6)
+                            .clickable { onCancelRecording() }
+                            .padding(MaterialTheme.spacing.spaceSmall),
                     imageVector = Icons.Default.Close,
                     tint = MaterialTheme.colorScheme.onErrorContainer,
                     contentDescription = stringResource(R.string.icon_close_text),
@@ -163,91 +159,99 @@ private fun RecordingModalSheetContent(
             }
         }
 
-
         RecordingButton(
             isRecording = isRecordingInProgress,
             onClick = {
-
-
                 if (isRecordingInProgress) {
-
                     onStopRecording()
                 } else {
                     isRecordingActivated = true
                     onStartRecording()
                 }
                 isRecordingInProgress = !isRecordingInProgress
-
-
-            }, modifier = Modifier
-                .align(Alignment.Center)
-                .padding(
-                    top = MaterialTheme.spacing.spaceExtraLarge,
-                    bottom = MaterialTheme.spacing.spaceMedium
-                )
+            },
+            modifier =
+                Modifier
+                    .align(Alignment.Center)
+                    .padding(
+                        top = MaterialTheme.spacing.spaceExtraLarge,
+                        bottom = MaterialTheme.spacing.spaceMedium,
+                    ),
         )
-
 
         if (isRecordingActivated or isRecordingInProgress) {
             Column(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(top = MaterialTheme.spacing.spaceExtraLarge)
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(top = MaterialTheme.spacing.spaceExtraLarge),
             ) {
                 Icon(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.onPrimaryContainer)
-                        .size(spacing.spaceSmall * 6)
-                        .clickable {
-
-                            isRecordingInProgress = false
-                            onPauseRecording()
-                        }
-                        .padding(spacing.spaceSmall),
+                    modifier =
+                        Modifier
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.onPrimaryContainer)
+                            .size(spacing.spaceSmall * 6)
+                            .clickable {
+                                isRecordingInProgress = false
+                                onPauseRecording()
+                            }
+                            .padding(spacing.spaceSmall),
                     imageVector = if (isRecordingInProgress) Icons.Default.Pause else Icons.Default.Done,
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = stringResource(R.string.icon_close_text),
                 )
             }
-
         }
-
     }
-
-
 }
 
 @Composable
 private fun RecordingButton(
-    isRecording: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier
+    isRecording: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val gradient = MaterialTheme.gradient.buttonDefaultGradient
 
     val infiniteTransition = rememberInfiniteTransition()
 
     val innerCircleScaling by infiniteTransition.animateFloat(
-        initialValue = 1f, targetValue = 1.2f, animationSpec = infiniteRepeatable(
-            animation = tween(1000), repeatMode = RepeatMode.Reverse
-        )
+        initialValue = 1f,
+        targetValue = 1.2f,
+        animationSpec =
+            infiniteRepeatable(
+                animation = tween(1000),
+                repeatMode = RepeatMode.Reverse,
+            ),
     )
     val outerCircleScaling by infiniteTransition.animateFloat(
-        initialValue = 1f, targetValue = 1.3f, animationSpec = infiniteRepeatable(
-            animation = tween(1000), repeatMode = RepeatMode.Reverse
-        )
+        initialValue = 1f,
+        targetValue = 1.3f,
+        animationSpec =
+            infiniteRepeatable(
+                animation = tween(1000),
+                repeatMode = RepeatMode.Reverse,
+            ),
     )
 
     val fabCircleScaling by infiniteTransition.animateFloat(
-
-        initialValue = 1f, targetValue = 1.1f, animationSpec = infiniteRepeatable(
-            animation = tween(1000), repeatMode = RepeatMode.Reverse
-        )
+        initialValue = 1f,
+        targetValue = 1.1f,
+        animationSpec =
+            infiniteRepeatable(
+                animation = tween(1000),
+                repeatMode = RepeatMode.Reverse,
+            ),
     )
 
     Box(modifier = modifier) {
-        Canvas(modifier = Modifier
-            .size(MaterialTheme.spacing.spaceOneTwentyEight)
-            .clickable { onClick() }) {
+        Canvas(
+            modifier =
+                Modifier
+                    .size(MaterialTheme.spacing.spaceOneTwentyEight)
+                    .clickable { onClick() },
+        ) {
             if (isRecording) {
                 // Outer Circle
                 drawCircle(
@@ -265,37 +269,42 @@ private fun RecordingButton(
             // FAB
             drawCircle(
                 brush = gradient,
-                radius = if (isRecording) size.minDimension.div(3) * fabCircleScaling
-                else size.minDimension.div(3)
+                radius =
+                    if (isRecording) {
+                        size.minDimension.div(3) * fabCircleScaling
+                    } else {
+                        size.minDimension.div(3)
+                    },
             )
         }
 
         // Icon
         Box(
-            modifier = Modifier
-                .size(MaterialTheme.spacing.spaceLarge)
-                .align(Alignment.Center),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .size(MaterialTheme.spacing.spaceLarge)
+                    .align(Alignment.Center),
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = if (isRecording) Icons.Default.Done else Icons.Default.Mic,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimary
+                tint = MaterialTheme.colorScheme.onPrimary,
             )
         }
     }
 }
-
 
 @PreviewLightDark
 @Composable
 private fun RecordingBottomSheetPreview() {
     EchoJournalTheme {
         Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxSize()
-                .padding(vertical = MaterialTheme.spacing.spaceFifty),
+            modifier =
+                Modifier
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .fillMaxSize()
+                    .padding(vertical = MaterialTheme.spacing.spaceFifty),
         ) {
             RecordingModalSheet(
                 onStartRecording = {},
@@ -303,29 +312,25 @@ private fun RecordingBottomSheetPreview() {
                 onPauseRecording = {},
                 onCancelRecording = {},
                 onDismissRecordingModalSheet = {},
-                recordingTime = "02:18:01"
+                recordingTime = "02:18:01",
             )
         }
     }
 }
-
 
 @PreviewLightDark
 @Composable
 private fun BottomSheetContentPreview() {
-
     EchoJournalTheme {
-
         Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxSize()
-                .padding(vertical = MaterialTheme.spacing.spaceFifty),
+            modifier =
+                Modifier
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .fillMaxSize()
+                    .padding(vertical = MaterialTheme.spacing.spaceFifty),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraLarge)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraLarge),
         ) {
-
-
             RecordingModalSheetContent(
                 onStartRecording = {},
                 onStopRecording = {},
@@ -343,24 +348,21 @@ private fun BottomSheetContentPreview() {
     }
 }
 
-
 @PreviewLightDark
 @Composable
 private fun BottomSheetLayoutPreview() {
-
     EchoJournalTheme {
-
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(vertical = MaterialTheme.spacing.spaceTwoHundred),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(vertical = MaterialTheme.spacing.spaceTwoHundred),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
         ) {
             RecordingButton(isRecording = true, onClick = {})
             RecordingButton(isRecording = false, onClick = {})
         }
     }
-
 }

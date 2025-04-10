@@ -10,31 +10,30 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class TopicRepositoryImpl @Inject constructor(
-   private val dao: TopicsDao
-): TopicRepository{
-    override fun getTopics(): Flow<List<Topic>> {
-        return dao.getTopics().map {
-            it.toTopicsList()
+class TopicRepositoryImpl
+    @Inject
+    constructor(
+        private val dao: TopicsDao,
+    ) : TopicRepository {
+        override fun getTopics(): Flow<List<Topic>> {
+            return dao.getTopics().map {
+                it.toTopicsList()
+            }
+        }
+
+        override suspend fun matchTopics(query: String): List<Topic> {
+            return dao.matchTopics(query = query).toTopicsList()
+        }
+
+        override suspend fun insertTopic(topic: Topic) {
+            dao.insert(topic.toEntity())
+        }
+
+        override suspend fun deleteTopic(topic: Topic) {
+            dao.delete(topic.toEntity())
+        }
+
+        override suspend fun getTopicsByIds(topicsIds: List<Long>): List<Topic> {
+            return dao.getTopicsByIds(topicsIds).map { it.toModel() }
         }
     }
-
-    override suspend fun matchTopics(query: String): List<Topic> {
-
-        return dao.matchTopics(query = query).toTopicsList()
-    }
-
-    override suspend fun insertTopic(topic: Topic) {
-        dao.insert(topic.toEntity())
-    }
-
-    override suspend fun deleteTopic(topic: Topic) {
-        dao.delete(topic.toEntity())
-    }
-
-    override suspend fun getTopicsByIds(topicsIds: List<Long>): List<Topic> {
-
-        return dao.getTopicsByIds(topicsIds).map {  it.toModel()}
-    }
-
-}

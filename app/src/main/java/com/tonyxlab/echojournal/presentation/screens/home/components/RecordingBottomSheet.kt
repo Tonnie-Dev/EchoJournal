@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,113 +30,105 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.Dp
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.utils.GradientScheme
-import com.tonyxlab.echojournal.presentation.core.utils.gradient
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiEvent
 import com.tonyxlab.echojournal.presentation.screens.home.handling.HomeUiState
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordingBottomSheet(
     homeSheetState: HomeUiState.RecordingSheetState,
     onEvent: (HomeUiEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
-
     if (homeSheetState.isVisible) {
-
         ModalBottomSheet(
             onDismissRequest = { onEvent(HomeUiEvent.StopRecording(saveFile = false)) },
-
-            ) {
-
+        ) {
             Column(
                 modifier = modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-
                 BottomSheetHeader(
                     modifier = Modifier.padding(vertical = MaterialTheme.spacing.spaceSmall),
                     isRecording = homeSheetState.isRecording,
-                    recordingTime = homeSheetState.recordingTime
+                    recordingTime = homeSheetState.recordingTime,
                 )
 
                 RecordButtons(
-                    modifier = Modifier.padding(
-                        vertical = MaterialTheme.spacing.spaceDoubleDp * 21,
-                        horizontal = MaterialTheme.spacing.spaceMedium
-                    ),
+                    modifier =
+                        Modifier.padding(
+                            vertical = MaterialTheme.spacing.spaceDoubleDp * 21,
+                            horizontal = MaterialTheme.spacing.spaceMedium,
+                        ),
                     isRecording = homeSheetState.isRecording,
                     onCancelClick = { onEvent(HomeUiEvent.StopRecording(saveFile = false)) },
                     onRecordClick = {
-                        if (homeSheetState.isRecording)
+                        if (homeSheetState.isRecording) {
                             onEvent(HomeUiEvent.StopRecording(saveFile = true))
-                        else
+                        } else {
                             onEvent(HomeUiEvent.ResumeRecording)
+                        }
                     },
                     onPauseClick = {
-
-                        if (homeSheetState.isRecording)
+                        if (homeSheetState.isRecording) {
                             onEvent(HomeUiEvent.PauseRecording)
-                        else
+                        } else {
                             onEvent(HomeUiEvent.StopRecording(saveFile = true))
-                    }
+                        }
+                    },
                 )
-
             }
         }
     }
-
 }
 
 @Composable
 private fun BottomSheetHeader(
     recordingTime: String,
     isRecording: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
     ) {
-
         // Title
         Text(
-            text = if (isRecording)
-                stringResource(id = R.string.text_recording_memories)
-            else
-                stringResource(id = R.string.text_recording_paused),
-            style = MaterialTheme.typography.titleSmall
+            text =
+                if (isRecording) {
+                    stringResource(id = R.string.text_recording_memories)
+                } else {
+                    stringResource(id = R.string.text_recording_paused)
+                },
+            style = MaterialTheme.typography.titleSmall,
         )
 
         // Timer
         Box(modifier = Modifier.width(IntrinsicSize.Max)) {
-
             Text(
-                text = if (recordingTime.length > 5)
-                    recordingTime
-                else
-                    "00:$recordingTime",
-                style = MaterialTheme.typography.labelMedium
+                text =
+                    if (recordingTime.length > 5) {
+                        recordingTime
+                    } else {
+                        "00:$recordingTime"
+                    },
+                style = MaterialTheme.typography.labelMedium,
             )
 
             // Hidden PlaceHolder Text [ Color is Transparent ] to define Intrinsic max width
 
             Text(
                 text = "00:00:00",
-                style = MaterialTheme.typography.labelMedium.copy(color = Color.Transparent)
+                style = MaterialTheme.typography.labelMedium.copy(color = Color.Transparent),
             )
         }
     }
 }
-
 
 @Composable
 fun RecordButtons(
@@ -147,64 +138,60 @@ fun RecordButtons(
     onPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
     recordButtonSize: Dp = MaterialTheme.spacing.spaceTwelve * 6,
-    auxiliaryButtonSize: Dp = MaterialTheme.spacing.spaceTwelve * 4
+    auxiliaryButtonSize: Dp = MaterialTheme.spacing.spaceTwelve * 4,
 ) {
-
-
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(recordButtonSize),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(recordButtonSize),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround
+        horizontalArrangement = Arrangement.SpaceAround,
     ) {
-
         // Cancel Button
         IconButton(
             modifier = Modifier.size(auxiliaryButtonSize),
             onClick = onCancelClick,
-            colors = IconButtonDefaults.iconButtonColors(
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer
-            )
+            colors =
+                IconButtonDefaults.iconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer,
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                ),
         ) {
             Icon(
                 imageVector = Icons.Default.Clear,
-                contentDescription = stringResource(id = R.string.recording_button)
+                contentDescription = stringResource(id = R.string.recording_button),
             )
         }
 
         // Record Button
         Box(
             modifier = Modifier.size(recordButtonSize),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
-
             Box(
-                modifier = Modifier
-                    .size(recordButtonSize)
-                    .clip(CircleShape)
-                    .background(
-                        brush = GradientScheme.PrimaryGradient,
-                        shape = CircleShape
-                    )
-                    .clickable { onRecordClick() },
-                contentAlignment = Alignment.Center
-
+                modifier =
+                    Modifier
+                        .size(recordButtonSize)
+                        .clip(CircleShape)
+                        .background(
+                            brush = GradientScheme.PrimaryGradient,
+                            shape = CircleShape,
+                        )
+                        .clickable { onRecordClick() },
+                contentAlignment = Alignment.Center,
             ) {
-
                 Image(
-                    painter = if (isRecording)
-                        painterResource(R.drawable.ic_checkmark)
-                    else
-                        painterResource(R.drawable.ic_recording),
-                    contentDescription = stringResource(id = R.string.recording_button)
+                    painter =
+                        if (isRecording) {
+                            painterResource(R.drawable.ic_checkmark)
+                        } else {
+                            painterResource(R.drawable.ic_recording)
+                        },
+                    contentDescription = stringResource(id = R.string.recording_button),
                 )
-
-
             }
             if (isRecording) {
-
                 PulsatingButton()
             }
         }
@@ -213,21 +200,21 @@ fun RecordButtons(
         IconButton(
             modifier = Modifier.size(auxiliaryButtonSize),
             onClick = onPauseClick,
-            colors = IconButtonDefaults.iconButtonColors(
-                containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary
-            )
-
+            colors =
+                IconButtonDefaults.iconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                ),
         ) {
             Icon(
-                painter = if (isRecording)
-                    painterResource(R.drawable.ic_pause)
-                else
-                    painterResource(R.drawable.ic_checkmark_primary),
-                contentDescription = stringResource(id = R.string.pause_text)
+                painter =
+                    if (isRecording) {
+                        painterResource(R.drawable.ic_pause)
+                    } else {
+                        painterResource(R.drawable.ic_checkmark_primary)
+                    },
+                contentDescription = stringResource(id = R.string.pause_text),
             )
         }
-
     }
-
 }

@@ -52,12 +52,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.utils.GradientScheme
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 
 @Composable
 fun HomeFab(
@@ -65,9 +65,8 @@ fun HomeFab(
     onLongPressRelease: (isEchoCancelled: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     buttonSize: Dp = MaterialTheme.spacing.spaceExtraLarge,
-    pulsatingCircleSize: Dp = MaterialTheme.spacing.spaceOneTwentyEight
+    pulsatingCircleSize: Dp = MaterialTheme.spacing.spaceOneTwentyEight,
 ) {
-
     val context = LocalContext.current
     val activity = context as Activity
 
@@ -78,71 +77,72 @@ fun HomeFab(
     val hapticFeedback = LocalHapticFeedback.current
     var isEntryCancelled by remember { mutableStateOf(false) }
 
-    val recordAudioPermissionResultLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
-            isPermissionDialogOpen = !isGranted
-            onResult(isGranted, isLongPressed)
-        }
-    )
+    val recordAudioPermissionResultLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { isGranted ->
+                isPermissionDialogOpen = !isGranted
+                onResult(isGranted, isLongPressed)
+            },
+        )
 
     // Animate size of the cancel icon based on drag effect
     val cancelIconScale by animateFloatAsState(
-        targetValue = 1f + (-dragOffsetX / 200f).coerceIn(
-            0f,
-            .5f
-        ),
+        targetValue =
+            1f +
+                (-dragOffsetX / 200f).coerceIn(
+                    0f,
+                    .5f,
+                ),
         animationSpec = tween(durationMillis = 100),
-        label = "Scale Cancel Icon"
+        label = "Scale Cancel Icon",
     )
 
     LaunchedEffect(isEntryCancelled) {
-
         if (isEntryCancelled) {
             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
         }
     }
 
     Row(
-        modifier = modifier
-            .height(buttonSize)
-            .pointerInput(Unit) {
-                detectDragGesturesAfterLongPress(
-                    onDragEnd = {
-                        isLongPressed = false
-                        dragOffsetX = 0f
-                        onLongPressRelease(isEntryCancelled)
-                        isEntryCancelled = false
-                    },
-                    onDrag = { change, _ ->
-                        dragOffsetX += change.positionChange().x
+        modifier =
+            modifier
+                .height(buttonSize)
+                .pointerInput(Unit) {
+                    detectDragGesturesAfterLongPress(
+                        onDragEnd = {
+                            isLongPressed = false
+                            dragOffsetX = 0f
+                            onLongPressRelease(isEntryCancelled)
+                            isEntryCancelled = false
+                        },
+                        onDrag = { change, _ ->
+                            dragOffsetX += change.positionChange().x
 
-                        // Trigger vibration when dragging a significant distance
-                        isEntryCancelled = dragOffsetX < -200f
-                    }
-                )
-            },
-        verticalAlignment = Alignment.CenterVertically
+                            // Trigger vibration when dragging a significant distance
+                            isEntryCancelled = dragOffsetX < -200f
+                        },
+                    )
+                },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-
         val density = LocalDensity.current
         val adjustmentRecordButtonOffsetX by remember {
-
             derivedStateOf {
-                val pulsatingCircleSizePx = with(density) {
-                    pulsatingCircleSize.toPx()
-                }
+                val pulsatingCircleSizePx =
+                    with(density) {
+                        pulsatingCircleSize.toPx()
+                    }
 
                 val buttonSizePx = with(density) { buttonSize.toPx() }
                 pulsatingCircleSizePx / 2 - buttonSizePx / 2
             }
         }
         val recordButtonOffset by remember {
-
             derivedStateOf {
                 IntOffset(
                     x = if (isLongPressed) adjustmentRecordButtonOffsetX.toInt() else 0,
-                    y = 0
+                    y = 0,
                 )
             }
         }
@@ -150,27 +150,27 @@ fun HomeFab(
         // Cancel icon
         if (isLongPressed) {
             Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .scale(cancelIconScale)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.errorContainer),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .size(48.dp)
+                        .scale(cancelIconScale)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.errorContainer),
+                contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Default.Clear,
                     contentDescription = stringResource(R.string.recording_button),
-                    tint = MaterialTheme.colorScheme.onErrorContainer
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         }
-
 
         // Record button with animation
 
         Box(
             modifier = Modifier.offset { recordButtonOffset },
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             RecordButton(
                 isRecording = isLongPressed,
@@ -183,14 +183,13 @@ fun HomeFab(
                     isLongPressed = false
                     onLongPressRelease(isEntryCancelled)
                 },
-                buttonSize = buttonSize
+                buttonSize = buttonSize,
             )
 
             if (isLongPressed) {
-
                 PulsatingButton(
                     baseSize = (pulsatingCircleSize.value - 20.dp.value).dp,
-                    pulseSize = pulsatingCircleSize
+                    pulseSize = pulsatingCircleSize,
                 )
             }
         }
@@ -198,10 +197,11 @@ fun HomeFab(
 
     if (isPermissionDialogOpen) {
         PermissionDialog(
-            isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
-                activity,
-                Manifest.permission.RECORD_AUDIO
-            ),
+            isPermanentlyDeclined =
+                !shouldShowRequestPermissionRationale(
+                    activity,
+                    Manifest.permission.RECORD_AUDIO,
+                ),
             onDismiss = { isPermissionDialogOpen = false },
             onOkClick = {
                 isPermissionDialogOpen = false
@@ -210,11 +210,10 @@ fun HomeFab(
             navigateToAppSettings = {
                 isPermissionDialogOpen = false
                 activity.openAppSettings()
-            }
+            },
         )
     }
 }
-
 
 @Composable
 private fun RecordButton(
@@ -223,20 +222,16 @@ private fun RecordButton(
     onLongClick: () -> Unit,
     onLongPressRelease: () -> Unit,
     modifier: Modifier = Modifier,
-    buttonSize: Dp = MaterialTheme.spacing.spaceExtraSmall
+    buttonSize: Dp = MaterialTheme.spacing.spaceExtraSmall,
 ) {
-
     val interactionSource = remember { MutableInteractionSource() }
     val viewConfiguration = LocalViewConfiguration.current
     var isLongClick by remember { mutableStateOf(false) }
 
-
     LaunchedEffect(interactionSource) {
-
         interactionSource.interactions.collectLatest { interaction ->
 
             when (interaction) {
-
                 is PressInteraction.Press -> {
                     isLongClick = false
                     delay(viewConfiguration.longPressTimeoutMillis)
@@ -245,18 +240,13 @@ private fun RecordButton(
                 }
 
                 is PressInteraction.Release -> {
-
                     if (!isLongClick) onClick() else onLongPressRelease()
                 }
 
                 is PressInteraction.Cancel -> {
-
                     isLongClick = false
-
                 }
             }
-
-
         }
     }
 
@@ -268,32 +258,31 @@ private fun RecordButton(
         contentColor = Color.Transparent,
         tonalElevation = MaterialTheme.spacing.spaceDoubleDp * 3,
         shadowElevation = MaterialTheme.spacing.spaceDoubleDp * 3,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     ) {
-
         Box(
-            modifier = Modifier
-                .size(buttonSize)
-                .clip(CircleShape)
-                .background(
-                    brush = GradientScheme.PressedGradient,
-                    shape = CircleShape
-                ), contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .size(buttonSize)
+                    .clip(CircleShape)
+                    .background(
+                        brush = GradientScheme.PressedGradient,
+                        shape = CircleShape,
+                    ),
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = if (isRecording) Icons.Default.Mic else Icons.Default.Add,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimary
+                tint = MaterialTheme.colorScheme.onPrimary,
             )
         }
     }
-
-
 }
 
 private fun Activity.openAppSettings() {
     Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.fromParts("package", packageName, null)
+        Uri.fromParts("package", packageName, null),
     ).apply(::startActivity)
 }

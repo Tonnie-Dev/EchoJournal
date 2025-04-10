@@ -27,21 +27,23 @@ fun MoodRow(
     activeMood: Mood,
     moods: List<Mood>,
     onMoodClick: (Mood) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         moods.fastForEach { mood ->
             MoodItem(
-                icon = if (activeMood == mood) mood.icon
-                else mood.outlinedIcon,
+                icon =
+                    if (activeMood == mood) {
+                        mood.icon
+                    } else {
+                        mood.outlinedIcon
+                    },
                 title = mood.name,
-                onClick = { onMoodClick(mood) }
+                onClick = { onMoodClick(mood) },
             )
-
         }
     }
 }
@@ -51,28 +53,29 @@ fun MoodItem(
     @DrawableRes icon: Int,
     title: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     Column(
-        modifier = modifier
-            .width(MaterialTheme.spacing.spaceExtraLarge)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() }, indication = null
-            ) { onClick() },
+        modifier =
+            modifier
+                .width(MaterialTheme.spacing.spaceExtraLarge)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                ) { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
     ) {
-
         Image(
             painter = painterResource(icon),
             contentDescription = title,
             modifier = Modifier.height(MaterialTheme.spacing.spaceTen * 4),
-            contentScale = ContentScale.FillHeight
+            contentScale = ContentScale.FillHeight,
         )
 
         Text(
-            text = title, style = MaterialTheme.typography.labelMedium
+            text = title,
+            style = MaterialTheme.typography.labelMedium,
         )
     }
 }

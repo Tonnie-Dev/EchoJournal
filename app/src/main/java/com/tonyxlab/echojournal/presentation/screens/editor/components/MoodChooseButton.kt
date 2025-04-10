@@ -28,36 +28,33 @@ import com.tonyxlab.echojournal.presentation.theme.Secondary70
 fun MoodChooseButton(
     mood: Mood,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     if (mood == Mood.Undefined) {
         Box(
-            modifier = modifier
-                .size(MaterialTheme.spacing.spaceLarge)
-                .clip(CircleShape)
-                .background(color = Primary95, shape = CircleShape)
-                .clickable { onClick() },
-            contentAlignment = Alignment.Center
+            modifier =
+                modifier
+                    .size(MaterialTheme.spacing.spaceLarge)
+                    .clip(CircleShape)
+                    .background(color = Primary95, shape = CircleShape)
+                    .clickable { onClick() },
+            contentAlignment = Alignment.Center,
         ) {
-
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = stringResource(id = R.string.text_choose_mood),
-                tint = Secondary70
+                tint = Secondary70,
             )
         }
-
     } else {
-
         Image(
-            modifier = Modifier
-                .height(MaterialTheme.spacing.spaceLarge)
-                .clickable { onClick() },
+            modifier =
+                Modifier
+                    .height(MaterialTheme.spacing.spaceLarge)
+                    .clickable { onClick() },
             painter = painterResource(mood.icon),
             contentDescription = stringResource(id = R.string.text_choose_mood),
-            contentScale = ContentScale.FillHeight
+            contentScale = ContentScale.FillHeight,
         )
     }
-
 }

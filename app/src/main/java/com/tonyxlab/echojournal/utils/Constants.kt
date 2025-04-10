@@ -1,7 +1,6 @@
 package com.tonyxlab.echojournal.utils
 
 object Constants {
-
     const val INITIAL_DATABASE_ID = 0L
 
     const val UNDEFINED_ECHO_ID = -1L

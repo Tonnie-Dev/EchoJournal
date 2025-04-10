@@ -1,32 +1,25 @@
 package com.tonyxlab.echojournal.utils
 
-
 fun renderSecondsToStrings(seconds: Int): String {
-
     return if (seconds == 0) {
-
         "00:00"
     } else {
-
         val minutes = seconds / 60
         val secs = seconds % 60
 
         minutes.formatSecs()
-                .plus(":")
-                .plus(secs.formatSecs())
+            .plus(":")
+            .plus(secs.formatSecs())
     }
-
 }
 
 fun Int.formatSecs(): String {
-
     return if (this in 0..9) "0$this" else this.toString()
-
 }
 
-
 fun generateLoremIpsum(wordCount: Int): String {
-    val loremIpsumWords = listOf(
+    val loremIpsumWords =
+        listOf(
             "Lorem",
             "ipsum",
             "dolor",
@@ -95,11 +88,11 @@ fun generateLoremIpsum(wordCount: Int): String {
             "anim",
             "id",
             "est",
-            "laborum"
-    )
+            "laborum",
+        )
 
     return (1..wordCount).joinToString(" ") {
         loremIpsumWords.random()
-                .replaceFirstChar { it.titlecase() }
+            .replaceFirstChar { it.titlecase() }
     }
 }

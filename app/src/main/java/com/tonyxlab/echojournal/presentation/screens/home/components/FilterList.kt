@@ -40,102 +40,107 @@ fun FilterList(
     onItemClick: (String) -> Unit,
     onDismissClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    startOffset: IntOffset = IntOffset.Zero
+    startOffset: IntOffset = IntOffset.Zero,
 ) {
     Box(
-        modifier = modifier
-        .offset {
-            startOffset
-        }
-        .fillMaxSize()
+        modifier =
+            modifier
+                .offset {
+                    startOffset
+                }
+                .fillMaxSize(),
     ) {
-
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) { onDismissClicked() }
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ) { onDismissClicked() },
         )
 
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(MaterialTheme.spacing.spaceTen),
-            shadowElevation = MaterialTheme.spacing.spaceExtraSmall
+            shadowElevation = MaterialTheme.spacing.spaceExtraSmall,
         ) {
             LazyColumn(
                 modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall),
             ) {
                 items(filterItems.take(5)) { filterItem ->
                     FilterItem(
                         filterItem = filterItem,
-                        onClick = { onItemClick(it) })
+                        onClick = { onItemClick(it) },
+                    )
                 }
-
             }
-
         }
-
     }
 }
-
 
 @Composable
 fun FilterItem(
     filterItem: FilterState.FilterItem,
     onClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
-        modifier = modifier
-            .clip(RoundedCornerShape(MaterialTheme.spacing.spaceSmall))
-            .fillMaxWidth()
-            .clickable { onClick(filterItem.title) },
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(MaterialTheme.spacing.spaceSmall))
+                .fillMaxWidth()
+                .clickable { onClick(filterItem.title) },
         shape = RoundedCornerShape(MaterialTheme.spacing.spaceSmall),
-        color = if (filterItem.isChecked)
-            MaterialTheme.colorScheme.surfaceTint.copy(alpha = .05f)
-        else
-            MaterialTheme.colorScheme.surface
-
+        color =
+            if (filterItem.isChecked) {
+                MaterialTheme.colorScheme.surfaceTint.copy(alpha = .05f)
+            } else {
+                MaterialTheme.colorScheme.surface
+            },
     ) {
         Row(
-            modifier = Modifier.padding(
-                horizontal = MaterialTheme.spacing.spaceTen,
-                vertical = MaterialTheme.spacing.spaceDoubleDp * 3
-            ), horizontalArrangement = Arrangement.spacedBy(
-                MaterialTheme.spacing.spaceSmall
-            ), verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier.padding(
+                    horizontal = MaterialTheme.spacing.spaceTen,
+                    vertical = MaterialTheme.spacing.spaceDoubleDp * 3,
+                ),
+            horizontalArrangement =
+                Arrangement.spacedBy(
+                    MaterialTheme.spacing.spaceSmall,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-
             val mood = filterItem.title.toMood()
 
             Image(
                 modifier = Modifier.height(MaterialTheme.spacing.spaceSmall * 3),
-                painter = if (mood == Mood.Undefined)
-                    painterResource(R.drawable.ic_hashtag)
-                else
-                    painterResource(mood.icon),
+                painter =
+                    if (mood == Mood.Undefined) {
+                        painterResource(R.drawable.ic_hashtag)
+                    } else {
+                        painterResource(mood.icon)
+                    },
                 contentDescription = null,
             )
             Text(
                 modifier = Modifier.weight(1f),
                 text = filterItem.title,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Medium
-                )
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.Medium,
+                    ),
             )
 
             if (filterItem.isChecked) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             }
         }
     }
-
 }

@@ -22,19 +22,21 @@ fun SettingsItem(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(MaterialTheme.spacing.spaceTen),
-        shadowElevation = MaterialTheme.spacing.spaceExtraSmall
+        shadowElevation = MaterialTheme.spacing.spaceExtraSmall,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.spacing.spaceMedium),
-            verticalArrangement = Arrangement.spacedBy(
-                MaterialTheme.spacing.spaceTwelve
-            )
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.spaceMedium),
+            verticalArrangement =
+                Arrangement.spacedBy(
+                    MaterialTheme.spacing.spaceTwelve,
+                ),
         ) {
             SettingsHeader(
                 title = title,
-                description = description
+                description = description,
             )
 
             content()

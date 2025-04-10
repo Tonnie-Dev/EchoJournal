@@ -42,48 +42,49 @@ fun MoodPlayer(
     onPlayClick: () -> Unit,
     onPauseClick: () -> Unit,
     onResumeClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = CircleShape,
-        color = mood.moodBackgroundColor
+        color = mood.moodBackgroundColor,
     ) {
         Row(
             modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-
             // Play Button
             Surface(
-                modifier = Modifier
-                    .size(MaterialTheme.spacing.spaceLarge)
-                    .shadow(
-                        MaterialTheme.spacing.spaceExtraSmall, CircleShape
-                    )
-                    .clip(CircleShape)
-                    .clickable {
-                        when (playerState.mode) {
-                            PlayerState.Mode.Stopped -> onPlayClick()
-                            PlayerState.Mode.Paused -> onResumeClick()
-                            PlayerState.Mode.Playing -> onPauseClick()
-                            PlayerState.Mode.Resumed -> onPauseClick()
-                        }
-                    }, shape = CircleShape
+                modifier =
+                    Modifier
+                        .size(MaterialTheme.spacing.spaceLarge)
+                        .shadow(
+                            MaterialTheme.spacing.spaceExtraSmall,
+                            CircleShape,
+                        )
+                        .clip(CircleShape)
+                        .clickable {
+                            when (playerState.mode) {
+                                PlayerState.Mode.Stopped -> onPlayClick()
+                                PlayerState.Mode.Paused -> onResumeClick()
+                                PlayerState.Mode.Playing -> onPauseClick()
+                                PlayerState.Mode.Resumed -> onPauseClick()
+                            }
+                        },
+                shape = CircleShape,
             ) {
-
-
                 Icon(
                     modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
-                    imageVector = when (playerState.mode) {
-                        PlayerState.Mode.Stopped -> Icons.Default.PlayArrow
-                        PlayerState.Mode.Paused -> Icons.Default.PlayArrow
-                        PlayerState.Mode.Playing -> Icons.Default.Pause
-                        PlayerState.Mode.Resumed -> Icons.Default.Pause
-                    },
+                    imageVector =
+                        when (playerState.mode) {
+                            PlayerState.Mode.Stopped -> Icons.Default.PlayArrow
+                            PlayerState.Mode.Paused -> Icons.Default.PlayArrow
+                            PlayerState.Mode.Playing -> Icons.Default.Pause
+                            PlayerState.Mode.Resumed -> Icons.Default.Pause
+                        },
                     contentDescription = stringResource(id = R.string.play_text),
-                    tint = mood.moodButtonColor
+                    tint = mood.moodButtonColor,
                 )
             }
 
@@ -92,92 +93,79 @@ fun MoodPlayer(
                 playbackPosition = playerState.currentPosition,
                 playbackDuration = playerState.duration,
                 onValueChange = null,
-                mood = mood
+                mood = mood,
             )
             PlayerTimer(
                 modifier = Modifier.padding(end = MaterialTheme.spacing.spaceExtraSmall),
                 duration = playerState.durationText,
-                currentPosition = playerState.currentPositionText
+                currentPosition = playerState.currentPositionText,
             )
-
-
         }
     }
-
 }
 
 @Composable
 fun PlayerTimer(
     duration: String,
     currentPosition: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-
         val placeholderText = if (duration.length > 5) "00:00:00" else "00:00"
 
         // Current Position
         Box(
-            modifier = Modifier.width(IntrinsicSize.Max)
+            modifier = Modifier.width(IntrinsicSize.Max),
         ) {
-
             Text(
                 text = currentPosition,
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
-
 
             // Hidden placeholder text to define a fixed width.
             Text(
                 text = placeholderText,
-                style = MaterialTheme.typography.labelMedium.copy(color = Color.Transparent)
+                style = MaterialTheme.typography.labelMedium.copy(color = Color.Transparent),
             )
         }
 
         // Duration
         Box(modifier = Modifier.width(IntrinsicSize.Max)) {
-
             Text(
                 text = "/$duration",
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
 
             // Hidden placeholder text to define a fixed width
 
             Text(
                 text = "/$placeholderText",
-                style = MaterialTheme.typography.labelMedium.copy(color = Color.Transparent)
+                style = MaterialTheme.typography.labelMedium.copy(color = Color.Transparent),
             )
         }
-
     }
 }
 
 @PreviewLightDark
 @Composable
 private fun MoodPlayerPreview() {
-
-
-    val playerState = remember {
-        PlayerState(
-            duration = 85,
-            currentPosition = 58,
-            mode = PlayerState.Mode.Playing
-        )
-    }
+    val playerState =
+        remember {
+            PlayerState(
+                duration = 85,
+                currentPosition = 58,
+                mode = PlayerState.Mode.Playing,
+            )
+        }
     EchoJournalTheme {
-
-
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
-
             MoodPlayer(
                 mood = Mood.Stressed,
                 playerState = playerState,
@@ -185,9 +173,6 @@ private fun MoodPlayerPreview() {
                 onResumeClick = {},
                 onPlayClick = {},
             )
-
         }
     }
-
-
 }

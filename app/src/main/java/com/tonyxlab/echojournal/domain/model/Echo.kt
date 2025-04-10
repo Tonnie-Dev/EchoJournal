@@ -12,5 +12,5 @@ data class Echo(
     val audioDuration: Int,
     val description: String = "",
     val topics: List<String> = emptyList(),
-    val creationTimestamp: Instant = System.now()
+    val creationTimestamp: Instant = System.now(),
 )

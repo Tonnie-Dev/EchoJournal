@@ -22,7 +22,7 @@ fun RowScope.TopicTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     hintText: String = stringResource(id = R.string.text_topic),
-    showLeadingIcon: Boolean = true
+    showLeadingIcon: Boolean = true,
 ) {
     EditorTextField(
         modifier = modifier.align(alignment = Alignment.CenterVertically),
@@ -32,21 +32,21 @@ fun RowScope.TopicTextField(
         leadingIcon = {
             if (showLeadingIcon) {
                 Box(
-                    modifier = Modifier
-                        .width(MaterialTheme.spacing.spaceMedium)
-                        .align(alignment = Alignment.CenterVertically),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .width(MaterialTheme.spacing.spaceMedium)
+                            .align(alignment = Alignment.CenterVertically),
+                    contentAlignment = Alignment.Center,
                 ) {
-
                     Text(
                         text = "#",
                         fontFamily = InterFontFamily,
                         fontWeight = FontWeight.Medium,
                         fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.outlineVariant
+                        color = MaterialTheme.colorScheme.outlineVariant,
                     )
                 }
             }
-        }
+        },
     )
 }

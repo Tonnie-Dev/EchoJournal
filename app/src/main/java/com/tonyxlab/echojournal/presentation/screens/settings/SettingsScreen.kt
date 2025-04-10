@@ -31,9 +31,8 @@ import com.tonyxlab.echojournal.utils.toInt
 
 @Composable
 fun SettingsScreenRoot(
-
     modifier: Modifier = Modifier,
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
 ) {
     val viewModel: SettingsViewModel = hiltViewModel()
 
@@ -41,43 +40,39 @@ fun SettingsScreenRoot(
         modifier = modifier.padding(top = MaterialTheme.spacing.spaceSmall),
         viewModel = viewModel,
         topBar = {
-
             AppTopBar(
                 title = stringResource(R.string.header_text_settings),
                 isShowBackButton = true,
-                onBackClick = { navigateToHome() }
+                onBackClick = { navigateToHome() },
             )
-        }
-
+        },
     ) { uiState ->
 
         SettingsScreen(
             uiState = uiState,
-            onEvent = viewModel::onEvent
+            onEvent = viewModel::onEvent,
         )
     }
 }
 
-
 @Composable
 fun SettingsScreen(
     uiState: SettingsUiState,
-    onEvent: (SettingsUiEvent) -> Unit
+    onEvent: (SettingsUiEvent) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
     ) {
-
         // Mood Settings
         SettingsItem(
             title = stringResource(id = R.string.title_text_my_mood),
-            description = stringResource(id = R.string.text_mood_header_desc)
+            description = stringResource(id = R.string.text_mood_header_desc),
         ) {
             MoodRow(
                 moods = uiState.moods,
                 activeMood = uiState.activeMood,
-                onMoodClick = { onEvent(SettingsUiEvent.SelectMood(it)) }
+                onMoodClick = { onEvent(SettingsUiEvent.SelectMood(it)) },
             )
         }
 
@@ -92,20 +87,20 @@ fun SettingsScreen(
 
             SettingsItem(
                 title = stringResource(R.string.header_text_my_topics),
-                description = stringResource(id = R.string.header_text_description)
+                description = stringResource(id = R.string.header_text_description),
             ) {
-
                 TopicTagsWithAddButton(
-                    modifier = Modifier.onGloballyPositioned { coordinates ->
+                    modifier =
+                        Modifier.onGloballyPositioned { coordinates ->
 
-                        topicOffset = IntOffset(
-                            x = coordinates.positionInParent().x.toInt(),
-                            y = coordinates.positionInParent().y.toInt() + coordinates.size.height + verticalSpace
-                        )
-
-                    },
+                            topicOffset =
+                                IntOffset(
+                                    x = coordinates.positionInParent().x.toInt(),
+                                    y = coordinates.positionInParent().y.toInt() + coordinates.size.height + verticalSpace,
+                                )
+                        },
                     topicState = uiState.topicState,
-                    onEvent = onEvent
+                    onEvent = onEvent,
                 )
             }
 

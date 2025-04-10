@@ -40,16 +40,15 @@ fun HomeScreenRoot(
     navigateToEditorScreen: (audioFilePath: String, Long) -> Unit,
     navigateToSettingScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
-
     BaseContentLayout(
         modifier = modifier,
         viewModel = viewModel,
         topBar = {
             HomeTopBar(
                 title = stringResource(id = R.string.your_echo_journal),
-                onSettingsClick = navigateToSettingScreen
+                onSettingsClick = navigateToSettingScreen,
             )
         },
         floatingActionButton = {
@@ -67,14 +66,13 @@ fun HomeScreenRoot(
                 onLongPressRelease = { isEchoCancelled ->
 
                     viewModel.onEvent(HomeUiEvent.ActionButtonStopRecording(saveFile = !isEchoCancelled))
-                }
+                },
             )
         },
         actionsEventHandler = { _, actionEvent ->
             when (actionEvent) {
                 is HomeActionEvent.NavigateToEditorScreen -> {
-
-                    navigateToEditorScreen(actionEvent.audioFilePath,actionEvent.echoId)
+                    navigateToEditorScreen(actionEvent.audioFilePath, actionEvent.echoId)
                 }
 
                 is HomeActionEvent.DataLoaded -> {
@@ -83,35 +81,30 @@ fun HomeScreenRoot(
                         viewModel.onEvent(HomeUiEvent.StartRecording)
                     }
                 }
-
             }
-
-
-        }) { uiState ->
+        },
+    ) { uiState ->
 
         if (uiState.echoes.isEmpty() && !uiState.isFilterActive) {
             EmptyHomeScreen(modifier = Modifier.padding(MaterialTheme.spacing.spaceMedium))
         } else {
             HomeScreen(
                 uiState = uiState,
-                onEvent = viewModel::onEvent
+                onEvent = viewModel::onEvent,
             )
         }
 
         RecordingBottomSheet(
             homeSheetState = uiState.recordingSheetState,
-            onEvent = viewModel::onEvent
+            onEvent = viewModel::onEvent,
         )
-
     }
-
 }
-
 
 @Composable
 private fun HomeScreen(
     uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit
+    onEvent: (HomeUiEvent) -> Unit,
 ) {
     var filterOffset by remember { mutableStateOf(IntOffset.Zero) }
 
@@ -119,24 +112,25 @@ private fun HomeScreen(
         EchoFilter(
             filterState = uiState.filterState,
             onEvent = onEvent,
-            modifier = Modifier.onGloballyPositioned { coordinates ->
-                filterOffset = IntOffset(
-                    x = coordinates.positionInParent().x.toInt(),
-                    y = coordinates.positionInParent().y.toInt() + coordinates.size.height
-                )
-            }
+            modifier =
+                Modifier.onGloballyPositioned { coordinates ->
+                    filterOffset =
+                        IntOffset(
+                            x = coordinates.positionInParent().x.toInt(),
+                            y = coordinates.positionInParent().y.toInt() + coordinates.size.height,
+                        )
+                },
         )
 
         if (uiState.echoes.isEmpty() && uiState.isFilterActive) {
             EmptyHomeScreen(
                 text = stringResource(R.string.text_no_entries_found),
-                supportingText = stringResource(id = R.string.text_no_entries)
+                supportingText = stringResource(id = R.string.text_no_entries),
             )
-
         }
         EchoesList(
             echoes = uiState.echoes,
-            onEvent = onEvent
+            onEvent = onEvent,
         )
     }
 
@@ -145,9 +139,8 @@ private fun HomeScreen(
             filterItems = uiState.filterState.moodFilterItems,
             onItemClick = { onEvent(HomeUiEvent.SelectMoodItem(it)) },
             onDismissClicked = { onEvent(HomeUiEvent.ToggleMoodFilter) },
-            startOffset = filterOffset
+            startOffset = filterOffset,
         )
-
     }
 
     if (uiState.filterState.isTopicFilterActive) {
@@ -155,9 +148,7 @@ private fun HomeScreen(
             filterItems = uiState.filterState.topicFilterItems,
             onItemClick = { onEvent(HomeUiEvent.SelectTopicItem(it)) },
             onDismissClicked = { onEvent(HomeUiEvent.ToggleTopicFilter) },
-            startOffset = filterOffset
+            startOffset = filterOffset,
         )
     }
 }
-
-

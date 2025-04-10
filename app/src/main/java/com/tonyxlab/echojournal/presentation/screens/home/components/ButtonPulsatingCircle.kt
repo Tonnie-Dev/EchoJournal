@@ -27,13 +27,11 @@ import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 
 @Composable
-
 fun PulsatingButton(
     modifier: Modifier = Modifier,
     baseSize: Dp = MaterialTheme.spacing.spaceOneHundred + MaterialTheme.spacing.spaceSmall,
     pulseSize: Dp = MaterialTheme.spacing.spaceOneTwentyEight,
 ) {
-
     val infiniteTransition = rememberInfiniteTransition(label = "Pulsating Circle Transition")
     val density = LocalDensity.current
 
@@ -43,47 +41,41 @@ fun PulsatingButton(
     val animatedSize by infiniteTransition.animateFloat(
         initialValue = baseSizePx,
         targetValue = pulsatingSizePx,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "Pulsating Circle Size"
+        animationSpec =
+            infiniteRepeatable(
+                animation = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse,
+            ),
+        label = "Pulsating Circle Size",
     )
 
     Canvas(modifier = modifier.size(59.dp)) {
-
         // Circle with Animation
         drawCircle(
             brush = GradientScheme.FabPulsatingBackground,
             radius = animatedSize / 2,
-            center = Offset(x = size.width / 2, y = size.height / 2)
+            center = Offset(x = size.width / 2, y = size.height / 2),
         )
 
         // Circle without animation
         drawCircle(
             brush = GradientScheme.FabRecordingBackground,
-            radius = baseSize.toPx()/ 2,
-            center = Offset(x = size.width / 2, y = size.height/2)
+            radius = baseSize.toPx() / 2,
+            center = Offset(x = size.width / 2, y = size.height / 2),
         )
     }
-
 }
 
 @PreviewLightDark
 @Composable
 private fun PulsatingButtonPreview() {
-
     EchoJournalTheme {
-
         Column(
             modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
-           PulsatingButton()
-
+            PulsatingButton()
         }
     }
-
 }

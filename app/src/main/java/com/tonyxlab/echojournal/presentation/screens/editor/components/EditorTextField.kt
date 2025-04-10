@@ -23,21 +23,22 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun EditorTextField(
-    textValue: String, onValueChange: (String) -> Unit,
+    textValue: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
     hintText: String = "",
     singleLine: Boolean = true,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(
-        color = MaterialTheme.colorScheme.onSurface
-    ),
-    iconSpacing: Dp = Dp.Unspecified
+    textStyle: TextStyle =
+        MaterialTheme.typography.bodyMedium.copy(
+            color = MaterialTheme.colorScheme.onSurface,
+        ),
+    iconSpacing: Dp = Dp.Unspecified,
 ) {
-
     var isFocused by remember { mutableStateOf(false) }
 
     BasicTextField(
-        modifier = modifier.onFocusChanged { isFocused = it.isFocused},
+        modifier = modifier.onFocusChanged { isFocused = it.isFocused },
         value = textValue,
         onValueChange = onValueChange,
         textStyle = textStyle,
@@ -47,12 +48,13 @@ fun EditorTextField(
 
             Row(
                 modifier = Modifier,
-                verticalAlignment = if (singleLine)
-                    Alignment.CenterVertically
-                else
-                    Alignment.Top
+                verticalAlignment =
+                    if (singleLine) {
+                        Alignment.CenterVertically
+                    } else {
+                        Alignment.Top
+                    },
             ) {
-
                 leadingIcon?.let {
                     Box(modifier = Modifier.padding(end = iconSpacing)) {
                         leadingIcon()
@@ -60,28 +62,25 @@ fun EditorTextField(
                 }
 
                 Box(
-                    modifier = Modifier
-                        .widthIn(min = 62.dp)
-                        .align(Alignment.CenterVertically)
+                    modifier =
+                        Modifier
+                            .widthIn(min = 62.dp)
+                            .align(Alignment.CenterVertically),
                 ) {
                     if (textValue.isEmpty() && !isFocused) {
-
                         // Hint Text
                         Text(
                             text = hintText,
-                            style = textStyle.copy(
-                                color = MaterialTheme.colorScheme.outlineVariant
-                            )
+                            style =
+                                textStyle.copy(
+                                    color = MaterialTheme.colorScheme.outlineVariant,
+                                ),
                         )
                     } else {
                         innerTextField()
                     }
-
                 }
-
             }
-
-        }
+        },
     )
-
 }

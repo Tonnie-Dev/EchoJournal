@@ -36,9 +36,8 @@ sealed class Mood(
     @Serializable(with = ColorSerializer::class)
     val moodTrackColor: Color,
     @Serializable(with = ColorSerializer::class)
-    val moodBackgroundColor: Color
+    val moodBackgroundColor: Color,
 ) {
-
     @Serializable
     data object Stressed : Mood(
         icon = R.drawable.mood_stressed,
@@ -46,7 +45,7 @@ sealed class Mood(
         name = "Stressed",
         moodButtonColor = Stressed80,
         moodTrackColor = Stressed35,
-        moodBackgroundColor = Stressed25
+        moodBackgroundColor = Stressed25,
     )
 
     @Serializable
@@ -56,7 +55,7 @@ sealed class Mood(
         name = "Sad",
         moodButtonColor = Sad80,
         moodTrackColor = Sad35,
-        moodBackgroundColor = Sad25
+        moodBackgroundColor = Sad25,
     )
 
     @Serializable
@@ -66,7 +65,7 @@ sealed class Mood(
         name = "Neutral",
         moodButtonColor = Neutral80,
         moodTrackColor = Neutral35,
-        moodBackgroundColor = Neutral25
+        moodBackgroundColor = Neutral25,
     )
 
     @Serializable
@@ -76,7 +75,7 @@ sealed class Mood(
         name = "Peaceful",
         moodButtonColor = Peaceful80,
         moodTrackColor = Peaceful35,
-        moodBackgroundColor = Peaceful25
+        moodBackgroundColor = Peaceful25,
     )
 
     @Serializable
@@ -86,7 +85,7 @@ sealed class Mood(
         name = "Excited",
         moodButtonColor = Excited80,
         moodTrackColor = Excited35,
-        moodBackgroundColor = Excited25
+        moodBackgroundColor = Excited25,
     )
 
     @Serializable
@@ -96,26 +95,21 @@ sealed class Mood(
         name = "Undefined",
         moodButtonColor = Primary30,
         moodTrackColor = Secondary80,
-        moodBackgroundColor = Primary95
+        moodBackgroundColor = Primary95,
     )
 
     companion object {
-
-        fun allMoods():List<Mood > = listOf(Stressed, Sad, Neutral, Peaceful, Excited)
+        fun allMoods(): List<Mood> = listOf(Stressed, Sad, Neutral, Peaceful, Excited)
     }
 }
 
-
-fun String.toMood():Mood{
-
-    return when(this){
-
-       "Stressed" -> Mood.Stressed
-       "Sad" -> Mood.Sad
-       "Neutral" -> Mood.Neutral
-       "Peaceful" -> Mood.Peaceful
-       "Excited" -> Mood.Excited
-       else -> Mood.Undefined
+fun String.toMood(): Mood  {
+    return when (this) {
+        "Stressed" -> Mood.Stressed
+        "Sad" -> Mood.Sad
+        "Neutral" -> Mood.Neutral
+        "Peaceful" -> Mood.Peaceful
+        "Excited" -> Mood.Excited
+        else -> Mood.Undefined
     }
-
 }

@@ -3,7 +3,6 @@
 
 package com.tonyxlab.echojournal.utils
 
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import kotlinx.datetime.Clock
@@ -31,17 +30,14 @@ fun LocalDateTime.Companion.now(): LocalDateTime {
     return instant.toLocalDateTime(TimeZone.currentSystemDefault())
 }
 
-
 // LocalDateTime -> Milliseconds
 fun LocalDateTime.fromLocalDateTimeToDefaultTimestamp(): Long {
-
     return this.toInstant(timeZone = TimeZone.currentSystemDefault())
         .toEpochMilliseconds()
 }
 
 // MilliSecs in Current Timezone -> UTC
 fun Long.toUtcTimeStamp(): Long {
-
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
         .toInstant(TimeZone.UTC)
@@ -50,27 +46,22 @@ fun Long.toUtcTimeStamp(): Long {
 
 // MilliSecs in UTC -> Current Timezone
 fun Long.fromUtcTimestampToDefaultTimeStamp(): Long {
-
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.UTC)
         .toInstant(TimeZone.currentSystemDefault())
         .toEpochMilliseconds()
-
 }
 
 // In DB - EchoEntity
 fun LocalDateTime.fromLocalDateTimeToUtcTimeStamp(): Long {
-
     return this.toInstant(timeZone = TimeZone.currentSystemDefault())
         .toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
         .toInstant(TimeZone.UTC)
         .toEpochMilliseconds()
-
 }
 
 // From DB - Echo
 fun Long.fromUtcTimeStampToLocalDateTime(): LocalDateTime {
-
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.UTC)
         .toInstant(TimeZone.currentSystemDefault())
@@ -78,48 +69,47 @@ fun Long.fromUtcTimeStampToLocalDateTime(): LocalDateTime {
 }
 
 fun Long.formatMillisToNumber(): String {
-
     val hours = (this / (1000 * 60 * 60)) % 24
     val minutes = (this / (1000 * 60)) % 60
     val seconds = (this / 1000) % 60
     return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds)
-
 }
-
 
 fun Long.formatMillisToTime(): String {
     val durationInSeconds = this / 1000
 
-    val localDateTime = Instant
-        .fromEpochMilliseconds(this)
+    val localDateTime =
+        Instant
+            .fromEpochMilliseconds(this)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+    val pattern =
+        if (durationInSeconds < 3600) {
+            "ss:SS"
+        } else {
+            "mm:ss:SS"
+        }
 
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-    val pattern = if (durationInSeconds < 3600)
-        "ss:SS"
-    else
-        "mm:ss:SS"
-
-    val format = LocalDateTime.Format {
-        byUnicodePattern(pattern = pattern)
-    }
+    val format =
+        LocalDateTime.Format {
+            byUnicodePattern(pattern = pattern)
+        }
     return localDateTime.format(format)
 }
 
-
-
 fun Long.formatToRelativeDay(): String {
-
     val pattern = "EEEE, MMM d"
 
     val format = LocalDate.Format { byUnicodePattern(pattern = pattern) }
 
-    val currentDate = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-        .date
+    val currentDate =
+        Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
 
-    val targetDate = Instant.fromEpochMilliseconds(this)
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-        .date
+    val targetDate =
+        Instant.fromEpochMilliseconds(this)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
 
     return when (targetDate) {
         currentDate -> "Today"
@@ -128,16 +118,14 @@ fun Long.formatToRelativeDay(): String {
     }
 }
 
-
-
-
 @RequiresApi(Build.VERSION_CODES.O)
 fun Instant.formatInstantToRelativeDay(): String {
     val pattern = DateTimeFormatter.ofPattern("EEEE, MMM d")
     val currentDate = ZonedDateTime.now(ZoneId.systemDefault()).toLocalDate()
-    val targetDate = this.toEpochMilliseconds().let {
-        ZonedDateTime.ofInstant(java.time.Instant.ofEpochMilli(it), ZoneId.systemDefault()).toLocalDate()
-    }
+    val targetDate =
+        this.toEpochMilliseconds().let {
+            ZonedDateTime.ofInstant(java.time.Instant.ofEpochMilli(it), ZoneId.systemDefault()).toLocalDate()
+        }
 
     return when (targetDate) {
         currentDate -> "Today"
@@ -146,21 +134,16 @@ fun Instant.formatInstantToRelativeDay(): String {
     }
 }
 
-
-fun Instant.formatHoursAndMinutes(): String{
-
+fun Instant.formatHoursAndMinutes(): String  {
     val pattern = "HH:mm"
     val format = LocalDateTime.Format { byUnicodePattern(pattern = pattern) }
 
-    val time = this.toLocalDateTime( TimeZone.currentSystemDefault())
+    val time = this.toLocalDateTime(TimeZone.currentSystemDefault())
 
     return time.format(format)
-
-
 }
 
 fun Long.toAmPmTime(): String {
-
     val pattern = "hh:mm aa"
     val date = Date(this)
 

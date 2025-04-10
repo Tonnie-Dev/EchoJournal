@@ -12,12 +12,9 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class AudioModule {
-
     @Binds
     abstract fun bindAudioRecorder(audioRecorder: MediaAudioRecorder): AudioRecorder
 
     @Binds
     abstract fun bindAudioPlayer(audioPlayer: MediaAudioPlayer): AudioPlayer
-
 }
-

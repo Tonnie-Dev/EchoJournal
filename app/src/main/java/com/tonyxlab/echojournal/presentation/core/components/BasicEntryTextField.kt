@@ -34,10 +34,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.Secondary70
 import com.tonyxlab.echojournal.presentation.theme.Secondary95
-import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.utils.TextFieldValue
 
 @Composable
@@ -51,30 +51,29 @@ fun BasicEntryTextField(
     isHeadline: Boolean = false,
     gap: Dp = 6.dp,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
-
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
-
     val value = textFieldValue.value
-    val headlineTextStyle = TextStyle(
-        color = MaterialTheme.colorScheme.onSurface,
-        fontSize = 26.sp,
-        fontWeight = FontWeight.W500
-    )
-    val bodyMediumTextStyle = TextStyle(
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        fontSize = 14.sp,
-        fontWeight = FontWeight.W400
-    )
+    val headlineTextStyle =
+        TextStyle(
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 26.sp,
+            fontWeight = FontWeight.W500,
+        )
+    val bodyMediumTextStyle =
+        TextStyle(
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.W400,
+        )
 
     var isFocused by remember { mutableStateOf(false) }
 
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(gap),
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.Top,
     ) {
-
         leadingContent?.invoke()
 
         BasicTextField(
@@ -84,15 +83,16 @@ fun BasicEntryTextField(
             textStyle = if (isHeadline)headlineTextStyle else bodyMediumTextStyle,
             decorationBox = { innerTextField ->
                 Box(contentAlignment = Alignment.Center) {
-
                     if (value.isBlank() && isFocused.not()) {
                         Text(
                             text = hint,
                             color = hintColor,
-                            style = if (isHeadline)
-                                MaterialTheme.typography.headlineLarge
-                            else
-                                MaterialTheme.typography.bodyMedium
+                            style =
+                                if (isHeadline) {
+                                    MaterialTheme.typography.headlineLarge
+                                } else {
+                                    MaterialTheme.typography.bodyMedium
+                                },
                         )
                     }
 
@@ -102,42 +102,38 @@ fun BasicEntryTextField(
             cursorBrush = SolidColor(Secondary70),
             singleLine = singleLine,
             keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions
+            keyboardActions = keyboardActions,
         )
-
     }
-
 }
-
 
 @PreviewLightDark
 @Composable
 private fun EntryBasicTextFieldPreview() {
-
     EchoJournalTheme {
-
         Column(
-            modifier = Modifier
-                .background(color = Color.White)
-                .fillMaxSize()
-                .padding(MaterialTheme.spacing.spaceMedium),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .background(color = Color.White)
+                    .fillMaxSize()
+                    .padding(MaterialTheme.spacing.spaceMedium),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
         ) {
-
             BasicEntryTextField(
                 textFieldValue = TextFieldValue(value = "My Heading"),
                 isHeadline = true,
                 hint = "Add Something ...",
                 leadingContent = {
                     AppIcon(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(color = Secondary95)
-                            .size(MaterialTheme.spacing.spaceLarge),
+                        modifier =
+                            Modifier
+                                .clip(CircleShape)
+                                .background(color = Secondary95)
+                                .size(MaterialTheme.spacing.spaceLarge),
                         imageVector = Icons.Default.Add,
-                        tint = Secondary70
+                        tint = Secondary70,
                     )
-                }
+                },
             )
 
             BasicEntryTextField(
@@ -146,15 +142,16 @@ private fun EntryBasicTextFieldPreview() {
                 hint = "Add Something ...",
                 leadingContent = {
                     AppIcon(
-                        modifier = Modifier
-                            .size(
-                                width = MaterialTheme.spacing.spaceMedium,
-                                height = MaterialTheme.spacing.spaceExtraSmall * 5
-                            ),
+                        modifier =
+                            Modifier
+                                .size(
+                                    width = MaterialTheme.spacing.spaceMedium,
+                                    height = MaterialTheme.spacing.spaceExtraSmall * 5,
+                                ),
                         imageVector = Icons.Default.Edit,
-                        tint = MaterialTheme.colorScheme.outlineVariant
+                        tint = MaterialTheme.colorScheme.outlineVariant,
                     )
-                }
+                },
             )
 
             BasicEntryTextField(
@@ -163,15 +160,16 @@ private fun EntryBasicTextFieldPreview() {
                 hint = "Add Something ...",
                 leadingContent = {
                     AppIcon(
-                        modifier = Modifier
-                            .size(
-                                width = MaterialTheme.spacing.spaceMedium,
-                                height = MaterialTheme.spacing.spaceExtraSmall * 5
-                            ),
+                        modifier =
+                            Modifier
+                                .size(
+                                    width = MaterialTheme.spacing.spaceMedium,
+                                    height = MaterialTheme.spacing.spaceExtraSmall * 5,
+                                ),
                         imageVector = Icons.Default.Edit,
-                        tint = MaterialTheme.colorScheme.outlineVariant
+                        tint = MaterialTheme.colorScheme.outlineVariant,
                     )
-                }
+                },
             )
         }
     }

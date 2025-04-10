@@ -35,54 +35,56 @@ import com.tonyxlab.echojournal.presentation.theme.EchoUltraLightGray
 fun TopicTag(
     topic: Topic,
     onClearClick: (Topic) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .height(MaterialTheme.spacing.spaceLarge)
-            .clip(CircleShape)
-            .background(
-                color = EchoUltraLightGray,
-                shape = CircleShape
-            ),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .height(MaterialTheme.spacing.spaceLarge)
+                .clip(CircleShape)
+                .background(
+                    color = EchoUltraLightGray,
+                    shape = CircleShape,
+                ),
+        contentAlignment = Alignment.Center,
     ) {
         Row(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceTen)) {
-
             Text(
-                text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .5f)
-                        )
-                    ) {
-                        append("# ")
-                    }
-                    append(topic.name)
-                },
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                text =
+                    buildAnnotatedString {
+                        withStyle(
+                            style =
+                                SpanStyle(
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .5f),
+                                ),
+                        ) {
+                            append("# ")
+                        }
+                        append(topic.name)
+                    },
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
             )
 
             Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceExtraSmall))
 
             Icon(
-                modifier = Modifier
-                    .size(MaterialTheme.spacing.spaceMedium)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) {
-                        onClearClick(topic)
-                    },
+                modifier =
+                    Modifier
+                        .size(MaterialTheme.spacing.spaceMedium)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ) {
+                            onClearClick(topic)
+                        },
                 imageVector = Icons.Default.Clear,
                 contentDescription = stringResource(id = R.string.text_delete_topic),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .3f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .3f),
             )
         }
     }
-
-
 }

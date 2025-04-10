@@ -24,6 +24,5 @@ data class EchoEntity(
     @ColumnInfo(name = "topics")
     val topics: List<String>,
     @ColumnInfo(name = "creation_time_stamp")
-    val creationTimestamp: Instant
-
+    val creationTimestamp: Instant,
 )

@@ -28,27 +28,28 @@ fun ExitDialog(
     modifier: Modifier = Modifier,
     supportingText: String = "",
     confirmButtonText: String = "",
-    cancelButtonText: String = ""
+    cancelButtonText: String = "",
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
+        properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
-
         Surface(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.spacing.spaceMedium),
-            shape = RoundedCornerShape(MaterialTheme.spacing.spaceSmall)
+            modifier =
+                modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.spaceMedium),
+            shape = RoundedCornerShape(MaterialTheme.spacing.spaceSmall),
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(MaterialTheme.spacing.spaceMedium)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.spacing.spaceMedium),
             ) {
                 DialogHeader(
                     headline = headline,
-                    supportingText = supportingText
+                    supportingText = supportingText,
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceMedium))
@@ -57,10 +58,9 @@ fun ExitDialog(
                     cancelButtonText = cancelButtonText,
                     confirmButtonText = confirmButtonText,
                     onConfirm = onConfirm,
-                    onCancel = onDismissRequest
+                    onCancel = onDismissRequest,
                 )
             }
-
         }
     }
 }
@@ -72,26 +72,25 @@ private fun DialogHeader(
     supportingText: String? = null,
 ) {
     Column(modifier = modifier) {
-
         // Headline
         Text(
             text = headline,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleSmall,
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceExtraSmall))
 
         if (supportingText != null) {
-
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceMedium))
 
             // Supporting Text
             Text(
                 text = supportingText,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Normal
-                )
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Normal,
+                    ),
             )
         }
     }
@@ -103,22 +102,21 @@ private fun DialogButtons(
     confirmButtonText: String,
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Absolute.Right
+        horizontalArrangement = Arrangement.Absolute.Right,
     ) {
-
         // Cancel Button
         TextButton(onClick = onCancel) {
-
             Text(
                 text = cancelButtonText,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.secondary,
+                    ),
             )
         }
 
@@ -126,15 +124,15 @@ private fun DialogButtons(
 
         // Confirm Button
         TextButton(
-            onClick = onConfirm
+            onClick = onConfirm,
         ) {
-
             Text(
                 text = confirmButtonText,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.secondary,
+                    ),
             )
         }
     }

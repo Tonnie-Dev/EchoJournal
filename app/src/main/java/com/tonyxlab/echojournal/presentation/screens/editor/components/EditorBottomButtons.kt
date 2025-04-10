@@ -21,14 +21,12 @@ fun EditorBottomButtons(
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
     primaryButtonEnabled: Boolean = true,
-    primaryLeadingIcon: (@Composable () -> Unit)? = null
-
+    primaryLeadingIcon: (@Composable () -> Unit)? = null,
 ) {
     Row(
         modifier = modifier.height(IntrinsicSize.Max),
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
     ) {
-
         SecondaryButton(
             modifier = Modifier.fillMaxHeight(),
             text = stringResource(id = R.string.button_text_cancel),
@@ -40,7 +38,7 @@ fun EditorBottomButtons(
             text = primaryButtonText,
             onClick = onConfirmClick,
             enabled = primaryButtonEnabled,
-            leadingIcon = primaryLeadingIcon)
-        
+            leadingIcon = primaryLeadingIcon,
+        )
     }
 }

@@ -20,11 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Mood
-import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.utils.renderSecondsToStrings
-
 
 @Composable
 fun PlayTrackUnit(
@@ -38,68 +37,64 @@ fun PlayTrackUnit(
 ) {
     val spacing = LocalSpacing.current
     Row(
-        modifier = modifier
-            .background(
-                color = mood.moodBackgroundColor,
-                RoundedCornerShape(spacing.spaceExtraLarge)
-            )
-            .padding(
-                start = MaterialTheme.spacing.spaceExtraSmall,
-                end = MaterialTheme.spacing.spaceDoubleDp * 5,
-                top = MaterialTheme.spacing.spaceDoubleDp,
-                bottom = MaterialTheme.spacing.spaceDoubleDp
-            )
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .background(
+                    color = mood.moodBackgroundColor,
+                    RoundedCornerShape(spacing.spaceExtraLarge),
+                )
+                .padding(
+                    start = MaterialTheme.spacing.spaceExtraSmall,
+                    end = MaterialTheme.spacing.spaceDoubleDp * 5,
+                    top = MaterialTheme.spacing.spaceDoubleDp,
+                    bottom = MaterialTheme.spacing.spaceDoubleDp,
+                )
+                .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-
         PlayPauseButton(
-            modifier = Modifier
-                .size(spacing.spaceLarge + spacing.spaceSmall)
-                .shadow(spacing.spaceSmall, CircleShape),
+            modifier =
+                Modifier
+                    .size(spacing.spaceLarge + spacing.spaceSmall)
+                    .shadow(spacing.spaceSmall, CircleShape),
             playArrowColor = mood.moodButtonColor,
             isPlaying = isPlaying,
-            onTogglePlay = onTogglePlay
+            onTogglePlay = onTogglePlay,
         )
         Seeker(
             modifier = Modifier.weight(1f),
             playbackPosition = 5,
-           playbackDuration = 10,
+            playbackDuration = 10,
             onValueChange = onSeek,
-            mood = mood
+            mood = mood,
         )
 
         Text(
-            text = stringResource(
-                R.string.live_tracker_timestamp,
-                renderSecondsToStrings(echoLength / 2),
-                renderSecondsToStrings(echoLength)
-            ),
+            text =
+                stringResource(
+                    R.string.live_tracker_timestamp,
+                    renderSecondsToStrings(echoLength / 2),
+                    renderSecondsToStrings(echoLength),
+                ),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
 
-
 @PreviewLightDark
 @Composable
 private fun PlayTrackUnitPreview() {
-
-
     EchoJournalTheme {
-
-
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(top = MaterialTheme.spacing.spaceExtraLarge),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(top = MaterialTheme.spacing.spaceExtraLarge),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
         ) {
-
-
 // Appearance on Echo Card
             PlayTrackUnit(
                 mood = Mood.Neutral,
@@ -118,10 +113,7 @@ private fun PlayTrackUnitPreview() {
                 onSeek = {},
                 echoLength = 63,
                 onTogglePlay = {},
-
-                )
+            )
         }
     }
 }
-
-

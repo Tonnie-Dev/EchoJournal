@@ -34,15 +34,13 @@ val SurfaceTint5 = Color(0x0C475D92)
 val SurfaceTint12 = Color(0x1F475D92)
 val SurfaceTint15 = Color(0x0D475D92)
 
-
-//Custom Surface Tints
+// Custom Surface Tints
 val SurfaceTint05 = Color(0x0D475D92)
 
 // Error
 val Error20 = Color(0xFF680014)
 val Error95 = Color(0xFFFFEDEC)
 val Error100 = Color(0xFFFFEDEC)
-
 
 // Mood - Excited
 val Excited25 = Color(0xFFF5F2EF)

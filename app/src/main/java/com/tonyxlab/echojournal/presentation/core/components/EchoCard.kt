@@ -18,11 +18,10 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.echojournal.domain.model.Echo
-import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.utils.generateRandomEchoItem
-import com.tonyxlab.echojournal.utils.toAmPmTime
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -33,50 +32,48 @@ fun EchoCard(
     onSeek: (Float) -> Unit,
     onPlayPause: () -> Unit,
     onClickEcho: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
-
     val spacing = LocalSpacing.current
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(
-                elevation = MaterialTheme.spacing.spaceExtraSmall,
-                RoundedCornerShape(spacing.spaceDoubleDp * 5),
-                clip = false
-            )
-            .background(Color.White)
-            .clickable {
-                onClickEcho("TODO")
-            }
-            .padding(
-                top = spacing.spaceDoubleDp * 6,
-                bottom = spacing.spaceDoubleDp * 7,
-                start = spacing.spaceDoubleDp * 7,
-                end = spacing.spaceDoubleDp * 7
-            )
-            .padding(spacing.spaceMedium),
-        verticalArrangement = Arrangement.spacedBy(spacing.spaceDoubleDp * 3)
-    ) {
-
-        Row(
-            modifier = Modifier
+        modifier =
+            modifier
                 .fillMaxWidth()
-                .padding(bottom = spacing.spaceDoubleDp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .shadow(
+                    elevation = MaterialTheme.spacing.spaceExtraSmall,
+                    RoundedCornerShape(spacing.spaceDoubleDp * 5),
+                    clip = false,
+                )
+                .background(Color.White)
+                .clickable {
+                    onClickEcho("TODO")
+                }
+                .padding(
+                    top = spacing.spaceDoubleDp * 6,
+                    bottom = spacing.spaceDoubleDp * 7,
+                    start = spacing.spaceDoubleDp * 7,
+                    end = spacing.spaceDoubleDp * 7,
+                )
+                .padding(spacing.spaceMedium),
+        verticalArrangement = Arrangement.spacedBy(spacing.spaceDoubleDp * 3),
+    ) {
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = spacing.spaceDoubleDp),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-
             Text(
                 text = echo.title,
                 style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
 
             Text(
                 text = "TODO",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
 
@@ -87,28 +84,22 @@ fun EchoCard(
             onSeek = onSeek,
             echoLength = echo.audioDuration,
             onTogglePlay = onPlayPause,
-
-            )
-
+        )
 
         if (echo.description.isNotEmpty()) {
-
             ExpandableText(echoText = echo.description)
         }
 
         with(echo.topics) {
-
             if (isNotEmpty()) {
-
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                     Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
-                    maxLines = 1
+                    maxLines = 1,
                 ) {
                     forEach { TopicChip(topic = it) }
                 }
             }
-
         }
     }
 }
@@ -118,22 +109,20 @@ fun EchoCard(
 private fun TrackerPreview() {
     val spacing = LocalSpacing.current
     EchoJournalTheme {
-
         Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .padding(spacing.spaceMedium),
-            verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(spacing.spaceMedium),
+            verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
         ) {
-
             EchoCard(
-
                 echo = generateRandomEchoItem(),
                 isPlaying = true,
                 seekValue = .6f,
                 onSeek = {},
                 onPlayPause = {},
-                onClickEcho = {}
+                onClickEcho = {},
             )
 
             EchoCard(
@@ -142,17 +131,8 @@ private fun TrackerPreview() {
                 seekValue = .7f,
                 onSeek = {},
                 onPlayPause = {},
-                onClickEcho = {}
+                onClickEcho = {},
             )
         }
-
     }
-
-
 }
-
-
-
-
-
-

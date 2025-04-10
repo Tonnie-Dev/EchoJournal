@@ -35,20 +35,20 @@ import com.tonyxlab.echojournal.presentation.theme.EchoUltraLightGray
 fun TopicTagsWithAddButton(
     topicState: TopicState,
     onEvent: (SettingsUiEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     FlowRow(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(
-            MaterialTheme.spacing.spaceSmall
-        ),
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
+        verticalArrangement =
+            Arrangement.spacedBy(
+                MaterialTheme.spacing.spaceSmall,
+            ),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
     ) {
-
         topicState.currentTopics.fastForEach { topic ->
             TopicTag(
                 topic = topic,
-                onClearClick = { onEvent(SettingsUiEvent.ClearTagClick(topic)) }
+                onClearClick = { onEvent(SettingsUiEvent.ClearTagClick(topic)) },
             )
         }
 
@@ -61,38 +61,37 @@ fun TopicTagsWithAddButton(
             }
 
             TopicTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .focusRequester(focusRequester),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .focusRequester(focusRequester),
                 value = topicState.topicValue,
                 onValueChange = { onEvent(SettingsUiEvent.TopicValueChange(it)) },
                 hintText = "",
-                showLeadingIcon = false
+                showLeadingIcon = false,
             )
         }
     }
-
 }
-
 
 @Composable
 fun TopicAddButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
-        modifier = modifier
-            .size(MaterialTheme.spacing.spaceLarge)
-            .clickable { onClick() },
+        modifier =
+            modifier
+                .size(MaterialTheme.spacing.spaceLarge)
+                .clickable { onClick() },
         shape = CircleShape,
         color = EchoUltraLightGray,
-        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     ) {
-
         Icon(
             modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
             imageVector = Icons.Default.Add,
-            contentDescription = stringResource(id = R.string.text_add_topic)
+            contentDescription = stringResource(id = R.string.text_add_topic),
         )
     }
 }

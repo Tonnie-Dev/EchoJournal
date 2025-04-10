@@ -59,14 +59,12 @@ fun EchoHolder(
     echoHolderState: HomeUiState.EchoHolderState,
     echoPosition: EchoListPosition,
     onEvent: (HomeUiEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val echo = echoHolderState.echo
     val mood = echo.mood
 
-    Row(modifier = modifier.height(IntrinsicSize.Min))
-    {
-
+    Row(modifier = modifier.height(IntrinsicSize.Min)) {
         var holderHeight by remember { mutableIntStateOf(0) }
         var isHolderCollapsed by remember { mutableStateOf(false) }
 
@@ -75,37 +73,37 @@ fun EchoHolder(
             echoPosition = echoPosition,
             modifier = Modifier.fillMaxHeight(),
             isHolderCollapsed = isHolderCollapsed,
-            holderHeight = holderHeight
+            holderHeight = holderHeight,
         )
 
         Surface(
-            modifier = Modifier
-            .fillMaxWidth()
-            .onSizeChanged { size ->
-                with(size.height) {
-                    if (this != holderHeight) {
-                        isHolderCollapsed = this < holderHeight
-                        holderHeight = this
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .onSizeChanged { size ->
+                        with(size.height) {
+                            if (this != holderHeight) {
+                                isHolderCollapsed = this < holderHeight
+                                holderHeight = this
+                            }
+                        }
                     }
-                }
-
-            }
-            .padding(vertical = MaterialTheme.spacing.spaceSmall),
+                    .padding(vertical = MaterialTheme.spacing.spaceSmall),
             shape = RoundedCornerShape(MaterialTheme.spacing.spaceDoubleDp * 5),
-            shadowElevation = MaterialTheme.spacing.spaceDoubleDp * 3) {
-
+            shadowElevation = MaterialTheme.spacing.spaceDoubleDp * 3,
+        ) {
             Column(
-                modifier = Modifier
-                    .padding(horizontal = MaterialTheme.spacing.spaceDoubleDp * 7)
-                    .padding(
-                        top = MaterialTheme.spacing.spaceDoubleDp * 6,
-                        bottom = MaterialTheme.spacing.spaceDoubleDp * 7
-                    )
+                modifier =
+                    Modifier
+                        .padding(horizontal = MaterialTheme.spacing.spaceDoubleDp * 7)
+                        .padding(
+                            top = MaterialTheme.spacing.spaceDoubleDp * 6,
+                            bottom = MaterialTheme.spacing.spaceDoubleDp * 7,
+                        ),
             ) {
-
                 EchoHeader(
                     title = echo.title,
-                    creationTime = echo.creationTimestamp.formatHoursAndMinutes()
+                    creationTime = echo.creationTimestamp.formatHoursAndMinutes(),
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 5))
@@ -115,15 +113,14 @@ fun EchoHolder(
                     playerState = echoHolderState.playerState,
                     onPlayClick = { onEvent(HomeUiEvent.StartPlay(echoId = echo.id)) },
                     onPauseClick = { onEvent(HomeUiEvent.PausePlay(echoId = echo.id)) },
-                    onResumeClick = { onEvent(HomeUiEvent.StartPlay(echoId = echo.id)) }
+                    onResumeClick = { onEvent(HomeUiEvent.StartPlay(echoId = echo.id)) },
                 )
 
                 // Echo Description
 
                 if (echo.description.isNotEmpty()) {
-
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 5))
-                    ExpandableText(echoText = echo.description,)
+                    ExpandableText(echoText = echo.description)
                 }
 
                 // Topic Tags
@@ -132,7 +129,7 @@ fun EchoHolder(
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3)
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceDoubleDp * 3),
                     ) {
                         echo.topics.forEach { topic -> TopicChip(title = topic) }
                     }
@@ -140,67 +137,65 @@ fun EchoHolder(
             }
         }
     }
-
 }
 
 @Composable
 private fun EchoHeader(
     title: String,
     creationTime: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
 
         Text(
             text = creationTime,
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
         )
     }
 }
-
 
 @Composable
 private fun TopicChip(
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .height(MaterialTheme.spacing.spaceDoubleDp * 11)
-            .clip(CircleShape)
-            .background(
-                color = EchoUltraLightGray,
-                shape = CircleShape
-            ), contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .height(MaterialTheme.spacing.spaceDoubleDp * 11)
+                .clip(CircleShape)
+                .background(
+                    color = EchoUltraLightGray,
+                    shape = CircleShape,
+                ),
+        contentAlignment = Alignment.Center,
     ) {
-
         Text(
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.spaceSmall),
-            text = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .5f)
-                    )
-                ) {
-                    append("#")
-                }
-                append(title)
-            },
-            style = MaterialTheme.typography.bodySmall
+            text =
+                buildAnnotatedString {
+                    withStyle(
+                        style =
+                            SpanStyle(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .5f),
+                            ),
+                    ) {
+                        append("#")
+                    }
+                    append(title)
+                },
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }
-
 
 @Composable
 private fun MoodTimeline(
@@ -210,30 +205,27 @@ private fun MoodTimeline(
     holderHeight: Int,
     modifier: Modifier = Modifier,
     iconTopPadding: Dp = MaterialTheme.spacing.spaceMedium,
-    iconEndPadding: Dp = MaterialTheme.spacing.spaceTwelve
+    iconEndPadding: Dp = MaterialTheme.spacing.spaceTwelve,
 ) {
     var elementHeight by remember { mutableIntStateOf(0) }
     var moodSize by remember { mutableStateOf(IntSize.Zero) }
     val centerMoodOffsetY by remember {
-
         derivedStateOf { moodSize.height / 2 + iconTopPadding.value.toInt() }
     }
 
     val dividerOffsetX by remember { derivedStateOf { moodSize.width / 2 } }
     val dividerOffsetY by remember(echoPosition) {
-
         derivedStateOf {
-
-            if (echoPosition is EchoListPosition.Middle || echoPosition is EchoListPosition.Last)
+            if (echoPosition is EchoListPosition.Middle || echoPosition is EchoListPosition.Last) {
                 0
-            else centerMoodOffsetY
+            } else {
+                centerMoodOffsetY
+            }
         }
     }
 
     val dividerHeight by remember(holderHeight, echoPosition) {
-
         derivedStateOf {
-
             when (echoPosition) {
                 EchoListPosition.First -> elementHeight - centerMoodOffsetY
                 EchoListPosition.Last -> centerMoodOffsetY
@@ -242,28 +234,31 @@ private fun MoodTimeline(
             }
         }
     }
-    Box(modifier = modifier.onSizeChanged {
-
-        elementHeight = it.height
-    }) {
-
+    Box(
+        modifier =
+            modifier.onSizeChanged {
+                elementHeight = it.height
+            },
+    ) {
         VerticalDivider(
-            modifier = Modifier
-                .offset {
-                    IntOffset(x = dividerOffsetX, y = dividerOffsetY)
-                }
-                .height(dividerHeight.toDp()),
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .7f)
+            modifier =
+                Modifier
+                    .offset {
+                        IntOffset(x = dividerOffsetX, y = dividerOffsetY)
+                    }
+                    .height(dividerHeight.toDp()),
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .7f),
         )
 
         Image(
-            modifier = Modifier
-                .padding(top = iconTopPadding, end = iconEndPadding)
-                .width(MaterialTheme.spacing.spaceLarge)
-                .onSizeChanged { moodSize = it },
+            modifier =
+                Modifier
+                    .padding(top = iconTopPadding, end = iconEndPadding)
+                    .width(MaterialTheme.spacing.spaceLarge)
+                    .onSizeChanged { moodSize = it },
             painter = painterResource(moodRes),
             contentScale = ContentScale.FillWidth,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }
@@ -271,21 +266,15 @@ private fun MoodTimeline(
 @Preview
 @Composable
 private fun TopicChipPreview() {
-
-
     EchoJournalTheme {
-
-
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
-
             TopicChip(
                 title = "Tonnie",
-
-                )
+            )
         }
     }
 }
@@ -295,4 +284,3 @@ private fun Int.toDp(): Dp {
     val density = LocalDensity.current
     return with(density) { toDp() }
 }
-

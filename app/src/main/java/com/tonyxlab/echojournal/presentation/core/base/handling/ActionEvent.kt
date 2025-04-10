@@ -1,4 +1,3 @@
 package com.tonyxlab.echojournal.presentation.core.base.handling
 
-interface ActionEvent {
-}
+interface ActionEvent

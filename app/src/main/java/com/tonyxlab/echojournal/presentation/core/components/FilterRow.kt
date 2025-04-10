@@ -33,10 +33,9 @@ import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastJoinToString
 import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.domain.model.Mood
-import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.core.utils.LocalSpacing
+import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.utils.conditionalModifier
-
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -47,37 +46,34 @@ fun FilterRow(
     isTopicFilterClicked: Boolean,
     onClickMoodFilter: () -> Unit,
     onClickTopicFilter: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val spacing = LocalSpacing.current
     FlowRow(
-            modifier = modifier.padding(
-
-                    top = spacing.spaceSmall,
-                    bottom = spacing.spaceSmall,
-                    start = spacing.spaceMedium,
-                    end = spacing.spaceMedium
+        modifier =
+            modifier.padding(
+                top = spacing.spaceSmall,
+                bottom = spacing.spaceSmall,
+                start = spacing.spaceMedium,
+                end = spacing.spaceMedium,
             ),
-            horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
-            maxLines = 2
+        horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
+        maxLines = 2,
     ) {
-
         MoodFilter(
-                moods = moods,
-                isMoodFilterClicked = isMoodFilterClicked,
-                onClickMoodFilter = onClickMoodFilter,
-                modifier = Modifier.height(spacing.spaceLarge)
+            moods = moods,
+            isMoodFilterClicked = isMoodFilterClicked,
+            onClickMoodFilter = onClickMoodFilter,
+            modifier = Modifier.height(spacing.spaceLarge),
         )
 
         TopicFilter(
-                topics = topics,
-                isTopicFilterClicked = isTopicFilterClicked,
-                onClickTopicFilter = onClickTopicFilter,
-                modifier = Modifier.height(spacing.spaceLarge)
+            topics = topics,
+            isTopicFilterClicked = isTopicFilterClicked,
+            onClickTopicFilter = onClickTopicFilter,
+            modifier = Modifier.height(spacing.spaceLarge),
         )
-
     }
-
 }
 
 @Composable
@@ -85,325 +81,318 @@ fun MoodFilter(
     moods: List<Mood>,
     isMoodFilterClicked: Boolean,
     onClickMoodFilter: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val spacing = LocalSpacing.current
 
     Row(
-            modifier = modifier
-                    .conditionalModifier(isMoodFilterClicked) {
-                        shadow(
-                                elevation = spacing.spaceExtraSmall,
-                                shape = RoundedCornerShape(spacing.spaceMedium)
-                        )
-                    }
-                    .border(
-                            width = spacing.spaceSingleDp,
-                            color = if (isMoodFilterClicked)
-                                MaterialTheme.colorScheme.primaryContainer
-                            else
-                                MaterialTheme.colorScheme.outlineVariant,
-                            shape = RoundedCornerShape(spacing.spaceMedium)
+        modifier =
+            modifier
+                .conditionalModifier(isMoodFilterClicked) {
+                    shadow(
+                        elevation = spacing.spaceExtraSmall,
+                        shape = RoundedCornerShape(spacing.spaceMedium),
                     )
-                    .background(
-                            color = Color.White,
-                            RoundedCornerShape(spacing.spaceMedium)
-                    )
-                    .clickable {
-                        onClickMoodFilter()
-                    }
-                    .padding(
-                            top = spacing.spaceDoubleDp * 3,
-                            bottom = spacing.spaceDoubleDp * 3,
-                            start = spacing.spaceDoubleDp * 6,
-                            end = spacing.spaceDoubleDp * 6
-                    )
-                    .wrapContentWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall)
+                }
+                .border(
+                    width = spacing.spaceSingleDp,
+                    color =
+                        if (isMoodFilterClicked) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.outlineVariant
+                        },
+                    shape = RoundedCornerShape(spacing.spaceMedium),
+                )
+                .background(
+                    color = Color.White,
+                    RoundedCornerShape(spacing.spaceMedium),
+                )
+                .clickable {
+                    onClickMoodFilter()
+                }
+                .padding(
+                    top = spacing.spaceDoubleDp * 3,
+                    bottom = spacing.spaceDoubleDp * 3,
+                    start = spacing.spaceDoubleDp * 6,
+                    end = spacing.spaceDoubleDp * 6,
+                )
+                .wrapContentWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
     ) {
-
         if (moods.isEmpty()) {
             Text(
-                    modifier = Modifier.padding(horizontal = spacing.spaceSmall),
-                    text = stringResource(R.string.filter_text_all_moods),
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.labelLarge
+                modifier = Modifier.padding(horizontal = spacing.spaceSmall),
+                text = stringResource(R.string.filter_text_all_moods),
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.labelLarge,
             )
         } else {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
-
                 moods.fastForEach {
-
                     Image(painter = painterResource(it.icon), contentDescription = it.name)
                 }
             }
 
-
             Text(
-                    modifier = Modifier
-                            .wrapContentWidth()
-                            .weight(.1f, false),
-                    text = moods.fastJoinToString { it.name },
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.labelLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                modifier =
+                    Modifier
+                        .wrapContentWidth()
+                        .weight(.1f, false),
+                text = moods.fastJoinToString { it.name },
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-
 
             Icon(
-                    modifier = Modifier.size(spacing.spaceDoubleDp * 10),
-                    imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(R.string.icon_close_text),
-                    tint = MaterialTheme.colorScheme.secondaryContainer
+                modifier = Modifier.size(spacing.spaceDoubleDp * 10),
+                imageVector = Icons.Default.Close,
+                contentDescription = stringResource(R.string.icon_close_text),
+                tint = MaterialTheme.colorScheme.secondaryContainer,
             )
-
         }
     }
 }
-
 
 @Composable
 fun TopicFilter(
     topics: List<String>,
     isTopicFilterClicked: Boolean,
     onClickTopicFilter: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val spacing = LocalSpacing.current
     val topicCounter = if (topics.size > 2) topics.size.minus(2) else 0
 
-
     Row(
-            modifier = modifier
-                    .conditionalModifier(isTopicFilterClicked) {
-                        shadow(
-                                elevation = spacing.spaceExtraSmall,
-                                shape = RoundedCornerShape(spacing.spaceMedium)
-                        )
-                    }
-                    .border(
-                            width = spacing.spaceSingleDp,
-                            color = if (isTopicFilterClicked)
-                                MaterialTheme.colorScheme.primaryContainer
-                            else
-                                MaterialTheme.colorScheme.outlineVariant,
-                            shape = RoundedCornerShape(spacing.spaceMedium)
+        modifier =
+            modifier
+                .conditionalModifier(isTopicFilterClicked) {
+                    shadow(
+                        elevation = spacing.spaceExtraSmall,
+                        shape = RoundedCornerShape(spacing.spaceMedium),
                     )
-                    .background(
-                            color = Color.White,
-                            RoundedCornerShape(spacing.spaceMedium)
-                    )
-                    .clickable {
-
-                        onClickTopicFilter()
-                    }
-                    .padding(
-                            top = spacing.spaceDoubleDp * 3,
-                            bottom = spacing.spaceDoubleDp * 3,
-                            start = spacing.spaceDoubleDp * 6,
-                            end = spacing.spaceDoubleDp * 6
-
-                    )
-                    .wrapContentWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall)
+                }
+                .border(
+                    width = spacing.spaceSingleDp,
+                    color =
+                        if (isTopicFilterClicked) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.outlineVariant
+                        },
+                    shape = RoundedCornerShape(spacing.spaceMedium),
+                )
+                .background(
+                    color = Color.White,
+                    RoundedCornerShape(spacing.spaceMedium),
+                )
+                .clickable {
+                    onClickTopicFilter()
+                }
+                .padding(
+                    top = spacing.spaceDoubleDp * 3,
+                    bottom = spacing.spaceDoubleDp * 3,
+                    start = spacing.spaceDoubleDp * 6,
+                    end = spacing.spaceDoubleDp * 6,
+                )
+                .wrapContentWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
     ) {
-
         if (topics.isEmpty()) {
-
             Text(
-                    modifier = Modifier.padding(horizontal = spacing.spaceSmall),
-                    text = stringResource(R.string.all_topics_filter_text),
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.labelLarge
+                modifier = Modifier.padding(horizontal = spacing.spaceSmall),
+                text = stringResource(R.string.all_topics_filter_text),
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.labelLarge,
             )
-
         } else {
-
-
             Text(
-                    modifier = Modifier
-                            .wrapContentWidth()
-                            .weight(.1f, false),
-                    text = topics.take(2)
-                            .fastJoinToString { it }
-                            .run {
-                                if (topicCounter > 0)
-                                    plus(" +$topicCounter")
-                                else this
-                            },
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.labelLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                modifier =
+                    Modifier
+                        .wrapContentWidth()
+                        .weight(.1f, false),
+                text =
+                    topics.take(2)
+                        .fastJoinToString { it }
+                        .run {
+                            if (topicCounter > 0) {
+                                plus(" +$topicCounter")
+                            } else {
+                                this
+                            }
+                        },
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-
 
             Icon(
-                    modifier = Modifier.size(spacing.spaceDoubleDp * 10),
-                    imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(R.string.icon_close_text),
-                    tint = MaterialTheme.colorScheme.secondaryContainer
+                modifier = Modifier.size(spacing.spaceDoubleDp * 10),
+                imageVector = Icons.Default.Close,
+                contentDescription = stringResource(R.string.icon_close_text),
+                tint = MaterialTheme.colorScheme.secondaryContainer,
             )
-
         }
     }
 }
 
-
 @PreviewLightDark
 @Composable
 private fun FilterRowPreview() {
-
     val spacing = LocalSpacing.current
-    val moods = listOf(
+    val moods =
+        listOf(
             Mood.Excited,
             Mood.Peaceful,
             Mood.Neutral,
             Mood.Sad,
-            Mood.Stressed
-    )
+            Mood.Stressed,
+        )
 
-
-    val topics = listOf(
-            "Work", "Money", "Family", "Love", "Food", "School"
-    )
+    val topics =
+        listOf(
+            "Work",
+            "Money",
+            "Family",
+            "Love",
+            "Food",
+            "School",
+        )
 
     EchoJournalTheme {
-
         Column(
-                modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .fillMaxWidth()
-                        .padding(
-                                horizontal = spacing.spaceMedium,
-                                spacing.spaceExtraLarge
-                        ),
-                verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = spacing.spaceMedium,
+                        spacing.spaceExtraLarge,
+                    ),
+            verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
         ) {
             FilterRow(
-                    moods = moods.take(0),
-                    topics = topics.take(0),
-                    isMoodFilterClicked = false,
-                    isTopicFilterClicked = false,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
-            )
-
-
-            FilterRow(
-                    moods = moods.take(1),
-                    topics = topics.take(0),
-                    isMoodFilterClicked = true,
-                    isTopicFilterClicked = false,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
+                moods = moods.take(0),
+                topics = topics.take(0),
+                isMoodFilterClicked = false,
+                isTopicFilterClicked = false,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
             )
 
             FilterRow(
-                    moods = moods.take(2),
-                    topics = topics.take(0),
-                    isMoodFilterClicked = true,
-                    isTopicFilterClicked = false,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
+                moods = moods.take(1),
+                topics = topics.take(0),
+                isMoodFilterClicked = true,
+                isTopicFilterClicked = false,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
             )
 
             FilterRow(
-                    moods = moods.take(3),
-                    topics = topics.take(0),
-                    isMoodFilterClicked = true,
-                    isTopicFilterClicked = false,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
+                moods = moods.take(2),
+                topics = topics.take(0),
+                isMoodFilterClicked = true,
+                isTopicFilterClicked = false,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
             )
 
             FilterRow(
-                    moods = moods.take(4),
-                    topics = topics.take(0),
-                    isMoodFilterClicked = true,
-                    isTopicFilterClicked = false,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
+                moods = moods.take(3),
+                topics = topics.take(0),
+                isMoodFilterClicked = true,
+                isTopicFilterClicked = false,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
             )
 
             FilterRow(
-                    moods = moods.take(5),
-                    topics = topics.take(0),
-                    isMoodFilterClicked = true,
-                    isTopicFilterClicked = false,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
+                moods = moods.take(4),
+                topics = topics.take(0),
+                isMoodFilterClicked = true,
+                isTopicFilterClicked = false,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
             )
 
             FilterRow(
-                    moods = moods.take(0),
-                    topics = topics.take(1),
-                    isMoodFilterClicked = false,
-                    isTopicFilterClicked = true,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
-            )
-
-
-            FilterRow(
-                    moods = moods.take(0),
-                    topics = topics.take(2),
-                    isMoodFilterClicked = false,
-                    isTopicFilterClicked = true,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
+                moods = moods.take(5),
+                topics = topics.take(0),
+                isMoodFilterClicked = true,
+                isTopicFilterClicked = false,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
             )
 
             FilterRow(
-                    moods = moods.take(0),
-                    topics = topics.take(3),
-                    isMoodFilterClicked = false,
-                    isTopicFilterClicked = true,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
+                moods = moods.take(0),
+                topics = topics.take(1),
+                isMoodFilterClicked = false,
+                isTopicFilterClicked = true,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
             )
 
             FilterRow(
-                    moods = moods.take(0),
-                    topics = topics.take(4),
-                    isMoodFilterClicked = false,
-                    isTopicFilterClicked = true,
-                    onClickMoodFilter = {},
-                    onClickTopicFilter = {},
+                moods = moods.take(0),
+                topics = topics.take(2),
+                isMoodFilterClicked = false,
+                isTopicFilterClicked = true,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
+            )
+
+            FilterRow(
+                moods = moods.take(0),
+                topics = topics.take(3),
+                isMoodFilterClicked = false,
+                isTopicFilterClicked = true,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
+            )
+
+            FilterRow(
+                moods = moods.take(0),
+                topics = topics.take(4),
+                isMoodFilterClicked = false,
+                isTopicFilterClicked = true,
+                onClickMoodFilter = {},
+                onClickTopicFilter = {},
             )
         }
     }
-
-
 }
 
 @PreviewLightDark
 @Composable
 private fun MoodFilterPreview() {
-
     val spacing = LocalSpacing.current
-    val moods = listOf(
+    val moods =
+        listOf(
             Mood.Excited,
             Mood.Peaceful,
             Mood.Neutral,
             Mood.Sad,
-            Mood.Stressed
-    )
-
+            Mood.Stressed,
+        )
 
     EchoJournalTheme {
         Column(
-                modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .padding(
-                                spacing.spaceSmall
-                        ),
-                verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(
+                        spacing.spaceSmall,
+                    ),
+            verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
         ) {
-
             MoodFilter(moods = emptyList(), isMoodFilterClicked = false, onClickMoodFilter = {})
             MoodFilter(moods = moods, isMoodFilterClicked = true, onClickMoodFilter = {})
             MoodFilter(moods = moods, isMoodFilterClicked = false, onClickMoodFilter = {})
@@ -411,56 +400,57 @@ private fun MoodFilterPreview() {
             MoodFilter(moods = moods.take(2), isMoodFilterClicked = true, onClickMoodFilter = {})
             MoodFilter(moods = moods.take(3), isMoodFilterClicked = false, onClickMoodFilter = {})
             MoodFilter(moods = moods.take(4), isMoodFilterClicked = true, onClickMoodFilter = {})
-
         }
-
     }
-
 }
-
 
 @PreviewLightDark
 @Composable
 private fun TopicFilterPreview() {
-
     val spacing = LocalSpacing.current
-    val topics = listOf(
-            "Work", "Money", "Family", "Love", "Food", "School"
-    )
-
+    val topics =
+        listOf(
+            "Work",
+            "Money",
+            "Family",
+            "Love",
+            "Food",
+            "School",
+        )
 
     EchoJournalTheme {
         Column(
-                modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .padding(
-                                spacing.spaceSmall
-                        ),
-                verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(
+                        spacing.spaceSmall,
+                    ),
+            verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
         ) {
-
             TopicFilter(topics = emptyList(), isTopicFilterClicked = false, onClickTopicFilter = {})
             TopicFilter(topics = topics, isTopicFilterClicked = true, onClickTopicFilter = {})
             TopicFilter(topics = topics, isTopicFilterClicked = false, onClickTopicFilter = {})
             TopicFilter(
-                    topics = topics.take(1),
-                    isTopicFilterClicked = false,
-                    onClickTopicFilter = {})
+                topics = topics.take(1),
+                isTopicFilterClicked = false,
+                onClickTopicFilter = {},
+            )
             TopicFilter(
-                    topics = topics.take(2),
-                    isTopicFilterClicked = true,
-                    onClickTopicFilter = {})
+                topics = topics.take(2),
+                isTopicFilterClicked = true,
+                onClickTopicFilter = {},
+            )
             TopicFilter(
-                    topics = topics.take(3),
-                    isTopicFilterClicked = false,
-                    onClickTopicFilter = {})
+                topics = topics.take(3),
+                isTopicFilterClicked = false,
+                onClickTopicFilter = {},
+            )
             TopicFilter(
-                    topics = topics.take(4),
-                    isTopicFilterClicked = true,
-                    onClickTopicFilter = {})
-
+                topics = topics.take(4),
+                isTopicFilterClicked = true,
+                onClickTopicFilter = {},
+            )
         }
-
     }
-
 }

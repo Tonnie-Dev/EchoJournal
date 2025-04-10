@@ -82,7 +82,6 @@ fun EditorScreenRoot(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     val viewModel: EditorViewModel =
         hiltViewModel<EditorViewModel, EditorViewModel.EditorViewModelFactory> { factory ->
             factory.create(echoId, audioFilePath)
@@ -100,13 +99,16 @@ fun EditorScreenRoot(
         },
         topBar = {
             AppTopBar(
-                title = if (echoId < 0)
-                    stringResource(id = R.string.title_new_entry)
-                else
-                    stringResource(id = R.string.title_edit_entry), onBackClick = {
+                title =
+                    if (echoId < 0) {
+                        stringResource(id = R.string.title_new_entry)
+                    } else {
+                        stringResource(id = R.string.title_edit_entry)
+                    },
+                onBackClick = {
                     viewModel.onEvent(EditorUiEvent.ExitDialogToggled)
                 },
-                isShowBackButton = true
+                isShowBackButton = true,
             )
         },
         bottomBar = { uiState ->
@@ -119,23 +121,22 @@ fun EditorScreenRoot(
                     val outputDir = context.filesDir
                     viewModel.onEvent(EditorUiEvent.SaveButtonClicked(outputDir!!))
                 },
-                primaryButtonEnabled = uiState.isSaveEnabled
+                primaryButtonEnabled = uiState.isSaveEnabled,
             )
         },
         onBackPressed = { viewModel.onEvent((EditorUiEvent.ExitDialogToggled)) },
-        containerColor = MaterialTheme.colorScheme.surface
-
+        containerColor = MaterialTheme.colorScheme.surface,
     ) { uiState ->
 
         EditorScreen(
             uiState = uiState,
-            onEvent = viewModel::onEvent
+            onEvent = viewModel::onEvent,
         )
 
-       // EditorBottomSheet
+        // EditorBottomSheet
         EditorBottomSheet(
             editorSheetState = uiState.editorSheetState,
-            onEvent = viewModel::onEvent
+            onEvent = viewModel::onEvent,
         )
 
         if (uiState.showExitDialog) {
@@ -145,17 +146,16 @@ fun EditorScreenRoot(
                 onDismissRequest = { viewModel.onEvent(EditorUiEvent.ExitDialogToggled) },
                 supportingText = stringResource(id = R.string.dialog_text_leave_confirmation),
                 cancelButtonText = stringResource(id = R.string.button_text_cancel),
-                confirmButtonText = stringResource(id = R.string.dialog_text_exit)
+                confirmButtonText = stringResource(id = R.string.dialog_text_exit),
             )
         }
-
     }
 }
 
 @Composable
 fun EditorScreen(
     uiState: EditorUiState,
-    onEvent: (EditorUiEvent) -> Unit
+    onEvent: (EditorUiEvent) -> Unit,
 ) {
     Box {
         var topicOffset by remember { mutableStateOf(IntOffset.Zero) }
@@ -164,12 +164,12 @@ fun EditorScreen(
         val verticalSpace = (MaterialTheme.spacing.spaceMedium).toInt()
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = MaterialTheme.spacing.spaceSmall),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall)
-        )
-        {
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(vertical = MaterialTheme.spacing.spaceSmall),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
+        ) {
             EditorTextField(
                 modifier = Modifier.fillMaxWidth(),
                 textValue = uiState.titleValue,
@@ -180,54 +180,53 @@ fun EditorScreen(
                         mood = uiState.currentMood,
                         onClick = {
                             onEvent(
-                                EditorUiEvent.BottomSheetOpened(mood = uiState.currentMood)
+                                EditorUiEvent.BottomSheetOpened(mood = uiState.currentMood),
                             )
-                        }
+                        },
                     )
-
                 },
                 textStyle = MaterialTheme.typography.titleMedium,
-                iconSpacing = MaterialTheme.spacing.spaceDoubleDp * 3
+                iconSpacing = MaterialTheme.spacing.spaceDoubleDp * 3,
             )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTwelve)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTwelve),
             ) {
-
                 MoodPlayer(
-                    modifier = Modifier.height(MaterialTheme.spacing.spaceMedium *3),
+                    modifier = Modifier.height(MaterialTheme.spacing.spaceMedium * 3),
                     mood = uiState.currentMood,
                     playerState = uiState.playerState,
                     onPlayClick = { onEvent(EditorUiEvent.PlayClicked) },
                     onPauseClick = { onEvent(EditorUiEvent.PauseClicked) },
-                    onResumeClick = { onEvent(EditorUiEvent.ResumeClicked) }
+                    onResumeClick = { onEvent(EditorUiEvent.ResumeClicked) },
                 )
 
                 // TODO: Check what to do with this button
             }
 
-
             TopicTagsRow(
-                modifier = Modifier
-                    .onGloballyPositioned { coordinates ->
-                        topicOffset = IntOffset(
-                            x = coordinates.positionInParent().x.toInt(),
-                            y = coordinates
-                                .positionInParent().y.toInt() +
-                                    coordinates.size.height + verticalSpace
-                        )
-                    }
-                    .onFocusChanged {
-                        onEvent(EditorUiEvent.TopicValueChanged(""))
-                    },
+                modifier =
+                    Modifier
+                        .onGloballyPositioned { coordinates ->
+                            topicOffset =
+                                IntOffset(
+                                    x = coordinates.positionInParent().x.toInt(),
+                                    y =
+                                        coordinates
+                                            .positionInParent().y.toInt() +
+                                            coordinates.size.height + verticalSpace,
+                                )
+                        }
+                        .onFocusChanged {
+                            onEvent(EditorUiEvent.TopicValueChanged(""))
+                        },
                 value = uiState.topicValue,
                 onValueChange = { onEvent(EditorUiEvent.TopicValueChanged(it)) },
                 topics = uiState.currentTopics,
                 onTagClearClick = { onEvent(EditorUiEvent.TagClearClicked(it)) },
             )
-
 
             // Description Field
 
@@ -241,12 +240,11 @@ fun EditorScreen(
                         modifier = Modifier.size(MaterialTheme.spacing.spaceMedium),
                         imageVector = Icons.Default.Edit,
                         contentDescription = stringResource(id = R.string.text_add_description),
-                        tint = MaterialTheme.colorScheme.outlineVariant
+                        tint = MaterialTheme.colorScheme.outlineVariant,
                     )
                 },
-                singleLine = false
+                singleLine = false,
             )
-
         }
 
         TopicDropDown(
@@ -254,15 +252,14 @@ fun EditorScreen(
             topics = uiState.foundTopics,
             onTopicClick = {
                 onEvent(
-                    EditorUiEvent.TopicSelected(it)
+                    EditorUiEvent.TopicSelected(it),
                 )
             },
             onCreateClick = { onEvent(EditorUiEvent.CreateTopicClicked) },
-            startOffset = topicOffset
+            startOffset = topicOffset,
         )
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -291,31 +288,28 @@ fun EditorScreenContent(
     isMoodConfirmButtonHighlighted: Boolean,
     onDismissMoodSelectionSheet: () -> Unit,
     onPressBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(modifier = modifier, topBar = {
-
         AppTopBar(
             title = stringResource(R.string.title_new_entry),
             style = MaterialTheme.typography.headlineMedium,
             onBackClick = onPressBack,
-            isShowBackButton = true
+            isShowBackButton = true,
         )
-
     }) { paddingValues ->
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(
-                    horizontal = MaterialTheme.spacing.spaceMedium,
-                    vertical = MaterialTheme.spacing.spaceSmall
-                ),
-
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(
+                        horizontal = MaterialTheme.spacing.spaceMedium,
+                        vertical = MaterialTheme.spacing.spaceSmall,
+                    ),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
         ) {
-
             BasicEntryTextField(
                 modifier = Modifier.fillMaxWidth(),
                 textFieldValue = titleFieldValue,
@@ -323,38 +317,41 @@ fun EditorScreenContent(
                 isHeadline = true,
                 gap = MaterialTheme.spacing.spaceDoubleDp * 3,
                 leadingContent = {
-
                     if (isShowMoodTitleIcon) {
                         Image(
-                            modifier = Modifier
-                                .size(MaterialTheme.spacing.spaceLarge)
-                                .clickable {
-
-                                    onShowMoodSelectionSheet()
-                                },
+                            modifier =
+                                Modifier
+                                    .size(MaterialTheme.spacing.spaceLarge)
+                                    .clickable {
+                                        onShowMoodSelectionSheet()
+                                    },
                             painter = painterResource(mood.icon),
-                            contentDescription = mood.name
+                            contentDescription = mood.name,
                         )
-                    } else
+                    } else {
                         AppIcon(
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .background(Secondary90)
-                                .size(MaterialTheme.spacing.spaceLarge)
-                                .clickable {
-                                    onShowMoodSelectionSheet()
-                                }
-                                .padding(MaterialTheme.spacing.spaceDoubleDp * 3),
+                            modifier =
+                                Modifier
+                                    .clip(CircleShape)
+                                    .background(Secondary90)
+                                    .size(MaterialTheme.spacing.spaceLarge)
+                                    .clickable {
+                                        onShowMoodSelectionSheet()
+                                    }
+                                    .padding(MaterialTheme.spacing.spaceDoubleDp * 3),
                             imageVector = Icons.Default.Add,
-                            tint = Secondary70)
-                })
+                            tint = Secondary70,
+                        )
+                    }
+                },
+            )
 
             PlayTrackUnit(
                 isPlaying = isPlaying,
                 seekValue = seekValue,
                 onSeek = onSeek,
                 echoLength = echoLength,
-                onTogglePlay = onTogglePlay
+                onTogglePlay = onTogglePlay,
             )
 
             TopicSelector(
@@ -362,7 +359,7 @@ fun EditorScreenContent(
                 savedTopics = savedTopics,
                 currentSelectedTopics = selectedTopics,
                 onCurrentSelectedTopicsChange = onCurrentSelectedTopicsChange,
-                onSavedTopicsChange = onSavedTopicsChange
+                onSavedTopicsChange = onSavedTopicsChange,
             )
 
             BasicEntryTextField(
@@ -374,38 +371,38 @@ fun EditorScreenContent(
                 singleLine = false,
                 leadingContent = {
                     AppIcon(
-                        modifier = Modifier
-                            .size(
-                                width = MaterialTheme.spacing.spaceMedium,
-                                height = MaterialTheme.spacing.spaceTen * 2
-                            )
-                            .padding(MaterialTheme.spacing.spaceDoubleDp * 3),
+                        modifier =
+                            Modifier
+                                .size(
+                                    width = MaterialTheme.spacing.spaceMedium,
+                                    height = MaterialTheme.spacing.spaceTen * 2,
+                                )
+                                .padding(MaterialTheme.spacing.spaceDoubleDp * 3),
                         imageVector = Icons.Default.Edit,
-                        tint = Secondary70
+                        tint = Secondary70,
                     )
-                })
+                },
+            )
 
             Spacer(modifier = Modifier.weight(1f))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
             ) {
-
-//Other Buttons
+// Other Buttons
                 AppButton(
                     onClick = onCancelEditor,
-                    buttonText = stringResource(id = R.string.dialog_text_cancel)
+                    buttonText = stringResource(id = R.string.dialog_text_cancel),
                 )
                 AppButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onSaveEditor,
                     isEnabled = isSave,
                     isHighlighted = isSave,
-                    buttonText = stringResource(id = R.string.button_text_save)
+                    buttonText = stringResource(id = R.string.button_text_save),
                 )
             }
             if (isShowMoodSelectionSheet) {
-
                 ModalBottomSheet(
                     onDismissRequest = onDismissMoodSelectionSheet,
                     content = {
@@ -414,23 +411,17 @@ fun EditorScreenContent(
                             onConfirmMoodSelection = {
                                 onConfirmMoodSelection()
                                 onDismissMoodSelectionSheet()
-
                             },
                             onCancelMoodSelection = {
                                 onDismissMoodSelectionSheet()
                             },
-                            isMoodConfirmButtonHighlighted = isMoodConfirmButtonHighlighted
+                            isMoodConfirmButtonHighlighted = isMoodConfirmButtonHighlighted,
                         )
-
-                    })
-
+                    },
+                )
             }
-
         }
-
-
     }
-
 }
 
 @Composable
@@ -439,26 +430,26 @@ fun MoodSelectionSheetContent(
     onConfirmMoodSelection: () -> Unit,
     onCancelMoodSelection: () -> Unit,
     isMoodConfirmButtonHighlighted: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(MaterialTheme.spacing.spaceMedium),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(MaterialTheme.spacing.spaceMedium),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Text(
             text = stringResource(R.string.text_how_are_you_doing),
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceLarge))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.spaceSmall)
+            horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.spaceSmall),
         ) {
             var selectedIndex by remember { mutableIntStateOf(-1) }
 
@@ -475,21 +466,19 @@ fun MoodSelectionSheetContent(
                     onSelectMoodItem = {
                         selectedIndex = i
                         onSelectMood(it)
-
-                    }
+                    },
                 )
             }
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceExtraSmall * 3))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
         ) {
-
-            //Sheet Buttons
+            // Sheet Buttons
             AppButton(
                 buttonText = stringResource(id = R.string.dialog_text_cancel),
-                onClick = onCancelMoodSelection
+                onClick = onCancelMoodSelection,
             )
             AppButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -498,11 +487,9 @@ fun MoodSelectionSheetContent(
                 },
                 isHighlighted = isMoodConfirmButtonHighlighted,
                 buttonText = stringResource(id = R.string.text_confirm),
-                leadingIcon = true
+                leadingIcon = true,
             )
         }
-
-
     }
 }
 
@@ -511,40 +498,37 @@ private fun MoodItem(
     mood: Mood,
     selected: Boolean,
     onSelectMoodItem: (Mood) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
-
     Column(
-        modifier = modifier
-
-            .clickable { onSelectMoodItem(mood) }
-            .padding(MaterialTheme.spacing.spaceExtraSmall),
+        modifier =
+            modifier
+                .clickable { onSelectMoodItem(mood) }
+                .padding(MaterialTheme.spacing.spaceExtraSmall),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Image(
-            painter = if (selected)
-                painterResource(mood.icon)
-            else
-                painterResource(mood.outlinedIcon),
-            contentDescription = mood.name
+            painter =
+                if (selected) {
+                    painterResource(mood.icon)
+                } else {
+                    painterResource(mood.outlinedIcon)
+                },
+            contentDescription = mood.name,
         )
         Text(
             text = mood.name,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.outline
+            color = MaterialTheme.colorScheme.outline,
         )
     }
-
 }
 
 @PreviewLightDark
 @Composable
 private fun SaveScreenPreview() {
     EchoJournalTheme {
-
         EditorScreenContent(
             titleFieldValue = TextFieldValue("Title"),
             topicFieldValue = TextFieldValue("Topic"),
@@ -569,7 +553,7 @@ private fun SaveScreenPreview() {
             savedTopics = emptyList(),
             isSave = false,
             onSavedTopicsChange = {},
-            onCurrentSelectedTopicsChange = {}
+            onCurrentSelectedTopicsChange = {},
         )
     }
 }

@@ -9,5 +9,3 @@ data class HomeState(
     val isRecordingActivated: Boolean = false,
     val isRecordingInProgress: Boolean = false,
 )
-
-

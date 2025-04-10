@@ -5,13 +5,20 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class JsonSerializerImpl @Inject constructor(): JsonSerializer {
+class JsonSerializerImpl
+    @Inject
+    constructor() : JsonSerializer {
+        override fun <T> toJson(
+            serializer: KSerializer<T>,
+            data: T,
+        ): String {
+            return Json.encodeToString(serializer, data)
+        }
 
-    override fun <T> toJson(serializer: KSerializer<T>, data: T): String {
-        return Json.encodeToString(serializer, data)
+        override fun <T> fromJson(
+            serializer: KSerializer<T>,
+            json: String,
+        ): T {
+            return Json.decodeFromString(serializer, json)
+        }
     }
-
-    override fun <T> fromJson(serializer: KSerializer<T>, json: String): T {
-        return Json.decodeFromString(serializer, json)
-    }
-}

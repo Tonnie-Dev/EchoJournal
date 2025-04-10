@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.SuspendingPointerInputModifierNode
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -33,26 +32,24 @@ class MainActivity : ComponentActivity() {
             keepSplashScreen = it.getBoolean(SPLASH_SCREEN_KEY)
         }
         installSplashScreen().apply {
-
             setKeepOnScreenCondition { keepSplashScreen }
         }
         enableEdgeToEdge()
 
         setContent {
             EchoJournalTheme {
-
                 val navController = rememberNavController()
                 val horizontalPadding = MaterialTheme.spacing.spaceMedium
 
                 NavHost(
                     navController = navController,
-                    startDestination = HomeRouteObject
+                    startDestination = HomeRouteObject,
                 ) {
                     appDestinations(
                         modifier = Modifier.padding(horizontal = horizontalPadding),
                         navController = navController,
                         isDataLoaded = { keepSplashScreen = false },
-                        isLaunchedFromWidget = false
+                        isLaunchedFromWidget = false,
                     )
                 }
             }
@@ -68,4 +65,3 @@ class MainActivity : ComponentActivity() {
         private const val SPLASH_SCREEN_KEY = "splash_screen_key"
     }
 }
-
