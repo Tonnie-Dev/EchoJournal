@@ -1,12 +1,18 @@
 <br />
 <div align="center">
   <a href="#">
-    <img src="./readme-assets/screenshots/feature.png" alt="Logo" width="80" height="80">
+    <img src="./readme-assets/screenshots/icon.png" alt="Logo" width="80" height="80">
   </a>
 
 <h1 align = "center">
 <b><i>Echo Journal</i></b>
 </h1>
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge" alt="Version"/>
+  <img src="https://img.shields.io/github/repo-size/Tonnie-Dev/EchoJournal?style=for-the-badge" alt="Repo size"/>
+  <img src="https://img.shields.io/github/last-commit/Tonnie-Dev/EchoJournal?style=for-the-badge" alt="Last Commit"/>
+</p>
+
 
   <p align="center">
     Android App for Recording Voice Memos
@@ -18,13 +24,12 @@
 [Features](#-features) ~
 [Tech Stack](#-tech-stack) ~
 [Getting Started](#getting-started) ~
-[Tech Stack](#-tech-stack) ~
 [Authors](#️-authors) ~
 [Contributing](#-contributing)  
  
 </div>
 
-EchoJournal is an Android application for recording, playing, and managing audio entries with mood and topic tagging.
+Echo Journal is an Android App for Recording, Playing and Managing audio entries with mood and topic tagging.
 
 <p align="center">
   <!-- Google Play badge -->
@@ -62,7 +67,7 @@ EchoJournal is an Android application for recording, playing, and managing audio
 - Room and DataStore for data persistence
 - Coroutines 
 
-## Getting Started
+## 🧰 Getting Started
 
 ### Prerequisites
 
@@ -73,62 +78,43 @@ EchoJournal is an Android application for recording, playing, and managing audio
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/your-username/echojournal.git
+   git clone https://github.com/Tonnie-Dev/EchoJournal.git
+
     ```
 2. Open the project in Android Studio.
 3. Build the project to download dependencies and set up the environment.
 
 
 
-## 🖋️ Authors
+## 🖋️ Author
 
-**Tonnie** – [@Tonnie-Dev](https://github.com/Tonnie-De)
+**Tonnie** – [@Tonnie-Dev](https://github.com/Tonnie-Dev)
+
+<p align="left">
+ <a href="https://www.buymeacoffee.com/AgVrgB4N3r" target="_blank">
+    <img height="40" src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" />
+  </a>
+  <a href="https://www.linkedin.com/in/antony-muchiri/" target="_blank">
+    <img height="40" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  <a href="https://twitter.com/Tonnie_Dev" target="_blank">
+    <img height="40" src="https://img.shields.io/badge/X-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="X (Twitter)" />
+  </a>
+</p>
 
 
 
 
-<a href="https://www.buymeacoffee.com/AgVrgB4N3r" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-Do Reach Out :
-
-  * [X](https://twitter.com/Tonnie_Dev)
-
-  * [LinkedIn](https://www.linkedin.com/in/antony-muchiri/)
 
 
 ## 🛂 Contributing
 
-Contributions to make EchoJournal better are always welcome!
+Contributions Echo Journal are welcome and appreciated! Whether it's a bug fix, new feature, improvement, or even a typo correction – you're more than welcome to jump in 🚀
 
 If you are interested in seeing a particular feature implemented in this app, please open a new issue after which you can make a PR!
 
-![Alt](https://repobeats.axiom.co/api/embed/84dfd3cd94832805dbcaa3569ec855d19e5c9401.svg "Repobeats analytics image")
+### 📜 License
 
-
-#  :scroll: **License**  :scroll:
-
-
-```
-MIT License
-
-Copyright (c) [2022] [Tonnie Dev]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+This project is licensed under the [MIT License](./readme-assets/LICENSE).
 
