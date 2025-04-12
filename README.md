@@ -1,7 +1,7 @@
 <br />
 <div align="center">
   <a href="#">
-    <img src="./readme-assets/screenshots/icon.png" alt="Logo" width="80" height="80">
+    <img src="./readme-assets/screenshots/feature.png" alt="Logo" width="80" height="80">
   </a>
 
 <h1 align = "center">
