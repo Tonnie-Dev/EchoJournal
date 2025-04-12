@@ -25,6 +25,17 @@
 </div>
 
 EchoJournal is an Android application for recording, playing, and managing audio entries with mood and topic tagging.
+
+
+## 📸 Screenshots
+
+<p align="center">
+<img img width="200" height="400" src="./readme-assets/screenshots/screen_1.png"> &nbsp;&nbsp;&nbsp;&nbsp;
+<img img width="200" height="400" src="./readme-assets/screenshots/screen_4.png"> &nbsp;&nbsp;&nbsp;&nbsp;   
+<img img width="200" height="400" src="./readme-assets/screenshots/screen_5.png"> &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+</p>
 <p align="center">
   <!-- Google Play badge -->
   <a href="https://play.google.com/store/apps/details?id=com.tonyxlab.echojournal" target="_blank">
@@ -37,15 +48,7 @@ EchoJournal is an Android application for recording, playing, and managing audio
 </p>
 
 
-## 📸 Screenshots
 
-<p align="center">
-<img img width="200" height="400" src="./readme-assets/screenshots/screen_1.png"> &nbsp;&nbsp;&nbsp;&nbsp;
-<img img width="200" height="400" src="./readme-assets/screenshots/screen_4.png"> &nbsp;&nbsp;&nbsp;&nbsp;   
-<img img width="200" height="400" src="./readme-assets/screenshots/screen_5.png"> &nbsp;&nbsp;&nbsp;&nbsp;
-
-
-</p># :camera_flash: **Screenshots** :camera_flash:
 
 ## 📱 Features
 
