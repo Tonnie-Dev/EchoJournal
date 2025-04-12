@@ -25,17 +25,15 @@
 </div>
 
 EchoJournal is an Android application for recording, playing, and managing audio entries with mood and topic tagging.
-
-<p align="center">
-  <!-- GIF preview -->
-  <img src="./readme-assets/gif/demo.gif" width="364" alt="App demo" />
-</p>
-
 <p align="center">
   <!-- Google Play badge -->
   <a href="https://play.google.com/store/apps/details?id=com.tonyxlab.echojournal" target="_blank">
     <img alt="Get it on Google Play" src="./readme-assets/screenshots/google_badge.png" width="280" />
   </a>
+</p>
+<p align="center">
+  <!-- GIF preview -->
+  <img src="./readme-assets/gif/demo.gif" width="364" alt="App demo" />
 </p>
 
 
