@@ -55,7 +55,7 @@ jobs:
           keyPassword: '${{ secrets.SIGNING_KEY_PASSWORD }}'
 
       - name: Upload app bundle as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: app-bundle
           path: app/build/outputs/bundle/release/app-release.aab
