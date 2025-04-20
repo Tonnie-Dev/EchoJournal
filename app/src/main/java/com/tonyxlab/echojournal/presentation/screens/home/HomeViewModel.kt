@@ -505,7 +505,4 @@ class HomeViewModel
             updateState { it.copy(echoes = updatedEchoes) }
         }
 
-        private fun onClickEchoItem() {
-            // sendActionEvent(HomeActionEvent.NavigateToEditorScreen(au))
-        }
     }

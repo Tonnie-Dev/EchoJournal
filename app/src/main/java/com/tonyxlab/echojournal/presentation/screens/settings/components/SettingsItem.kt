@@ -1,6 +1,5 @@
 package com.tonyxlab.echojournal.presentation.screens.settings.components
 
-import android.R.attr.description
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
