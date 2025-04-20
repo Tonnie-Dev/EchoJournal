@@ -22,7 +22,7 @@ import com.tonyxlab.echojournal.R
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
 import com.tonyxlab.echojournal.presentation.theme.EchoJournalTheme
 import com.tonyxlab.echojournal.presentation.theme.Primary95
-import com.tonyxlab.echojournal.presentation.theme.buttonSmallTextStyle
+import com.tonyxlab.echojournal.presentation.theme.buttonSmall
 
 @Composable
 fun TopicChip(
@@ -41,7 +41,7 @@ fun TopicChip(
                 selectedContainerColor = Primary95,
             ),
         leadingIcon = {
-            Text("#", style = buttonSmallTextStyle)
+            Text("#", style = MaterialTheme.typography.buttonSmall)
         },
         trailingIcon = {
             if (hasTrailingIcon) {
@@ -59,7 +59,7 @@ fun TopicChip(
         label = {
             Text(
                 text = topic,
-                style = buttonSmallTextStyle,
+                style = MaterialTheme.typography.buttonSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 maxLines = 1,

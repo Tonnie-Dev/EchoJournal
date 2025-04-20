@@ -2,6 +2,7 @@ package com.tonyxlab.echojournal.presentation.theme
 
 import android.R.attr.fontFamily
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -86,16 +87,21 @@ val Typography =
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
-            ),
-        // Improvised Button Text Style - Button Small
-        labelSmall =
-            TextStyle(
-                fontFamily = InterFontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
-                lineHeight = 20.sp,
-            ),
+            )
     )
 
-val buttonMediumTextStyle = Typography.labelLarge
-val buttonSmallTextStyle = Typography.labelSmall
+
+object ExtendedTypography {
+
+    val buttonSmall = TextStyle(
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+    )
+}
+
+
+val Typography.buttonSmall: TextStyle
+@Composable
+get() = ExtendedTypography.buttonSmall
