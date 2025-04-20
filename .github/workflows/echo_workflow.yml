@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: Download app bundle from artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: app-bundle
           path: ${{ github.workspace }}
