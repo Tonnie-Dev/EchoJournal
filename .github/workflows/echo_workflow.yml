@@ -74,7 +74,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app-bundle
-          path: ${{ github.workspace }}/app-release.aab
+          path: ${{ github.workspace }}
           continue-on-error: false  # Fail if download fails
 
 
