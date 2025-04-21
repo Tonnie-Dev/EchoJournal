@@ -19,7 +19,7 @@ android {
         applicationId = "com.tonyxlab.echojournal"
         minSdk = 24
         targetSdk = 34
-        versionCode = 5
+        versionCode = 6
         versionName = "1.225752.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
