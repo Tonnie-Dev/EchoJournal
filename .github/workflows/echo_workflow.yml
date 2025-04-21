@@ -1,5 +1,5 @@
 name: Deploy EchoJournal
-'on':
+on:
   workflow_dispatch: null
 jobs:
   build:
@@ -38,11 +38,12 @@ jobs:
         uses: chkfung/android-version-actions@v1.2.1
         with:
           gradlePath: app/build.gradle.kts
-          versionCode: '${{ github.run_number }}'
+          versionCode: ${{ env.VERSION_CODE }}
           versionName: ${{ env.VERSION_NAME }}
 
       - name: Build prodRelease
         run: ./gradlew bundleRelease
+        continue-on-error: false  # Fail if build fails
 
       - name: Sign AAB
         id: sign
@@ -60,7 +61,7 @@ jobs:
           name: app-bundle
           path: app/build/outputs/bundle/release/app-release.aab
           retention-days: 2
-      - run: 'echo Build status report=${{ job.status }}'
+        continue-on-error: false  # Fail if upload fails
 
 
   deploy:
@@ -73,7 +74,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app-bundle
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/app-release.aab
+          continue-on-error: false  # Fail if download fails
 
 
       - name: Publish to Play Store
@@ -81,5 +83,6 @@ jobs:
         with:
           serviceAccountJsonPlainText: '${{ secrets.SERVICE_ACCOUNT_JSON }}'
           packageName: com.tonyxlab.echojournal
-          releaseFiles: '${{ github.workspace }}/app-release.aab'
+          releaseFiles: ${{ github.workspace }}/app-release.aab
           track: production
+          continue-on-error: false  # Fail if deployment fails
