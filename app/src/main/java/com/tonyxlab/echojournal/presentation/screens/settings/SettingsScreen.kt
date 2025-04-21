@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,6 +25,7 @@ import com.tonyxlab.echojournal.presentation.core.components.AppTopBar
 import com.tonyxlab.echojournal.presentation.core.components.MoodRow
 import com.tonyxlab.echojournal.presentation.core.components.TopicDropDown
 import com.tonyxlab.echojournal.presentation.core.utils.spacing
+import com.tonyxlab.echojournal.presentation.screens.settings.components.OtherSettings
 import com.tonyxlab.echojournal.presentation.screens.settings.components.SettingsItem
 import com.tonyxlab.echojournal.presentation.screens.settings.components.TopicTagsWithAddButton
 import com.tonyxlab.echojournal.presentation.screens.settings.handling.SettingsUiEvent
@@ -61,7 +64,9 @@ fun SettingsScreen(
     onEvent: (SettingsUiEvent) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium),
     ) {
         // Mood Settings
@@ -77,7 +82,6 @@ fun SettingsScreen(
         }
 
         // Topics Settings
-
         Box {
             var topicOffset by remember { mutableStateOf(IntOffset.Zero) }
 
@@ -113,5 +117,9 @@ fun SettingsScreen(
                 startOffset = topicOffset,
             )
         }
+
+        OtherSettings()
     }
+
+
 }

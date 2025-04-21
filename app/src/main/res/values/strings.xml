@@ -14,6 +14,16 @@
     <string name="all_topics_filter_text">All Topics</string>
     <string name="icon_text_checkmark">Checkmark</string>
     <string name="hash_tag_text">"# "</string>
+    <string name="header_general_settings">General Settings</string>
+    <string name="header_other_settings">Other Settings</string>
+    <string name="text_share_app">Share Application</string>
+    <string name="text_invite_friends">Please share us with friends</string>
+    <string name="text_report_issue">Report Issue</string>
+    <string name="text_help_us">Please help us make Echo Journal better</string>
+    <string name="text_rate_us">Rate Us</string>
+    <string name="text_give_feedback">Please share your feedback with us</string>
+    <string name="text_version_name">Version Name: %s</string>
+    <string name="text_version_code">Version Code: %s</string>
     <string name="text_create_topic">Create topic %1$s</string>
     <string name="text_start_recording">"Press to Start Recording"</string>
     <string name="text_recording_memories">Recording Your Memories…</string>
