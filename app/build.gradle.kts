@@ -1,5 +1,6 @@
-import com.android.build.gradle.internal.dependency.ShrinkerVersion
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType.*
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
