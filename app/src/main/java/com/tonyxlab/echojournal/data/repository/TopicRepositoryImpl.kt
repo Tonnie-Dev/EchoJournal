@@ -26,7 +26,7 @@ class TopicRepositoryImpl
         }
 
         override suspend fun insertTopic(topic: Topic) {
-            dao.insert(topic.toEntity())
+            dao.upsert(topic.toEntity())
         }
 
         override suspend fun deleteTopic(topic: Topic) {

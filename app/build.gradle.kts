@@ -14,12 +14,12 @@ plugins {
 
 android {
     namespace = "com.tonyxlab.echojournal"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.tonyxlab.echojournal"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 6
         versionName = "1.225752.0"
 
